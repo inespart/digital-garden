@@ -10,7 +10,10 @@ const headerStyles = css`
   justify-content: space-between;
   background-color: ${green};
   font-weight: 300;
-  /* position: fixed; */
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
 `;
 
 const logoContainer = css`
@@ -69,6 +72,11 @@ export default function Header() {
       </div>
       <div css={navContainer}>
         <ul>
+          <Link href="/create-seed">
+            <a>
+              <li class="button-default">+ Create Seed</li>
+            </a>
+          </Link>
           <Link href="/digital-garden">
             <a>
               <li>Digital Garden</li>
@@ -79,14 +87,15 @@ export default function Header() {
               <li>About</li>
             </a>
           </Link>
-          <Link href="/create-seed">
+
+          <Link href="/register">
             <a>
-              <li class="button-default">+ Create Seed</li>
+              <li>Register</li>
             </a>
           </Link>
-          <Link href="/sign-up">
+          <Link href="/login">
             <a>
-              <li class="button-default-ghost">Sign up</li>
+              <li>Login</li>
             </a>
           </Link>
         </ul>

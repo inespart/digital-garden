@@ -1,7 +1,12 @@
 import '../styles/globals.css';
 import { css, Global } from '@emotion/react';
 import Head from 'next/head';
-import { blue, darkGrey, lightBlue } from '../util/sharedStyles';
+import {
+  blue,
+  darkGrey,
+  lightBlue,
+  normalFontSize,
+} from '../util/sharedStyles';
 
 require('typeface-poppins');
 
@@ -17,15 +22,33 @@ export default function MyApp({ Component, pageProps }) {
           }
           body {
             margin: 0;
-            font-family: 'Poppins', sans-serif;
-            font-size: 16px;
-            color: black;
+            font-family: 'Roboto', sans-serif;
+            font-size: ${normalFontSize};
+            color: ${darkGrey};
+            width: 100%;
+            height: 100vh;
           }
+
           h1,
           h2,
           h3 {
             font-weight: 500;
           }
+
+          h1 {
+            font-size: 2.5rem;
+            line-height: 58px;
+          }
+
+          h2 {
+            font-size: 1.7rem;
+          }
+
+          h3 {
+            font-size: 1.5rem;
+            line-height: 40px;
+          }
+
           .button-default {
             padding: 12px 24px;
             background-color: ${blue};
