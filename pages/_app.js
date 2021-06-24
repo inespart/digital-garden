@@ -27,6 +27,11 @@ export default function MyApp({ Component, pageProps }) {
             color: ${darkGrey};
             width: 100%;
             height: 100vh;
+            background-color: #f8fff8;
+          }
+
+          .page-container {
+            padding: 100px 128px;
           }
 
           h1,

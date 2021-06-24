@@ -72,11 +72,6 @@ export default function Header() {
       </div>
       <div css={navContainer}>
         <ul>
-          <Link href="/create-seed">
-            <a>
-              <li class="button-default">+ Create Seed</li>
-            </a>
-          </Link>
           <Link href="/digital-garden">
             <a>
               <li>Digital Garden</li>
@@ -87,15 +82,14 @@ export default function Header() {
               <li>About</li>
             </a>
           </Link>
-
-          <Link href="/register">
+          <Link href="/create-seed">
             <a>
-              <li>Register</li>
+              <li class="button-default">+ Create Seed</li>
             </a>
           </Link>
           <Link href="/login">
             <a>
-              <li>Login</li>
+              <li class="button-default-ghost">Login</li>
             </a>
           </Link>
         </ul>

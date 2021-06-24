@@ -7,7 +7,10 @@ export default function About() {
       <Head>
         <title>About</title>
       </Head>
-      <h1>About Page</h1>
+      <div className="page-container">
+        {' '}
+        <h1>About Page</h1>
+      </div>
     </Layout>
   );
 }
