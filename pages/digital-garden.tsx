@@ -2,14 +2,18 @@ import Head from 'next/head';
 import Layout from '../components/Layout';
 import { pageContainer } from '../util/sharedStyles';
 
-export default function RegistrationSuccessful() {
+type Props = {
+  username?: string;
+};
+
+export default function About(props: Props) {
   return (
-    <Layout>
+    <Layout username={props.username}>
       <Head>
-        <title>Registration Successful | Digital Garden</title>
+        <title>All Seeds | Digital Garden</title>
       </Head>
       <div css={pageContainer}>
-        <h1>Registration Successful</h1>
+        <h1>All Seeds</h1>
       </div>
     </Layout>
   );

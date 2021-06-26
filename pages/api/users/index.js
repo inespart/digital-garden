@@ -5,7 +5,7 @@ import { getUsers, insertUser } from '../../../util/database';
 
 // An API Route needs to define the response
 // that is returned to the user
-export default async function Users(req, res) {
+export default async function usersHandler(req, res) {
   if (req.method === 'GET') {
     const users = await getUsers();
     return res.status(200).json({ users: users });

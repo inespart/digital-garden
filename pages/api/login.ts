@@ -1,16 +1,23 @@
 import argon2 from 'argon2';
+// eslint-disable-next-line unicorn/prefer-node-protocol
+import crypto from 'crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { createSerializedSessionTokenCookie } from '../../util/cookies';
 // Since all files in the API folder
 // are server-side only, we can import from
 // the database statically at the top
-import { getUserWithPasswordHashByUsername } from '../../util/database';
+import {
+  deleteExpiredSessions,
+  getUserWithPasswordHashByUsername,
+  insertSession,
+} from '../../util/database';
 import { ApplicationError, User } from '../../util/types';
 
 export type LoginResponse = { user: User } | { errors: ApplicationError[] };
 
 // An API Route needs to define the response
 // that is returned to the user
-export default async function Login(
+export default async function loginHandler(
   req: NextApiRequest,
   res: NextApiResponse<LoginResponse>,
 ) {
@@ -46,15 +53,19 @@ export default async function Login(
         .json({ errors: [{ message: 'Username or password did not match' }] });
     }
 
-    // TODO: Generate token consisting of a long string of letters
+    // Clean up expired sessions
+    await deleteExpiredSessions();
+
+    // Generate token consisting of a long string of letters
     // and number, which will serve as a record that the user
     // at one point did log in correctly
+    const token = crypto.randomBytes(64).toString('base64');
 
-    // TODO: Save the token to the database with a time limit
+    // Save the token to the database (with an automatically
+    // generated expiry of 24 hours)
+    const session = await insertSession(token, userWithPasswordHash.id);
 
-    // TODO: Save the token in a cookie on the user's machine
-    // (cookies get sent automatically to the server every time
-    // a user makes a request)
+    const cookie = createSerializedSessionTokenCookie(session.token);
 
     // Destructuring with a rest parameter
     // passwordHash => passwordHash will take it out of the object
@@ -62,7 +73,7 @@ export default async function Login(
     const { passwordHash, ...user } = userWithPasswordHash;
 
     // now we have a user that doesn't have the passwordHash anymore
-    return res.status(200).json({ user: user });
+    return res.status(200).setHeader('Set-Cookie', cookie).json({ user: user });
   }
 
   res.status(400).json({ errors: [{ message: 'Bad request' }] });

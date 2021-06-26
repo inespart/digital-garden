@@ -2,6 +2,10 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Layout from '../components/Layout';
 
+type Props = {
+  username?: string;
+};
+
 const heroSection = css`
   background-image: url('/Background.svg');
   background-size: cover;
@@ -27,13 +31,13 @@ const heroSectionHeading = css`
   justify-content: center;
   align-items: center;
   width: 80%;
-  padding: 0px 64px;
+  padding: 0px 32px;
 `;
 
 const heroSectionImage = css`
   display: flex;
   justify-content: flex-end;
-  width: 50%;
+  width: 70%;
   padding: 0px 64px;
 
   img {
@@ -42,11 +46,15 @@ const heroSectionImage = css`
   }
 `;
 
-export default function Home() {
+// const advantagesSection = css`
+//   height: 100vh;
+// `;
+
+export default function Home(props: Props) {
   return (
-    <Layout>
+    <Layout username={props.username}>
       <Head>
-        <title>Home</title>
+        <title>Home | Digital Garden</title>
       </Head>
       <section css={heroSection}>
         <div css={heroSectionHeadingImageContainer}>
@@ -70,6 +78,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* <section css={advantagesSection}>testtestjkösadklfjöaslkdfjösldk</section> */}
     </Layout>
   );
 }

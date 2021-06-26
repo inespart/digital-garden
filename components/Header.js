@@ -4,7 +4,7 @@ import { darkGrey, green } from '../util/sharedStyles';
 
 const headerStyles = css`
   width: 100%;
-  height: 90px;
+  height: 100px;
   padding: 12px 128px;
   display: flex;
   justify-content: space-between;
@@ -28,6 +28,10 @@ const logoContainer = css`
   a {
     text-decoration: none;
     color: ${darkGrey};
+  }
+
+  img {
+    width: 90px;
   }
 `;
 
@@ -62,19 +66,21 @@ const navContainer = css`
   }
 `;
 
-export default function Header() {
+export default function Header(props) {
   return (
     <header css={headerStyles}>
       <div css={logoContainer}>
         <Link href="/">
-          <a>Digital Garden</a>
+          <a>
+            <img src="digital-garden-logo.png" alt="" />
+          </a>
         </Link>
       </div>
       <div css={navContainer}>
         <ul>
           <Link href="/digital-garden">
             <a>
-              <li>Digital Garden</li>
+              <li>Digital Seeds</li>
             </a>
           </Link>
           <Link href="/about">
@@ -87,11 +93,20 @@ export default function Header() {
               <li class="button-default">+ Create Seed</li>
             </a>
           </Link>
-          <Link href="/login">
-            <a>
-              <li class="button-default-ghost">Login</li>
-            </a>
-          </Link>
+          {props.username ? (
+            <Link href="/logout">
+              <a>
+                <li class="button-default-ghost">Logout</li>
+              </a>
+            </Link>
+          ) : (
+            <Link href="/login">
+              <a>
+                <li class="button-default-ghost">Login</li>
+              </a>
+            </Link>
+          )}
+          {/* {props.username && `logged in as ${props.username}`} */}
         </ul>
       </div>
     </header>
