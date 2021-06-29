@@ -4,12 +4,18 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
-import { getValidSessionByToken } from '../util/database';
+import { generateCsrfSecretByToken } from '../util/auth';
+import {
+  deleteExpiredSessions,
+  getValidSessionByToken,
+} from '../util/database';
 import { pageContainer } from '../util/sharedStyles';
+import { RegisterResponse } from './api/register';
 
 type Props = {
   refreshUsername: () => void;
   username?: string;
+  csrfToken: string;
 };
 
 const wrapper = css`
@@ -40,6 +46,7 @@ export default function Register(props: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
   const router = useRouter();
 
   return (
@@ -65,16 +72,20 @@ export default function Register(props: Props) {
                     username: username,
                     password: password,
                     email: email,
-                    // TODO: pass CSRF token to Register API Route
-                    // csrfToken: props.csrfToken
+                    csrfToken: props.csrfToken,
                   }),
                 });
-                const { user: createdUser } = await response.json();
+                const json = (await response.json()) as RegisterResponse;
+
+                if ('errors' in json) {
+                  setError(json.errors[0].message);
+                  return;
+                }
 
                 props.refreshUsername();
 
-                // Navigate to the user's page when
-                // they have been successfully created
+                // Navigate to registration successful page when
+                // new account has been successfully created
                 router.push(`/registration-successful`);
               }}
             >
@@ -139,8 +150,8 @@ export default function Register(props: Props) {
                   />
                 </label>
               </div>
-
               <button>Create Account</button>
+              <div style={{ color: 'red' }}>{error}</div>
             </form>
           </div>
           <div css={imageContainer}>
@@ -153,6 +164,23 @@ export default function Register(props: Props) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  // Import needed libraries and functions
+  // eslint-disable-next-line unicorn/prefer-node-protocol
+  const crypto = await import('crypto');
+
+  const { createSerializedRegisterSessionTokenCookie } = await import(
+    '../util/cookies'
+  );
+
+  const { insertFiveMinuteSessionWithoutUserId } = await import(
+    '../util/database'
+  );
+
+  // Import and initialize the `csrf` library
+  const Tokens = await (await import('csrf')).default;
+  const tokens = new Tokens();
+
+  // Get session information if user is already logged in
   const sessionToken = context.req.cookies.sessionToken;
   // why is this undefined???
   console.log(
@@ -176,14 +204,33 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
-  // TODO: Generate short lived session only for the registration
-  // TODO: Use the short lived session to generate secret for the CSRF token
-  // TODO: Pass back CSRF token to the props
+  await deleteExpiredSessions();
+
+  // Generate 5-min short-lived session ONLY for the registration
+  // User needs to complete registration process within 5 minutes
+  const shortLivedSession = await insertFiveMinuteSessionWithoutUserId(
+    crypto.randomBytes(64).toString('base64'),
+  );
+  console.log('short lived session token', shortLivedSession.token);
+
+  // Set new cookie for the short-lived session
+  const cookie = createSerializedRegisterSessionTokenCookie(
+    shortLivedSession.token,
+  );
+  context.res.setHeader('Set-Cookie', cookie);
+
+  // Use token from short-lived session to generate secret for the CSRF token
+  const csrfSecret = generateCsrfSecretByToken(shortLivedSession.token);
+  console.log('csrfSecret', csrfSecret);
+
+  // Create CSRF token to the props
+  const csrfToken = tokens.create(csrfSecret);
+  console.log('csrfToken', csrfToken);
 
   return {
     props: {
-      // TODO: Pass CSRF token
-      // csrfToken
+      // Pass CSRF Token via props
+      csrfToken,
     },
   };
 }

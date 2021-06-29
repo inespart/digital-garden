@@ -15,6 +15,7 @@
     "argon2": "^0.28.2",
     "camelcase-keys": "^6.2.2",
     "cookie": "^0.4.1",
+    "csrf": "^3.1.0",
     "dotenv-cli": "^4.0.0",
     "dotenv-safe": "^8.2.0",
     "ley": "^0.7.1",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@next/eslint-plugin-next": "^10.2.2",
     "@types/cookie": "^0.4.0",
+    "@types/csrf": "^3.1.0",
     "@types/dotenv-safe": "^8.1.1",
     "@types/js-cookie": "^2.2.6",
     "@types/node": "^15.0.1",

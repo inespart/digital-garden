@@ -78,7 +78,7 @@ export async function insertUser(
   passwordHash: string,
 ) {
   console.log('email', email);
-  const users = await sql`
+  const users = await sql<[User]>`
     INSERT INTO users
       (first_name, last_name, username, email, password_hash)
     VALUES
@@ -221,6 +221,17 @@ export async function insertSession(token: string, userId: number) {
       (token, user_id)
     VALUES
       (${token}, ${userId})
+    RETURNING *
+  `;
+  return sessions.map((session) => camelcaseKeys(session))[0];
+}
+
+export async function insertFiveMinuteSessionWithoutUserId(token: string) {
+  const sessions = await sql<Session[]>`
+    INSERT INTO sessions
+      (token, expiry)
+    VALUES
+      (${token}, NOW() + INTERVAL '5 minutes')
     RETURNING *
   `;
   return sessions.map((session) => camelcaseKeys(session))[0];
