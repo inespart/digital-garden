@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Layout from '../../components/Layout';
 import { pageContainer } from '../../util/sharedStyles';
 import { ApplicationError, User } from '../../util/types';
+import { SingleUserResponseType } from '../api/users-by-username/[username]';
 
 type Props = {
   user?: User;
@@ -13,13 +14,16 @@ type Props = {
 export default function SingleUserProfile(props: Props) {
   // Show message if user not allowed
   const errors = props.errors;
+
   if (errors) {
     return (
       <Layout username={props.username}>
         <Head>
           <title>Error</title>
         </Head>
-        <div css={pageContainer}>Error: {errors[0].message}</div>
+        <div css={pageContainer}>
+          <h1>Error: {errors[0].message}</h1>
+        </div>
       </Layout>
     );
   }
@@ -69,16 +73,43 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // TODO: Test if the token user's username matches the username in the URL
 
   // API design here is not so great, maybe don't copy
-  const response = await fetch(
-    `${process.env.API_BASE_URL}/users-by-username/${context.query.username}`,
-  );
-  console.log('sessionToken inside GSSP', context.req.cookies.sessionToken);
-  const { user } = await response.json();
-  console.log('API decoded JSON from response', user);
+  const response =
+    // Since we're fetching on the server side,
+    // the browser is not a part of this fetch
+    // and it is therefore not sending the cookies along
+    //
+    // This is using the node-fetch library internally
+    //
+    await fetch(
+      `${process.env.API_BASE_URL}/users-by-username/${context.query.username}`,
+      {
+        method: 'GET',
+        headers: {
+          // This forwards the cookie to the API route
+          cookie: context.req.headers.cookie || '',
+        },
+      },
+    );
+  // console.log('sessionToken inside GSSP', context.req.cookies.sessionToken);
+  const json = (await response.json()) as SingleUserResponseType;
+
+  console.log('API decoded JSON from response', json);
+
+  // checking for a property called errors inside object json
+  if ('errors' in json) {
+    context.res.statusCode = 403;
+  } else if (!json.user) {
+    // Return a proper status code for a response
+    // with a null user (which indicates it has
+    // not been found in the database)
+    context.res.statusCode = 404;
+  }
 
   return {
     props: {
-      user: user,
+      // json is an object with a user property OR an error property
+      // if it has an error property, it's still rendering
+      ...json,
     },
   };
 }

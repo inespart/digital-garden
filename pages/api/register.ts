@@ -19,6 +19,12 @@ export default async function registerHandler(
   res: NextApiResponse,
 ) {
   if (req.method === 'POST') {
+    // Security: Check CSRF Token
+
+    // TODO: Check CSRF Token
+
+    // TODO: Delete matching short-lived session
+
     // Destructure relevant information from the request body
     const { firstName, lastName, username, email, password } = req.body;
 
@@ -41,8 +47,7 @@ export default async function registerHandler(
     // at one point did log in correctly
     const token = crypto.randomBytes(64).toString('base64');
 
-    // Save the token to the database (with an automatically
-    // generated expiry of 24 hours)
+    // Save the token to the database (with an automatically generated expiry of 24 hours)
     const session = await insertSession(token, user.id);
 
     const cookie = createSerializedSessionTokenCookie(session.token);

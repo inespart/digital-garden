@@ -54,7 +54,6 @@ export default function Register(props: Props) {
             <form
               onSubmit={async (event) => {
                 event.preventDefault();
-                console.log('email', email);
                 const response = await fetch(`/api/register`, {
                   method: 'POST',
                   headers: {
@@ -66,6 +65,8 @@ export default function Register(props: Props) {
                     username: username,
                     password: password,
                     email: email,
+                    // TODO: pass CSRF token to Register API Route
+                    // csrfToken: props.csrfToken
                   }),
                 });
                 const { user: createdUser } = await response.json();
@@ -153,8 +154,15 @@ export default function Register(props: Props) {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const sessionToken = context.req.cookies.sessionToken;
+  // why is this undefined???
+  console.log(
+    'sessionToken inside gSSP of register.tsx',
+    context.req.cookies.sessionToken,
+  );
 
   const session = await getValidSessionByToken(sessionToken);
+  // why is this undefined???
+  console.log('session inside gSSP of register.tsx', session);
 
   if (session) {
     // Redirect the user when they have a session
@@ -168,7 +176,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
+  // TODO: Generate short lived session only for the registration
+  // TODO: Use the short lived session to generate secret for the CSRF token
+  // TODO: Pass back CSRF token to the props
+
   return {
-    props: {},
+    props: {
+      // TODO: Pass CSRF token
+      // csrfToken
+    },
   };
 }
