@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -6,35 +5,18 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
 import { getValidSessionByToken } from '../util/database';
-import { pageContainer } from '../util/sharedStyles';
+import {
+  imageContainer,
+  pageContainer,
+  registrationForm,
+  wrapper,
+} from '../util/sharedStyles';
 import { LoginResponse } from './api/login';
 
 type Props = {
   refreshUsername: () => void;
   username?: string;
 };
-
-const wrapper = css`
-  display: flex;
-  /* grid-template-columns: 2fr 2fr; */
-  /* column-gap: 2.5em; */
-  padding: 64px 0;
-`;
-
-const registrationForm = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 50%;
-`;
-
-const imageContainer = css`
-  width: 50%;
-
-  img {
-    width: 90%;
-  }
-`;
 
 export default function Login(props: Props) {
   const [username, setUsername] = useState('');
@@ -92,6 +74,7 @@ export default function Login(props: Props) {
                   <input
                     data-cy="users-management-create-username"
                     value={username}
+                    placeholder="sophie_br"
                     onChange={(event) => {
                       setUsername(event.currentTarget.value);
                     }}
@@ -106,6 +89,7 @@ export default function Login(props: Props) {
                     data-cy="users-management-create-password"
                     value={password}
                     type="password"
+                    placeholder="*******"
                     onChange={(event) => {
                       setPassword(event.currentTarget.value);
                     }}
@@ -113,10 +97,17 @@ export default function Login(props: Props) {
                 </label>
               </div>
 
-              <button>Login</button>
+              <button className="button-default">Login</button>
 
               <div style={{ color: 'red' }}>{error}</div>
             </form>
+            <div>
+              <Link href="/">
+                <a className="a-no-highlight-color">
+                  <p>Forgot password?</p>
+                </a>
+              </Link>
+            </div>
             <br />
             <div>
               <Link href="/register">

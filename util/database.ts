@@ -2,7 +2,14 @@ import camelcaseKeys from 'camelcase-keys';
 import dotenvSafe from 'dotenv-safe';
 import postgres from 'postgres';
 // import setPostgresDefaultsOnHeroku from '../setPostgresDefaultsOnHeroku';
-import { ApplicationError, Session, User, UserWithPasswordHash } from './types';
+import {
+  ApplicationError,
+  Category,
+  Seed,
+  Session,
+  User,
+  UserWithPasswordHash,
+} from './types';
 
 // setPostgresDefaultsOnHeroku();
 
@@ -77,7 +84,6 @@ export async function insertUser(
   email: string,
   passwordHash: string,
 ) {
-  console.log('email', email);
   const users = await sql<[User]>`
     INSERT INTO users
       (first_name, last_name, username, email, password_hash)
@@ -257,4 +263,74 @@ export async function deleteSessionByToken(token: string) {
     RETURNING *
   `;
   return sessions.map((session) => camelcaseKeys(session))[0];
+}
+
+export async function createSeed(
+  title: string,
+  publicNoteId: number,
+  userId: number,
+  categoryId: number,
+  isPublished: boolean,
+  privateNoteId: number,
+  imageUrl: string,
+  resourceUrl: string,
+  slug: string,
+) {
+  const seeds = await sql<[Seed]>`
+    INSERT INTO seeds
+      (title, public_note_id, user_id, category_id, is_published, private_note_id, image_url, resource_url, slug)
+    VALUES
+      (${title}, ${publicNoteId}, ${userId}, ${categoryId}, ${isPublished}, ${privateNoteId}, ${imageUrl}, ${resourceUrl}, ${slug})
+    RETURNING
+      id,
+      title,
+      public_note_id,
+      category_id,
+      image_url,
+      resource_url,
+      slug
+  `;
+  console.log('seeds', seeds);
+  return seeds.map((seed) => camelcaseKeys(seed))[0];
+}
+
+// INSERT INTO seeds
+//       (title, public_note_id, user_id, category_id, is_published, private_note_id, image_url, resource_url, slug)
+//     VALUES
+//       ("Andrea", 1, 2, 3, true, 4, "www.image.com", "www.google.com", "test-title")
+//     RETURNING
+//       id,
+//       title,
+//       public_note_id,
+//       category_id,
+//       image_url,
+//       resource_url,
+//       slug
+//   `;
+
+export async function getCategory() {
+  const categories = await sql<[Category]>`
+  SELECT
+      id,
+      title
+    FROM
+      categories
+  `;
+  return categories.map((category) => camelcaseKeys(category));
+}
+
+export async function getCategoryById(id?: number) {
+  // Return undefined if id is not parseable
+  if (!id) return undefined;
+
+  const categories = await sql<[Category]>`
+  SELECT
+      id,
+      title
+    FROM
+      categories
+    WHERE
+      id = ${id}
+  `;
+  return categories.map((category) => camelcaseKeys(category))[0];
 }

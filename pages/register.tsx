@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -6,10 +5,11 @@ import { useState } from 'react';
 import Layout from '../components/Layout';
 import { generateCsrfSecretByToken } from '../util/auth';
 import {
-  deleteExpiredSessions,
-  getValidSessionByToken,
-} from '../util/database';
-import { pageContainer } from '../util/sharedStyles';
+  imageContainer,
+  pageContainer,
+  registrationForm,
+  wrapper,
+} from '../util/sharedStyles';
 import { RegisterResponse } from './api/register';
 
 type Props = {
@@ -17,28 +17,6 @@ type Props = {
   username?: string;
   csrfToken: string;
 };
-
-const wrapper = css`
-  display: flex;
-  /* grid-template-columns: 2fr 2fr; */
-  /* column-gap: 2.5em; */
-  padding: 64px 0;
-`;
-
-const registrationForm = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 50%;
-`;
-
-const imageContainer = css`
-  width: 50%;
-
-  img {
-    width: 90%;
-  }
-`;
 
 export default function Register(props: Props) {
   const [firstName, setFirstName] = useState('');
@@ -52,12 +30,12 @@ export default function Register(props: Props) {
   return (
     <Layout username={props.username}>
       <Head>
-        <title>Create Account | Digital Garden</title>
+        <title>Register | Digital Garden</title>
       </Head>
       <div css={pageContainer}>
         <div css={wrapper}>
           <div css={registrationForm}>
-            <h1>Create Account</h1>
+            <h1>Register</h1>
             <form
               onSubmit={async (event) => {
                 event.preventDefault();
@@ -94,6 +72,7 @@ export default function Register(props: Props) {
                   First Name:
                   <input
                     value={firstName}
+                    placeholder="Sophie"
                     onChange={(event) => {
                       setFirstName(event.currentTarget.value);
                     }}
@@ -106,6 +85,7 @@ export default function Register(props: Props) {
                   Last Name:
                   <input
                     value={lastName}
+                    placeholder="Breuer"
                     onChange={(event) => {
                       setLastName(event.currentTarget.value);
                     }}
@@ -119,6 +99,7 @@ export default function Register(props: Props) {
                   <input
                     value={email}
                     type="email"
+                    placeholder="sophie_br@gmail.com"
                     onChange={(event) => {
                       setEmail(event.currentTarget.value);
                     }}
@@ -131,18 +112,19 @@ export default function Register(props: Props) {
                   Username:
                   <input
                     value={username}
+                    placeholder="sophie_br"
                     onChange={(event) => {
                       setUsername(event.currentTarget.value);
                     }}
                   />
                 </label>
               </div>
-
               <div>
                 <label>
                   Password:
                   <input
                     value={password}
+                    placeholder="******"
                     type="password"
                     onChange={(event) => {
                       setPassword(event.currentTarget.value);
@@ -150,7 +132,7 @@ export default function Register(props: Props) {
                   />
                 </label>
               </div>
-              <button>Create Account</button>
+              <button className="button-default">Create Account</button>
               <div style={{ color: 'red' }}>{error}</div>
             </form>
           </div>
@@ -172,9 +154,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     '../util/cookies'
   );
 
-  const { insertFiveMinuteSessionWithoutUserId } = await import(
-    '../util/database'
-  );
+  const {
+    insertFiveMinuteSessionWithoutUserId,
+    deleteExpiredSessions,
+    getValidSessionByToken,
+  } = await import('../util/database');
 
   // Import and initialize the `csrf` library
   const Tokens = await (await import('csrf')).default;
@@ -183,14 +167,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // Get session information if user is already logged in
   const sessionToken = context.req.cookies.sessionToken;
   // why is this undefined???
-  console.log(
-    'sessionToken inside gSSP of register.tsx',
-    context.req.cookies.sessionToken,
-  );
+  // console.log('sessionToken inside gSSP of register.tsx', context.req.cookies);
 
   const session = await getValidSessionByToken(sessionToken);
   // why is this undefined???
-  console.log('session inside gSSP of register.tsx', session);
+  // console.log('session inside gSSP of register.tsx', session);
 
   if (session) {
     // Redirect the user when they have a session

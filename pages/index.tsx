@@ -61,7 +61,7 @@ export default function Home(props: Props) {
           <div css={heroSectionHeading}>
             <div>
               <h1>
-                Do you consume a lot of interesting information, but feel like
+                Do you consume lots of interesting information, but feel like
                 it’s not leading to results?
               </h1>
               <h3>

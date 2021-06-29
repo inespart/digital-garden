@@ -9,7 +9,7 @@ const headerStyles = css`
   display: flex;
   justify-content: space-between;
   background-color: ${green};
-  font-weight: 300;
+  font-weight: 400;
   position: fixed;
   z-index: 1000;
   top: 0;

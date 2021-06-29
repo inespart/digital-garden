@@ -4003,6 +4003,16 @@ type-fest@^0.8.1:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
+typeface-inter@^3.18.1:
+  version "3.18.1"
+  resolved "https://registry.yarnpkg.com/typeface-inter/-/typeface-inter-3.18.1.tgz#24cccdf29923f318589783997be20a662cd3ab9c"
+  integrity sha512-c+TBanYFCvmg3j5vPk+zxK4ocMZbPxMEmjnwG7rPQoV87xvQ6b07VbAOC0Va0XBbbZCGw6cWNeFuLeg1YQru3Q==
+
+typeface-petrona@^1.1.13:
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/typeface-petrona/-/typeface-petrona-1.1.13.tgz#ef755cd9b98a54275be3e0693512101dfd6b568e"
+  integrity sha512-Qp7UUuJPP1JpBZPRt5caO9GC85tg0GOb9HLNuM/Twb+AP3EiYHk6UyUKGc2wp1YmkRzhSJ9/0WcQI1+RL2UCOA==
+
 typeface-poppins@^1.1.13:
   version "1.1.13"
   resolved "https://registry.yarnpkg.com/typeface-poppins/-/typeface-poppins-1.1.13.tgz#a80b6f14a2a70624eb2eb833fe5559507a8f5651"

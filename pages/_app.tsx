@@ -6,11 +6,13 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   blue,
   darkGrey,
+  green,
   lightBlue,
   normalFontSize,
 } from '../util/sharedStyles';
 
-require('typeface-poppins');
+require('typeface-inter');
+require('typeface-petrona');
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [username, setUsername] = useState<string>();
@@ -58,7 +60,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           }
           body {
             margin: 0;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: ${normalFontSize};
             color: ${darkGrey};
             width: 100%;
@@ -73,21 +75,24 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           h1,
           h2,
           h3 {
-            font-weight: 500;
           }
 
           h1 {
-            font-size: 2.5rem;
-            line-height: 58px;
+            font-size: 4rem;
+            line-height: 64px;
+            font-family: 'Petrona', sans-serif;
+            font-weight: 800;
           }
 
           h2 {
             font-size: 1.7rem;
+            font-weight: 500;
           }
 
           h3 {
             font-size: 1.5rem;
-            line-height: 40px;
+            line-height: 32px;
+            font-weight: 400;
           }
 
           .button-default {
@@ -110,6 +115,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             border: 1px solid ${darkGrey};
             border-radius: 32px;
             cursor: pointer;
+            color: ${darkGrey};
+          }
+
+          a {
+            color: ${green};
+            font-weight: 500;
+          }
+
+          .a-no-highlight-color {
             color: ${darkGrey};
           }
         `}

@@ -11,6 +11,7 @@ import { createSerializedSessionTokenCookie } from '../../util/cookies';
 import {
   deleteExpiredSessions,
   deleteSessionByToken,
+  getValidSessionByToken,
   insertSession,
   insertUser,
 } from '../../util/database';
@@ -32,18 +33,31 @@ export default async function registerHandler(
 ) {
   if (req.method === 'POST') {
     // Retrieve csrfToken, etc. from the request body from the frontend
+    // Destructure relevant information from the request body
     const { firstName, lastName, username, email, password, csrfToken } =
       req.body;
 
     const sessionToken = req.cookies.sessionTokenRegister;
+    // console.log('req.cookies register.ts', req.cookies);
+    // console.log(
+    //   'req.cookies.sessionToken register.ts',
+    //   req.cookies.sessionToken,
+    // );
+    // console.log('sessionToken register.ts', sessionToken);
+
+    const registerSession = await getValidSessionByToken(sessionToken);
+
+    if (!registerSession) {
+      return res.status(400).json({ errors: [{ message: 'Invalid session' }] });
+    }
 
     const csrfSecret = generateCsrfSecretByToken(sessionToken);
 
     // Security: Check CSRF Token
     const isCsrfTokenValid = tokens.verify(csrfSecret, csrfToken);
-    // why is sessionToken undefined?
-    console.log('sessionToken', sessionToken);
-    console.log('csrfToken', csrfToken);
+    // sessionToken gets created upon new registration
+    // console.log('short lived session token - register.ts', sessionToken);
+    // console.log('csrfToken', csrfToken);
 
     if (!isCsrfTokenValid) {
       return res
@@ -52,10 +66,6 @@ export default async function registerHandler(
     }
 
     await deleteSessionByToken(sessionToken);
-
-    // TODO: Delete matching short-lived session
-
-    // Destructure relevant information from the request body
 
     // Create a hash of the password to save in the database
     const passwordHash = await argon2.hash(password);

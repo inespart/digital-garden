@@ -17,4 +17,21 @@ export type Session = {
   userId: number;
 };
 
+export type Seed = {
+  title: string;
+  publicNoteId: number;
+  userId: number;
+  categoryId: number;
+  isPublished: boolean;
+  privateNoteId: number;
+  imageUrl: string;
+  resourceUrl: string;
+  slug: string;
+};
+
+export type Category = {
+  id: number;
+  title: string;
+};
+
 export type ApplicationError = { message: string };
