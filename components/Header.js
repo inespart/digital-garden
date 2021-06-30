@@ -72,13 +72,13 @@ export default function Header(props) {
       <div css={logoContainer}>
         <Link href="/">
           <a>
-            <img src="digital-garden-logo.png" alt="" />
+            <img src="/digital-garden-logo.png" alt="Digital Garden Logo" />
           </a>
         </Link>
       </div>
       <div css={navContainer}>
         <ul>
-          <Link href="/digital-garden">
+          <Link href="/seeds">
             <a>
               <li>Digital Seeds</li>
             </a>
@@ -88,7 +88,7 @@ export default function Header(props) {
               <li>About</li>
             </a>
           </Link>
-          <Link href="/create-seed">
+          <Link href="/seeds/create">
             <a>
               <li class="button-default">+ Create Seed</li>
             </a>

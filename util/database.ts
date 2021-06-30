@@ -5,6 +5,7 @@ import postgres from 'postgres';
 import {
   ApplicationError,
   Category,
+  Note,
   Seed,
   Session,
   User,
@@ -267,46 +268,57 @@ export async function deleteSessionByToken(token: string) {
 
 export async function createSeed(
   title: string,
-  publicNoteId: number,
+  publicNote: string,
   userId: number,
+  // change into number
   categoryId: number,
   isPublished: boolean,
-  privateNoteId: number,
+  privateNote: string,
   imageUrl: string,
   resourceUrl: string,
   slug: string,
 ) {
+  const publicNoteId = await sql<[Note]>`
+    INSERT INTO notes
+      (content, is_private)
+    VALUES
+      (${publicNote}, ${false})
+    RETURNING
+      id
+  `;
+
+  // console.log('categoryId', categoryId);
+  console.log('publicNoteId', publicNoteId);
+
+  const privateNoteId = await sql<[Note]>`
+    INSERT INTO notes
+      (content, is_private)
+    VALUES
+      (${privateNote}, ${true})
+    RETURNING
+      id
+    `;
+
+  // console.log('privateNoteId', privateNoteId[0].id);
+
   const seeds = await sql<[Seed]>`
     INSERT INTO seeds
       (title, public_note_id, user_id, category_id, is_published, private_note_id, image_url, resource_url, slug)
     VALUES
-      (${title}, ${publicNoteId}, ${userId}, ${categoryId}, ${isPublished}, ${privateNoteId}, ${imageUrl}, ${resourceUrl}, ${slug})
+      (${title}, ${publicNoteId[0].id}, ${userId}, ${categoryId}, ${isPublished}, ${privateNoteId[0].id}, ${imageUrl}, ${resourceUrl}, ${slug})
     RETURNING
-      id,
       title,
       public_note_id,
+      user_id,
       category_id,
+      is_published,
+      private_note_id,
       image_url,
       resource_url,
       slug
   `;
-  console.log('seeds', seeds);
   return seeds.map((seed) => camelcaseKeys(seed))[0];
 }
-
-// INSERT INTO seeds
-//       (title, public_note_id, user_id, category_id, is_published, private_note_id, image_url, resource_url, slug)
-//     VALUES
-//       ("Andrea", 1, 2, 3, true, 4, "www.image.com", "www.google.com", "test-title")
-//     RETURNING
-//       id,
-//       title,
-//       public_note_id,
-//       category_id,
-//       image_url,
-//       resource_url,
-//       slug
-//   `;
 
 export async function getCategory() {
   const categories = await sql<[Category]>`
@@ -319,18 +331,42 @@ export async function getCategory() {
   return categories.map((category) => camelcaseKeys(category));
 }
 
-export async function getCategoryById(id?: number) {
-  // Return undefined if id is not parseable
-  if (!id) return undefined;
+// export async function getCategoryById(id?: number) {
+//   // Return undefined if id is not parseable
+//   if (!id) return undefined;
 
-  const categories = await sql<[Category]>`
-  SELECT
+//   const categories = await sql<[Category]>`
+//   SELECT
+//       id,
+//       title
+//     FROM
+//       categories
+//     WHERE
+//       id = ${id}
+//   `;
+//   return categories.map((category) => camelcaseKeys(category))[0];
+// }
+
+export async function getSeedBySeedId(seedId: number) {
+  if (!seedId) return undefined;
+
+  const seeds = await sql<[Seed]>`
+    SELECT
       id,
-      title
+      title,
+      public_note_id,
+      private_note_id,
+      category_id,
+      image_url,
+      resource_url
     FROM
-      categories
+      seeds
     WHERE
-      id = ${id}
+      id = ${seedId}
   `;
-  return categories.map((category) => camelcaseKeys(category))[0];
+  return seeds.map((seed) => camelcaseKeys(seed))[0];
 }
+
+// getSeedsByUserId
+
+// getSeeds

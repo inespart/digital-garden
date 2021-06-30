@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import Layout from '../components/Layout';
-import { pageContainer } from '../util/sharedStyles';
+import Layout from '../../components/Layout';
+import { pageContainer } from '../../util/sharedStyles';
 
 type Props = {
   username?: string;

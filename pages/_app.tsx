@@ -111,7 +111,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
           .button-default-ghost {
             padding: 12px 24px;
-            background-color: none;
+            background-color: transparent;
             border: 1px solid ${darkGrey};
             border-radius: 32px;
             cursor: pointer;

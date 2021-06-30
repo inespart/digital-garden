@@ -63,6 +63,7 @@ export default function Login(props: Props) {
 
                 props.refreshUsername();
 
+                // console.log('json inside login.tsx', json);
                 // Navigate to the user's page when
                 // they have been successfully created
                 router.push(`/profiles/${json.user.username}`);
@@ -126,7 +127,7 @@ export default function Login(props: Props) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   // get the session token from cookie
   const sessionToken = context.req.cookies.sessionToken;
-  console.log('sessionToken on login.tsx in gSSP', sessionToken);
+  // console.log('sessionToken on login.tsx in gSSP', sessionToken);
 
   const session = await getValidSessionByToken(sessionToken);
   // if the session is undefined, we allow the person to log in

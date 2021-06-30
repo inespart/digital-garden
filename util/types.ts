@@ -17,6 +17,12 @@ export type Session = {
   userId: number;
 };
 
+export type Note = {
+  id: number;
+  content: string;
+  isPrivate: boolean;
+};
+
 export type Seed = {
   title: string;
   publicNoteId: number;
