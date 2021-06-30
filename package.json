@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/babel-plugin": "^11.3.0",
     "@emotion/react": "^11.4.0",
+    "@tinymce/tinymce-react": "^3.12.6",
     "argon2": "^0.28.2",
     "camelcase-keys": "^6.2.2",
     "cookie": "^0.4.1",

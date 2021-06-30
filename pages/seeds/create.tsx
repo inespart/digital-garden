@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
+import { Editor } from '@tinymce/tinymce-react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Layout from '../../components/Layout';
 import { getCategory } from '../../util/database';
 import { generateSlug } from '../../util/generateSlug';
@@ -55,9 +56,9 @@ const buttonStyles = css`
   }
 `;
 
-const largeInput = css`
-  line-height: 128px;
-`;
+// const largeInput = css`
+//   line-height: 128px;
+// `;
 
 const containerLeft = css`
   display: flex;
@@ -70,6 +71,10 @@ const containerRight = css`
   display: flex;
   flex-direction: column;
   width: 35%;
+
+  img {
+    padding-left: 96px;
+  }
 `;
 
 export default function CreateSeed(props: Props) {
@@ -79,6 +84,13 @@ export default function CreateSeed(props: Props) {
   const [resourceUrl, setResourceUrl] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const router = useRouter();
+
+  // const editorRef = useRef(null);
+  // const log = () => {
+  //   if (editorRef.current) {
+  //     console.log(editorRef.current.getContent());
+  //   }
+  // };
 
   async function clickHandler(isPublished: boolean) {
     const response = await fetch(`/api/seeds/create`, {
@@ -109,6 +121,7 @@ export default function CreateSeed(props: Props) {
     <Layout username={props.username}>
       <Head>
         <title>Create Seed | Digital Garden</title>
+        <script src="/path/to/tinymce.min.js" />
       </Head>
       <div css={pageContainer}>
         <h1>Create Seed</h1>
@@ -155,43 +168,12 @@ export default function CreateSeed(props: Props) {
 
               <div>
                 <label>
-                  Public Note:
-                  <input
-                    css={largeInput}
-                    value={publicNoteId}
-                    type="text"
-                    placeholder="Key take-aways and main learnings"
-                    required
-                    onChange={(event) => {
-                      setPublicNoteId(event.currentTarget.value);
-                    }}
-                  />
-                </label>
-              </div>
-
-              <div>
-                <label>
                   Resource URL: (optional)
                   <input
                     value={resourceUrl}
                     placeholder="www.khanacademy.org/review-arrays"
                     onChange={(event) => {
                       setResourceUrl(event.currentTarget.value);
-                    }}
-                  />
-                </label>
-              </div>
-
-              <div>
-                <label>
-                  Private Note: (optional)
-                  <input
-                    css={largeInput}
-                    value={privateNoteId}
-                    type="text"
-                    placeholder="No one will ever see your private notes"
-                    onChange={(event) => {
-                      setPrivateNoteId(event.currentTarget.value);
                     }}
                   />
                 </label>
@@ -207,6 +189,88 @@ export default function CreateSeed(props: Props) {
                   //   setResourceUrl(event.currentTarget.value);
                   // }}
                   />
+                </label>
+              </div>
+
+              <div>
+                <label>
+                  Public Note:
+                  <Editor
+                    apiKey="txlnzwxmbaq4q1025rbuupwrv6np2w8obe4wwc2k8m8n83xz"
+                    // onInit={(evt, editor) => (editorRef.current = editor)}
+                    // initialValue="<p>What are your key takeaways?</p>"
+                    init={{
+                      height: 500,
+                      menubar: false,
+                      plugins: [
+                        'advlist autolink lists link image charmap print preview anchor',
+                        'searchreplace visualblocks code fullscreen',
+                        'insertdatetime media table paste code help wordcount',
+                      ],
+                      toolbar:
+                        'undo redo | formatselect | ' +
+                        'bold italic backcolor | alignleft aligncenter ' +
+                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                        'removeformat | help',
+                      content_style:
+                        'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                    }}
+                    value={publicNoteId}
+                    onEditorChange={(newValue, editor) =>
+                      setPublicNoteId(newValue)
+                    }
+                  />
+                  {/* <input
+                    css={largeInput}
+                    type="text"
+                    placeholder="Key take-aways and main learnings"
+                    required
+                    value={publicNoteId}
+                    onChange={(event) => {
+                      setPublicNoteId(event.currentTarget.value);
+                    }}
+                  /> */}
+                </label>
+              </div>
+
+              <div>
+                <br />
+                <label>
+                  Private Note: (optional)
+                  <Editor
+                    apiKey="txlnzwxmbaq4q1025rbuupwrv6np2w8obe4wwc2k8m8n83xz"
+                    // onInit={(evt, editor) => (editorRef.current = editor)}
+                    // initialValue="<p>No one will ever see your private notes</p>"
+                    init={{
+                      height: 500,
+                      menubar: false,
+                      plugins: [
+                        'advlist autolink lists link image charmap print preview anchor',
+                        'searchreplace visualblocks code fullscreen',
+                        'insertdatetime media table paste code help wordcount',
+                      ],
+                      toolbar:
+                        'undo redo | formatselect | ' +
+                        'bold italic backcolor | alignleft aligncenter ' +
+                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                        'removeformat | help',
+                      content_style:
+                        'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                    }}
+                    value={privateNoteId}
+                    onEditorChange={(newValue, editor) =>
+                      setPrivateNoteId(newValue)
+                    }
+                  />
+                  {/* <input
+                    css={largeInput}
+                    value={privateNoteId}
+                    type="text"
+                    placeholder="No one will ever see your private notes"
+                    onChange={(event) => {
+                      setPrivateNoteId(event.currentTarget.value);
+                    }}
+                  /> */}
                 </label>
               </div>
 
