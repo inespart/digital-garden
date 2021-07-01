@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
   createSeed,
+  getSlugsByUserId,
   getUserById,
   getValidSessionByToken,
 } from '../../../util/database';
@@ -21,7 +22,7 @@ export default async function createSeedHandler(
   if (req.method === 'POST') {
     const validSession = await getValidSessionByToken(req.cookies.sessionToken);
 
-    // console.log('getCategory', await getCategory());
+    // console.log('validSession', validSession);
 
     // Retrieve title, etc. from the request body from the frontend
     // Destructure relevant information from the req body - all are const
@@ -35,7 +36,7 @@ export default async function createSeedHandler(
       isPublished,
     } = req.body;
 
-    console.log('isPublished', isPublished);
+    // console.log('isPublished', isPublished);
 
     // Check if userId, etc. is not undefined
     if (!validSession) {
@@ -44,17 +45,39 @@ export default async function createSeedHandler(
         .json({ errors: [{ message: 'No valid session.' }] });
     }
 
-    // Create slug from title
     // Check if title is not undefined
-    let slug;
+    // Create slug from title
+    let slug = '';
     if (!title) {
       return res.status(403).json({ errors: [{ message: 'No valid title.' }] });
     } else {
       slug = generateSlug(title);
     }
 
-    // Save the seed information to the database
+    // Check if slug is unique
+    // userSlugs [
+    // { slug: 'seed-by-cp-entertainment' },
+    // { slug: 'pers-dev-title' },
+    // { slug: 'hallo-jose' },
+    // { slug: 'hallo-jose' },
+    // { slug: 'hallo-jose' }
+    // ]
+    const userSlugs = await getSlugsByUserId(validSession.userId);
 
+    // console.log('userSlugs', userSlugs);
+
+    const isSlugAlreadyUsed = userSlugs?.some(
+      (slugObject) => slugObject.slug === slug,
+    );
+    // console.log('isSlugAlreadyUsed', isSlugAlreadyUsed);
+
+    if (isSlugAlreadyUsed) {
+      return res
+        .status(409)
+        .json({ errors: [{ message: 'Title already taken.' }] });
+    }
+
+    // Save the seed information to the database
     const seed = await createSeed(
       title,
       publicNoteId,
@@ -69,6 +92,7 @@ export default async function createSeedHandler(
 
     const user = await getUserById(seed.userId);
 
+    // Return seed and user response to the frontend
     return res.status(200).json({ seed: seed, user: user });
   }
 }

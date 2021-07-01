@@ -76,12 +76,18 @@ const containerRight = css`
   }
 `;
 
+const errorStyle = css`
+  color: red;
+  padding-bottom: 128px;
+`;
+
 export default function CreateSeed(props: Props) {
   const [title, setTitle] = useState('');
   const [publicNoteId, setPublicNoteId] = useState('');
   const [privateNoteId, setPrivateNoteId] = useState('');
   const [resourceUrl, setResourceUrl] = useState('');
   const [categoryId, setCategoryId] = useState('');
+  const [errors, setErrors] = useState('');
   const router = useRouter();
 
   // const editorRef = useRef(null);
@@ -103,16 +109,22 @@ export default function CreateSeed(props: Props) {
         privateNoteId: privateNoteId,
         resourceUrl: resourceUrl,
         categoryId: Number(categoryId),
-        imageUrl: 'www.google.at',
+        imageUrl:
+          'https://images.unsplash.com/photo-1512314889357-e157c22f938d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1502&q=80',
         isPublished: isPublished,
       }),
     });
 
-    // Wait for the response of the fetch inside create.ts and then transform into json
-    const { seed, user } = await response.json();
+    // Wait for the response of the fetch inside create.ts and then transform it into json
+    const { seed, user, errors: errorMessage } = await response.json();
     console.log('json inside create.tsx', seed);
 
-    // TODO: Navigate to [title].tsx page when new seed has been successfully created
+    if (errorMessage) {
+      setErrors(errorMessage[0].message);
+      return;
+    }
+
+    // TODO: Navigate to /seeds/[username]/[title].tsx page when new seed has been successfully created
     router.push(`/seeds/${user.username}/${generateSlug(title)}`);
   }
 
@@ -291,6 +303,8 @@ export default function CreateSeed(props: Props) {
                 >
                   Create seed
                 </button>
+
+                <div css={errorStyle}>{errors}</div>
               </div>
             </div>
 

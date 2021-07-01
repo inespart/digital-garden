@@ -35,6 +35,14 @@ export type Seed = {
   slug: string;
 };
 
+export type Slug = {
+  slug: string;
+};
+
+export type Content = {
+  content: string;
+};
+
 export type Category = {
   id: number;
   title: string;

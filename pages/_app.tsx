@@ -129,7 +129,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         `}
       />
       <Head>
-        <link rel="icon" href="favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Component
         refreshUsername={refreshUsername}

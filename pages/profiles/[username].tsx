@@ -7,8 +7,8 @@ import { SingleUserResponseType } from '../api/users-by-username/[username]';
 
 type Props = {
   user?: User;
-  errors?: ApplicationError[];
   username?: string;
+  errors?: ApplicationError[];
 };
 
 export default function SingleUserProfile(props: Props) {

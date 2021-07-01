@@ -5,9 +5,11 @@ import postgres from 'postgres';
 import {
   ApplicationError,
   Category,
+  Content,
   Note,
   Seed,
   Session,
+  Slug,
   User,
   UserWithPasswordHash,
 } from './types';
@@ -102,8 +104,7 @@ export async function insertUser(
 }
 
 export async function getUserById(id?: number) {
-  // Return undefined if userId is not parseable
-  // to an integer
+  // Return undefined if userId is not parseable to an integer
   if (!id) return undefined;
 
   const users = await sql<[User]>`
@@ -117,6 +118,22 @@ export async function getUserById(id?: number) {
       users
     WHERE
       id = ${id}
+  `;
+  return users.map((user) => camelcaseKeys(user))[0];
+}
+
+export async function getUserByUsername(username: string | string[]) {
+  // Return undefined if userId is not parseable to an integer
+  if (!username) return undefined;
+
+  const users = await sql<[User]>`
+    SELECT
+      id,
+      username
+    FROM
+      users
+    WHERE
+      username = ${username}
   `;
   return users.map((user) => camelcaseKeys(user))[0];
 }
@@ -270,7 +287,6 @@ export async function createSeed(
   title: string,
   publicNote: string,
   userId: number,
-  // change into number
   categoryId: number,
   isPublished: boolean,
   privateNote: string,
@@ -288,7 +304,7 @@ export async function createSeed(
   `;
 
   // console.log('categoryId', categoryId);
-  console.log('publicNoteId', publicNoteId);
+  // console.log('publicNoteId', publicNoteId);
 
   const privateNoteId = await sql<[Note]>`
     INSERT INTO notes
@@ -331,21 +347,19 @@ export async function getCategory() {
   return categories.map((category) => camelcaseKeys(category));
 }
 
-// export async function getCategoryById(id?: number) {
-//   // Return undefined if id is not parseable
-//   if (!id) return undefined;
+export async function getSlugsByUserId(userId: number) {
+  if (!userId) return undefined;
 
-//   const categories = await sql<[Category]>`
-//   SELECT
-//       id,
-//       title
-//     FROM
-//       categories
-//     WHERE
-//       id = ${id}
-//   `;
-//   return categories.map((category) => camelcaseKeys(category))[0];
-// }
+  const slugs = await sql<[Slug]>`
+    SELECT
+      slug
+    FROM
+      seeds
+    WHERE
+      user_id = ${userId}
+  `;
+  return slugs.map((slug) => camelcaseKeys(slug));
+}
 
 export async function getSeedBySeedId(seedId: number) {
   if (!seedId) return undefined;
@@ -367,6 +381,64 @@ export async function getSeedBySeedId(seedId: number) {
   return seeds.map((seed) => camelcaseKeys(seed))[0];
 }
 
-// getSeedsByUserId
+export async function getSeedBySeedSlug(seedSlug: string) {
+  if (!seedSlug) return undefined;
+
+  const seeds = await sql<[Seed]>`
+    SELECT
+      title,
+      public_note_id,
+      private_note_id,
+      slug,
+      resource_url,
+      image_url
+    FROM
+      seeds
+    WHERE
+      slug = ${seedSlug};
+  `;
+  // console.log('seeds', seeds);
+  return seeds.map((seed) => camelcaseKeys(seed))[0];
+}
+
+// export async function getSeedBySeedSlug(seedSlug: string) {
+//   if (!seedSlug) return undefined;
+
+//   const seeds = await sql<[Seed]>`
+//     SELECT
+//       seeds.title,
+//       seeds.resource_url,
+//       seeds.image_url,
+//       notes.content,
+//       notes.is_private
+//     FROM
+//       seeds,
+//       notes
+//     WHERE
+//       (notes.id = seeds.public_note_id
+//     OR
+//       notes.id = seeds.private_note_id)
+//     AND
+//       seeds.slug = ${seedSlug};
+//   `;
+//   console.log('seeds', seeds);
+//   return seeds.map((seed) => camelcaseKeys(seed))[0];
+// }
+
+export async function getNoteContentByNoteId(noteId: number) {
+  if (!noteId) return undefined;
+
+  const notesContent = await sql<[Content]>`
+    SELECT
+      content
+    FROM
+      notes
+    WHERE
+      id = ${noteId}
+  `;
+  return notesContent.map((noteContent) => camelcaseKeys(noteContent))[0];
+}
 
 // getSeeds
+
+// getSeedsByUserId
