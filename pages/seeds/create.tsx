@@ -2,12 +2,11 @@ import { css } from '@emotion/react';
 import { Editor } from '@tinymce/tinymce-react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Layout from '../../components/Layout';
 import { getCategory } from '../../util/database';
 import { generateSlug } from '../../util/generateSlug';
 import { darkGrey, green, pageContainer } from '../../util/sharedStyles';
-import { RegisterResponse } from '../api/register';
 
 type Props = {
   username?: string;
@@ -196,7 +195,7 @@ export default function CreateSeed(props: Props) {
                 <label>
                   Public Note:
                   <Editor
-                    apiKey="txlnzwxmbaq4q1025rbuupwrv6np2w8obe4wwc2k8m8n83xz"
+                    apiKey={process.env.API_KEY}
                     // onInit={(evt, editor) => (editorRef.current = editor)}
                     // initialValue="<p>What are your key takeaways?</p>"
                     init={{
@@ -238,7 +237,7 @@ export default function CreateSeed(props: Props) {
                 <label>
                   Private Note: (optional)
                   <Editor
-                    apiKey="txlnzwxmbaq4q1025rbuupwrv6np2w8obe4wwc2k8m8n83xz"
+                    apiKey={process.env.API_KEY}
                     // onInit={(evt, editor) => (editorRef.current = editor)}
                     // initialValue="<p>No one will ever see your private notes</p>"
                     init={{
