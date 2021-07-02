@@ -213,6 +213,7 @@ export default function CreateSeed(props: Props) {
                     init={{
                       height: 500,
                       menubar: false,
+                      encoding: 'xml',
                       plugins: [
                         'advlist autolink lists link image charmap print preview anchor',
                         'searchreplace visualblocks code fullscreen',

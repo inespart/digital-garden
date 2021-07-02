@@ -1,5 +1,6 @@
 import camelcaseKeys from 'camelcase-keys';
 import dotenvSafe from 'dotenv-safe';
+import DOMPurify from 'isomorphic-dompurify';
 import postgres from 'postgres';
 // import setPostgresDefaultsOnHeroku from '../setPostgresDefaultsOnHeroku';
 import {
@@ -294,20 +295,24 @@ export async function createSeed(
   resourceUrl: string,
   slug: string,
 ) {
+  const cleanPublicNote = DOMPurify.sanitize(publicNote);
+
   const publicNoteId = await sql<[Note]>`
     INSERT INTO notes
       (content, is_private)
     VALUES
-      (${publicNote}, ${false})
+      (${cleanPublicNote}, ${false})
     RETURNING
       id
   `;
+
+  const cleanPrivateNote = DOMPurify.sanitize(privateNote);
 
   const privateNoteId = await sql<[Note]>`
     INSERT INTO notes
       (content, is_private)
     VALUES
-      (${privateNote}, ${true})
+      (${cleanPrivateNote}, ${true})
     RETURNING
       id
     `;

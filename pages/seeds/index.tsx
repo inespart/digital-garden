@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import ReadMoreReact from 'read-more-react';
 import Layout from '../../components/Layout';
 import { green, pageContainer } from '../../util/sharedStyles';
 
@@ -38,6 +39,7 @@ const seedContainer = css`
 
 const publicNoteStyle = css`
   margin-bottom: 16px;
+  -webkit-line-clamp: 2; /* number of lines to show */
 `;
 
 const usernameAndCategoryContainer = css`
@@ -46,6 +48,10 @@ const usernameAndCategoryContainer = css`
 
 export default function AllSeeds(props: Props) {
   // console.log('props inside /seeds/index.ts', props);
+  // Function to remove html tags from notes
+  function createMarkup(content: string) {
+    return { __html: content };
+  }
   return (
     <Layout username={props.username}>
       <Head>
@@ -58,14 +64,30 @@ export default function AllSeeds(props: Props) {
             return (
               <div key={seedObject.id} css={seedContainer}>
                 <h3>{seedObject.title}</h3>
-                <div css={publicNoteStyle}>
-                  {seedObject.content}{' '}
+
+                <div
+                  css={publicNoteStyle}
+                  dangerouslySetInnerHTML={createMarkup(seedObject.content)}
+                />
+
+                <Link href={`seeds/${seedObject.username}/${seedObject.slug}`}>
+                  Read full seed
+                </Link>
+
+                {/* <div css={publicNoteStyle}>
+                  <ReadMoreReact
+                    text={seedObject.content}
+                    min={100}
+                    ideal={200}
+                    max={300}
+                    readMoreText=" "
+                  />
                   <Link
                     href={`seeds/${seedObject.username}/${seedObject.slug}`}
                   >
                     Read full seed
                   </Link>
-                </div>
+                </div> */}
 
                 <div css={usernameAndCategoryContainer}>
                   <div>

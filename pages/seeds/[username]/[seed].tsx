@@ -34,6 +34,10 @@ const seedContainer = css`
 
 export default function Seed(props: Props) {
   // console.log('props inside [seed].tsx', props);
+  // Function to remove html tags from notes
+  function createMarkup(content: string) {
+    return { __html: content };
+  }
   return (
     <Layout username={props.username}>
       <Head>
@@ -43,12 +47,33 @@ export default function Seed(props: Props) {
         <div css={seedContainer}>
           <h1>{props.seed.title}</h1>
           <p>Author: {props.username}</p>
-          <p>Public Note Content: {props.publicNoteContent.content}</p>
-          {props.privateNoteContent?.content ? (
-            <p>Private Note Content: {props.privateNoteContent.content}</p>
+          <p>
+            <div
+              dangerouslySetInnerHTML={createMarkup(
+                props.publicNoteContent.content,
+              )}
+            />
+          </p>
+          {console.log(
+            'props.privateNoteContent.content',
+            props.privateNoteContent.content,
+          )}
+
+          {props.privateNoteContent.content ? (
+            <div
+              dangerouslySetInnerHTML={createMarkup(
+                props.privateNoteContent.content,
+              )}
+            />
           ) : (
             ''
           )}
+
+          {/* {props.privateNoteContent?.content ? (
+            <p>Private Note Content: {props.privateNoteContent.content}</p>
+          ) : (
+            ''
+          )} */}
           <p>Resource URL: {props.seed.resourceUrl}</p>
           <p>Image URL: </p>
           <img src={props.seed.imageUrl} alt="Note" />

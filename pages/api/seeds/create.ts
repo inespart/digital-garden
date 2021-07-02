@@ -93,6 +93,7 @@ export default async function createSeedHandler(
     );
 
     const user = await getUserById(seed.userId);
+    console.log('user from create.ts', user);
 
     // Return seed and user response to the frontend
     return res.status(200).json({ seed: seed, user: user });
