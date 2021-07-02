@@ -3,21 +3,10 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Layout from '../../../components/Layout';
 import { green, pageContainer } from '../../../util/sharedStyles';
+import { SingleSeedResponseType } from '../../api/seeds/[username]/[seed]';
 
-type Props = {
+type Props = SingleSeedResponseType & {
   username?: string;
-  seed: SeedObject;
-  publicNoteContent: { content: string };
-  privateNoteContent: { content: string };
-};
-
-type SeedObject = {
-  title: string;
-  publicNoteId: number;
-  privateNoteId: number;
-  categoryId: number;
-  imageUrl: string;
-  resourceUrl: string;
 };
 
 const seedContainer = css`
@@ -47,27 +36,22 @@ export default function Seed(props: Props) {
         <div css={seedContainer}>
           <h1>{props.seed.title}</h1>
           <p>Author: {props.username}</p>
-          <p>
-            <div
-              dangerouslySetInnerHTML={createMarkup(
-                props.publicNoteContent.content,
-              )}
-            />
-          </p>
-          {console.log(
+
+          <div
+            dangerouslySetInnerHTML={createMarkup(
+              props.publicNoteContent.content,
+            )}
+          />
+
+          {/* {console.log(
             'props.privateNoteContent.content',
             props.privateNoteContent.content,
-          )}
-
-          {props.privateNoteContent.content ? (
-            <div
-              dangerouslySetInnerHTML={createMarkup(
-                props.privateNoteContent.content,
-              )}
-            />
-          ) : (
-            ''
-          )}
+          )} */}
+          <div
+            dangerouslySetInnerHTML={createMarkup(
+              props.privateNoteContent.content,
+            )}
+          />
 
           {/* {props.privateNoteContent?.content ? (
             <p>Private Note Content: {props.privateNoteContent.content}</p>
@@ -96,14 +80,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   );
 
   // console.log('cookie inside GSSP on title.tsx', context.req.headers.cookie);
-  const json = await response.json();
+  const json = (await response.json()) as SingleSeedResponseType;
 
   // console.log('API decoded JSON from response', json);
 
   // checking for a property called errors inside object json
   if ('errors' in json) {
     context.res.statusCode = 403;
-  } else if (!json.user) {
+  } else if (!json.seed) {
     // Return a proper status code for a response
     // with a null user (which indicates it has
     // not been found in the database)

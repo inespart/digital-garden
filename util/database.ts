@@ -347,6 +347,19 @@ export async function getCategory() {
   return categories.map((category) => camelcaseKeys(category));
 }
 
+export async function getCategoryById(categoryId: number) {
+  if (!categoryId) return undefined;
+
+  const categories = await sql<[Category]>`
+  SELECT
+      id,
+      title
+    FROM
+      categories
+  `;
+  return categories.map((category) => camelcaseKeys(category))[0];
+}
+
 export async function getSlugsByUserId(userId: number) {
   if (!userId) return undefined;
 
@@ -479,13 +492,13 @@ export async function getSeedsWithNotesContentAndUser() {
       seeds.slug,
       notes.id,
       notes.content,
-      users.username
-      -- categories.title
+      users.username,
+      categories.title as categories_title
     FROM
       seeds,
       notes,
-      users
-      -- categories
+      users,
+      categories
     WHERE
       notes.id = seeds.public_note_id
     `;

@@ -6,14 +6,20 @@ import {
   getUserByUsername,
   getValidSessionByToken,
 } from '../../../../util/database';
+import { ApplicationError, Content, Seed } from '../../../../util/types';
 
-// export type SingleSeedResponseType =
-//   | { title: User | null }
-//   | { errors: ApplicationError[] };
+// Type for response
+export type SingleSeedResponseType =
+  | {
+      seed: Seed | null;
+      publicNoteContent: Content | undefined;
+      privateNoteContent: Content | undefined;
+    }
+  | { errors: ApplicationError[] };
 
 export default async function singleSeedHandler(
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse<SingleSeedResponseType>,
 ) {
   // Check if session is valid
   const validSession = await getValidSessionByToken(req.cookies.sessionToken);
