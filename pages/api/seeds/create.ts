@@ -42,14 +42,16 @@ export default async function createSeedHandler(
     if (!validSession) {
       return res
         .status(403)
-        .json({ errors: [{ message: 'No valid session.' }] });
+        .json({ errors: [{ message: 'No valid session. Please log in.' }] });
     }
 
     // Check if title is not undefined
     // Create slug from title
     let slug = '';
     if (!title) {
-      return res.status(403).json({ errors: [{ message: 'No valid title.' }] });
+      return res
+        .status(403)
+        .json({ errors: [{ message: 'Please enter a title.' }] });
     } else {
       slug = generateSlug(title);
     }

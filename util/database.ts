@@ -303,9 +303,6 @@ export async function createSeed(
       id
   `;
 
-  // console.log('categoryId', categoryId);
-  // console.log('publicNoteId', publicNoteId);
-
   const privateNoteId = await sql<[Note]>`
     INSERT INTO notes
       (content, is_private)
@@ -314,8 +311,6 @@ export async function createSeed(
     RETURNING
       id
     `;
-
-  // console.log('privateNoteId', privateNoteId[0].id);
 
   const seeds = await sql<[Seed]>`
     INSERT INTO seeds
@@ -439,6 +434,60 @@ export async function getNoteContentByNoteId(noteId: number) {
   return notesContent.map((noteContent) => camelcaseKeys(noteContent))[0];
 }
 
-// getSeeds
+// maybe dont need this anymore
+export async function getAllSeeds() {
+  const allSeeds = await sql<[Seed]>`
+    SELECT
+      id,
+      title,
+      image_url,
+      public_note_id
+    FROM
+      seeds
+  `;
+  return allSeeds.map((seed) => camelcaseKeys(seed));
+}
+
+// maybe dont need this anymore
+export async function getPublicNotesContents() {
+  const publicNotesContents = await sql<[Content]>`
+    SELECT
+      id,
+      content
+    FROM
+      notes
+  `;
+  return publicNotesContents.map((publicNoteContent) =>
+    camelcaseKeys(publicNoteContent),
+  );
+}
+
+export async function getSeedsWithNotesContentAndUser() {
+  const seedsWithNotesContentAndUser = await sql<[Seed]>`
+    SELECT
+      seeds.title,
+      seeds.image_url,
+      seeds.resource_url,
+      seeds.public_note_id,
+      seeds.user_id,
+      seeds.category_id,
+      seeds.slug,
+      notes.id,
+      notes.content,
+      users.username
+      -- categories.title
+    FROM
+      seeds,
+      notes,
+      users
+      -- categories
+    WHERE
+      notes.id = seeds.public_note_id
+    `;
+  // console.log('seedsWithNotes', seedsWithNotes);
+  return seedsWithNotesContentAndUser.map((seedWithNoteContentAndUser) =>
+    camelcaseKeys(seedWithNoteContentAndUser),
+  );
+}
 
 // getSeedsByUserId

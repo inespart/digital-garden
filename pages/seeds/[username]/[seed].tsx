@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Layout from '../../../components/Layout';
-import { darkGrey, green, pageContainer } from '../../../util/sharedStyles';
+import { green, pageContainer } from '../../../util/sharedStyles';
 
 type Props = {
   username?: string;

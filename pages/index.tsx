@@ -17,6 +17,10 @@ const heroSection = css`
   min-height: 100%;
   display: flex;
   padding-top: 100px;
+
+  h3 {
+    text-align: left;
+  }
 `;
 
 const heroSectionHeadingImageContainer = css`
