@@ -1,3 +1,3 @@
-export function generateSlug(title: string) {
-  return title.replace(/\s+/g, '-').toLowerCase();
+export function generateSlug(userId: number, title: string) {
+  return `${userId}-` + title.replace(/\s+/g, '-').toLowerCase();
 }

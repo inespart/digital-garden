@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../../components/Layout';
 import { getCategory } from '../../util/database';
-import { generateSlug } from '../../util/generateSlug';
 import { darkGrey, green, pageContainer } from '../../util/sharedStyles';
 
 type Props = {
@@ -116,16 +115,17 @@ export default function CreateSeed(props: Props) {
     });
 
     // Wait for the response of the fetch inside create.ts and then transform it into json
-    const { seed, user, errors: errorMessage } = await response.json();
-    console.log('json inside create.tsx', seed);
+    const { user, sluggedTitle, errors: errorMessage } = await response.json();
+    // console.log('json user inside create.tsx', user);
 
+    console.log('errorMessages', errorMessage);
     if (errorMessage) {
       setErrors(errorMessage[0].message);
       return;
     }
 
     // TODO: Navigate to /seeds/[username]/[title].tsx page when new seed has been successfully created
-    router.push(`/seeds/${user.username}/${generateSlug(title)}`);
+    router.push(`/seeds/${user.username}/${sluggedTitle}`);
   }
 
   return (

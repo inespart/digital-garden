@@ -5,6 +5,7 @@ import postgres from 'postgres';
 // import setPostgresDefaultsOnHeroku from '../setPostgresDefaultsOnHeroku';
 import {
   ApplicationError,
+  Author,
   Category,
   Content,
   Note,
@@ -399,6 +400,7 @@ export async function getSeedBySeedSlug(seedSlug: string) {
 
   const seeds = await sql<[Seed]>`
     SELECT
+      id,
       title,
       public_note_id,
       private_note_id,
@@ -452,19 +454,19 @@ export async function getNoteContentByNoteId(noteId: number) {
   return notesContent.map((noteContent) => camelcaseKeys(noteContent))[0];
 }
 
-// maybe dont need this anymore
-export async function getAllSeeds() {
-  const allSeeds = await sql<[Seed]>`
-    SELECT
-      id,
-      title,
-      image_url,
-      public_note_id
-    FROM
-      seeds
-  `;
-  return allSeeds.map((seed) => camelcaseKeys(seed));
-}
+// // maybe dont need this anymore
+// export async function getAllSeeds() {
+//   const allSeeds = await sql<[Seed]>`
+//     SELECT
+//       id,
+//       title,
+//       image_url,
+//       public_note_id
+//     FROM
+//       seeds
+//   `;
+//   return allSeeds.map((seed) => camelcaseKeys(seed));
+// }
 
 // maybe dont need this anymore
 export async function getPublicNotesContents() {
@@ -480,8 +482,8 @@ export async function getPublicNotesContents() {
   );
 }
 
-export async function getSeedsWithNotesContentAndUser() {
-  const seedsWithNotesContentAndUser = await sql<[Seed]>`
+export async function getAllSeeds() {
+  const allSeeds = await sql<[Seed]>`
     SELECT
       seeds.title,
       seeds.image_url,
@@ -500,12 +502,62 @@ export async function getSeedsWithNotesContentAndUser() {
       users,
       categories
     WHERE
-      notes.id = seeds.public_note_id
+    seeds.public_note_id = notes.id
+    AND
+      seeds.user_id = users.id
+    AND
+      seeds.category_id = categories.id
     `;
-  // console.log('seedsWithNotes', seedsWithNotes);
-  return seedsWithNotesContentAndUser.map((seedWithNoteContentAndUser) =>
-    camelcaseKeys(seedWithNoteContentAndUser),
-  );
+  return allSeeds.map((s) => camelcaseKeys(s));
 }
 
-// getSeedsByUserId
+export async function getSeedsByValidSessionUser(validSessionUserId: number) {
+  if (!validSessionUserId) return undefined;
+
+  const allSeedsByValidSessionUser = await sql<[Seed]>`
+    SELECT
+      seeds.title,
+      seeds.image_url,
+      seeds.resource_url,
+      seeds.public_note_id,
+      seeds.user_id,
+      seeds.category_id,
+      seeds.slug,
+      notes.id,
+      notes.content,
+      users.username,
+      categories.title as categories_title
+    FROM
+      seeds,
+      notes,
+      users,
+      categories
+    WHERE
+    seeds.public_note_id = notes.id
+    AND
+      seeds.user_id = users.id
+    AND
+      seeds.category_id = categories.id
+    AND
+      seeds.user_id = ${validSessionUserId}
+    `;
+  return allSeedsByValidSessionUser.map((s) => camelcaseKeys(s));
+}
+
+export async function getAuthorBySeedId(seedId: number) {
+  if (!seedId) return undefined;
+
+  const authors = await sql<[Author]>`
+    SELECT
+      seeds.user_id,
+      users.username
+    FROM
+      seeds,
+      users
+    WHERE
+      seeds.id = ${seedId}
+    AND
+      users.id = seeds.user_id
+  `;
+  return authors.map((author) => camelcaseKeys(author))[0];
+}

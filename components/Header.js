@@ -106,7 +106,7 @@ export default function Header(props) {
               </a>
             </Link>
           )}
-          {/* {props.username && `logged in as ${props.username}`} */}
+          {props.username && `logged in as ${props.username}`}
         </ul>
       </div>
     </header>

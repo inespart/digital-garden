@@ -6,6 +6,11 @@ export type User = {
   email: string;
 };
 
+export type Author = {
+  userId: number;
+  username: string;
+};
+
 export type UserWithPasswordHash = User & {
   passwordHash: string;
 };
@@ -24,6 +29,7 @@ export type Note = {
 };
 
 export type Seed = {
+  id: number;
   title: string;
   publicNoteId: number;
   userId: number;

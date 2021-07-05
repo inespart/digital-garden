@@ -31,10 +31,10 @@ export default function RegistrationSuccessful(props: Props) {
           plant your first seed.
         </h3>
         <div css={buttonContainer}>
-          <Link href="/digital-garden">
+          <Link href="/seeds">
             <a className="button-default-ghost"> Go to all seeds</a>
           </Link>
-          <Link href="/create-seed">
+          <Link href="/seeds/create">
             <a className="button-default">+ Create seed</a>
           </Link>
         </div>

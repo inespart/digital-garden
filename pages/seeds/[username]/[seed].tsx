@@ -7,6 +7,7 @@ import { SingleSeedResponseType } from '../../api/seeds/[username]/[seed]';
 
 type Props = SingleSeedResponseType & {
   username?: string;
+  errors?: Error[];
 };
 
 const seedContainer = css`
@@ -21,8 +22,8 @@ const seedContainer = css`
   }
 `;
 
-export default function Seed(props: Props) {
-  // console.log('props inside [seed].tsx', props);
+export default function SeedDisplay(props: Props) {
+  // console.log('props in seed.ts', props);
   // Function to remove html tags from notes
   function createMarkup(content: string) {
     return { __html: content };
@@ -35,7 +36,7 @@ export default function Seed(props: Props) {
       <div css={pageContainer}>
         <div css={seedContainer}>
           <h1>{props.seed.title}</h1>
-          <p>Author: {props.username}</p>
+          <p>Author: {props.author.username}</p>
 
           <div
             dangerouslySetInnerHTML={createMarkup(
@@ -43,10 +44,6 @@ export default function Seed(props: Props) {
             )}
           />
 
-          {/* {console.log(
-            'props.privateNoteContent.content',
-            props.privateNoteContent.content,
-          )} */}
           <div
             dangerouslySetInnerHTML={createMarkup(
               props.privateNoteContent.content,
@@ -59,8 +56,8 @@ export default function Seed(props: Props) {
             ''
           )} */}
           <p>Resource URL: {props.seed.resourceUrl}</p>
-          <p>Image URL: </p>
-          <img src={props.seed.imageUrl} alt="Note" />
+          {/* <p>Image URL: </p>
+          <img src={props.seed.imageUrl} alt="Note" /> */}
         </div>
       </div>
     </Layout>
@@ -82,16 +79,28 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // console.log('cookie inside GSSP on title.tsx', context.req.headers.cookie);
   const json = (await response.json()) as SingleSeedResponseType;
 
-  // console.log('API decoded JSON from response', json);
+  console.log('API decoded JSON from response', json);
 
   // checking for a property called errors inside object json
   if ('errors' in json) {
     context.res.statusCode = 403;
+    return {
+      redirect: {
+        destination: `/404`,
+        permanent: false,
+      },
+    };
   } else if (!json.seed) {
     // Return a proper status code for a response
     // with a null user (which indicates it has
     // not been found in the database)
     context.res.statusCode = 404;
+    return {
+      redirect: {
+        destination: `/404`,
+        permanent: false,
+      },
+    };
   }
   // console.log('json', json);
   return {

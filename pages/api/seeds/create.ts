@@ -6,12 +6,14 @@ import {
   getValidSessionByToken,
 } from '../../../util/database';
 import { generateSlug } from '../../../util/generateSlug';
+import { generateTitle } from '../../../util/generateTitle';
 import { ApplicationError, Seed, User } from '../../../util/types';
 
 export type CreateSeedResponse =
   | {
       seed: Seed;
       user?: User;
+      sluggedTitle: string;
     }
   | { errors: ApplicationError[] };
 
@@ -25,7 +27,6 @@ export default async function createSeedHandler(
     // console.log('validSession', validSession);
 
     // Retrieve title, etc. from the request body from the frontend
-    // Destructure relevant information from the req body - all are const
     const {
       title,
       publicNoteId,
@@ -36,47 +37,53 @@ export default async function createSeedHandler(
       isPublished,
     } = req.body;
 
-    // console.log('isPublished', isPublished);
-
     // Check if userId, etc. is not undefined
     if (!validSession) {
       return res
         .status(403)
         .json({ errors: [{ message: 'No valid session. Please log in.' }] });
     }
+    // console.log('validSession', validSession);
 
-    // Check if title is not undefined
+    // Check if category is selected
+    if (!categoryId) {
+      return res
+        .status(403)
+        .json({ errors: [{ message: 'Please select a category.' }] });
+    }
+
     // Create slug from title
+    let sluggedTitle = '';
     let slug = '';
     if (!title) {
       return res
         .status(403)
         .json({ errors: [{ message: 'Please enter a title.' }] });
     } else {
-      slug = generateSlug(title);
+      sluggedTitle = generateTitle(title);
+      slug = generateSlug(validSession.userId, title);
     }
 
     // Check if slug is unique
-    // userSlugs [
-    // { slug: 'seed-by-cp-entertainment' },
-    // { slug: 'pers-dev-title' },
-    // { slug: 'hallo-jose' },
-    // { slug: 'hallo-jose' },
-    // { slug: 'hallo-jose' }
-    // ]
     const userSlugs = await getSlugsByUserId(validSession.userId);
-
-    // console.log('userSlugs', userSlugs);
 
     const isSlugAlreadyUsed = userSlugs?.some(
       (slugObject) => slugObject.slug === slug,
     );
-    // console.log('isSlugAlreadyUsed', isSlugAlreadyUsed);
 
     if (isSlugAlreadyUsed) {
+      return res.status(409).json({
+        errors: [
+          { message: 'Title already used. Please choose another title.' },
+        ],
+      });
+    }
+
+    // Check if public note was entered
+    if (!publicNoteId) {
       return res
-        .status(409)
-        .json({ errors: [{ message: 'Title already taken.' }] });
+        .status(403)
+        .json({ errors: [{ message: 'Please enter a public note.' }] });
     }
 
     // Save the seed information to the database
@@ -93,9 +100,11 @@ export default async function createSeedHandler(
     );
 
     const user = await getUserById(seed.userId);
-    console.log('user from create.ts', user);
+    // console.log('user from create.ts', user);
 
     // Return seed and user response to the frontend
-    return res.status(200).json({ seed: seed, user: user });
+    return res
+      .status(200)
+      .json({ seed: seed, user: user, sluggedTitle: sluggedTitle });
   }
 }

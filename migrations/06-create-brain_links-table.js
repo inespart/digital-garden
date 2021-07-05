@@ -3,8 +3,8 @@
 exports.up = async function up(sql) {
   await sql`
     CREATE TABLE brain_links (
-      seed_id_owner INT REFERENCES seeds (id),
-			seed_id_linked INT REFERENCES seeds (id)
+      seed_id_owner INT REFERENCES seeds (id) ON DELETE CASCADE,
+			seed_id_linked INT REFERENCES seeds (id) ON DELETE CASCADE
     )
   `;
 };

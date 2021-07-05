@@ -1,19 +1,26 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { convertQueryValueString } from '../../../../util/context';
 import {
+  getAuthorBySeedId,
   getNoteContentByNoteId,
   getSeedBySeedSlug,
   getUserByUsername,
   getValidSessionByToken,
 } from '../../../../util/database';
-import { ApplicationError, Content, Seed } from '../../../../util/types';
+import {
+  ApplicationError,
+  Author,
+  Content,
+  Seed,
+} from '../../../../util/types';
 
 // Type for response
 export type SingleSeedResponseType =
   | {
       seed: Seed | null;
+      author: Author | undefined;
       publicNoteContent: Content | undefined;
-      privateNoteContent: Content | undefined;
+      privateNoteContent: string | Content | undefined;
     }
   | { errors: ApplicationError[] };
 
@@ -22,49 +29,60 @@ export default async function singleSeedHandler(
   res: NextApiResponse<SingleSeedResponseType>,
 ) {
   // Check if session is valid
+  // validSession {
+  //   id: 8,
+  //   token: 'AVDn...,
+  //   expiry: 2021-07-06T10:18:22.330Z,
+  //   userId: 3
+  // }
   const validSession = await getValidSessionByToken(req.cookies.sessionToken);
-
-  console.log('validSession', validSession);
+  // console.log('validSession', validSession);
 
   // Retrieve slug from the query string (the square bracket notation in the filename)
-  const slug = convertQueryValueString(req.query.seed);
+  // console.log('req.query', req.query.username);
+  const user = await getUserByUsername(req.query.username);
+  if (!user) {
+    return res.status(404).json({ errors: [{ message: 'User not found.' }] });
+  }
+  console.log('user', user);
+  const seedTitle = convertQueryValueString(req.query.seed);
+
+  const slug = `${user.id}-${seedTitle}`;
+  console.log('slug', slug);
 
   if (!slug) {
     return res.status(409).json({ errors: [{ message: 'Slug is missing.' }] });
   }
 
   // Get either an array of errors OR a user
-  // seed {
-  //   id: 63,
-  //   title: 'This is a test title for business',
-  //   publicNoteId: 125,
-  //   privateNoteId: 126,
-  //   categoryId: 1,
-  //   imageUrl: 'www.google.at',
-  //   resourceUrl: 'www.resourceurl.at'
-  // }
   const seed = await getSeedBySeedSlug(slug);
+  // console.log('seed in .ts', seed);
 
   if (!seed) {
     return res.status(409).json({ errors: [{ message: 'Seed is missing.' }] });
   }
 
-  let privateNoteContent;
-
-  // Get user id
-  if (validSession) {
-    const user = await getUserByUsername(req.query.username);
-    // console.log('user.id', user.id);
-    // console.log('validSession.id', validSession.userId);
-
-    if (user?.id === validSession.userId) {
-      // Get private note content
-      privateNoteContent = await getNoteContentByNoteId(seed.privateNoteId);
-    }
-  }
-
   // Get public note content
   const publicNoteContent = await getNoteContentByNoteId(seed.publicNoteId);
+
+  // Get the author of the seed
+  const author = await getAuthorBySeedId(seed.id);
+  console.log('author', author);
+
+  let privateNoteContent;
+
+  // If author is the same as validSession user, also get the private note content
+  // console.log('author.id', author?.userId);
+  // console.log('validSession.userId', validSession?.userId);
+  if (author?.userId === validSession?.userId) {
+    // Get private note content
+    privateNoteContent = await getNoteContentByNoteId(seed.privateNoteId);
+    // console.log("You're the author! Here's the private content", {
+    //   privateNoteContent,
+    // });
+  } else {
+    privateNoteContent = '';
+  }
 
   // If we have received an array of errors, set the
   // response accordingly
@@ -72,9 +90,12 @@ export default async function singleSeedHandler(
     return res.status(403).json({ errors: seed });
   }
 
+  console.log('seed in seed.ts', seed);
+
   // If we've successfully retrieved a title, return that
   return res.status(200).json({
     seed: seed,
+    author: author,
     publicNoteContent: publicNoteContent,
     privateNoteContent: privateNoteContent,
   });
