@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
   getAllSeeds,
+  getSeedsByCategoryId,
   getSeedsByValidSessionUser,
   getValidSessionByToken,
 } from '../../../util/database';
@@ -15,7 +16,7 @@ export default async function singleSeedHandler(
 ) {
   // Retrieve all seeds
   const allSeeds = await getAllSeeds();
-  // console.log('fullSeed', fullSeed);
+  // console.log('allSeeds', allSeeds);
 
   // Check if session is valid
   // validSession {
@@ -38,6 +39,10 @@ export default async function singleSeedHandler(
     validSession.userId,
   );
   // console.log('allSeedsByValidSessionUser', allSeedsByValidSessionUser);
+
+  // Retrieve seeds by category
+  const allSeedsByCategoryId = await getSeedsByCategoryId(4);
+  console.log('allSeedsByCategoryId', allSeedsByCategoryId);
 
   // If we have received an array of errors, set the response accordingly
   // if (Array.isArray(seed)) {

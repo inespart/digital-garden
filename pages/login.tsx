@@ -41,8 +41,7 @@ export default function Login(props: Props) {
               onSubmit={async (event) => {
                 event.preventDefault();
 
-                // Send the username and password to the API
-                // for verification
+                // Send the username and password to the API for verification
                 const response = await fetch(`/api/login`, {
                   method: 'POST',
                   headers: {

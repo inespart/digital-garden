@@ -12,8 +12,9 @@ import { Category } from '../../util/types';
 
 type Props = {
   username?: string;
-  allSeeds: SeedObject[];
   categories: Category[];
+  allSeeds: SeedObject[];
+  allSeedsByValidSessionUser: SeedObject[];
 };
 
 type SeedObject = {
@@ -80,12 +81,30 @@ const publicNoteStyle = css`
 export default function AllSeeds(props: Props) {
   // console.log('props inside /seeds/index.ts', props);
   const [categoryId, setCategoryId] = useState('');
-  // const [showSeeds, setShowSeeds] = useState('');
+  const [data, setData] = useState(props.allSeeds);
 
   // Function to remove html tags from notes
   function createMarkup(content: string) {
     return { __html: content };
   }
+
+  // Handle click on My Seeds Button
+  const handleMySeedsClick = (event) => {
+    event.preventDefault();
+    return setData(props.allSeedsByValidSessionUser);
+  };
+
+  // Handle click on All Seeds Button
+  const handleAllSeedsClick = (event) => {
+    event.preventDefault();
+    return setData(props.allSeeds);
+  };
+
+  // Handle click on Select By Category Button
+  // const handleSeedsByCategoryClick = (event) => {
+  //   event.preventDefault();
+  //   return setData(props.allSeeds);
+  // };
 
   return (
     <Layout username={props.username}>
@@ -95,8 +114,15 @@ export default function AllSeeds(props: Props) {
       <div css={pageContainer}>
         <h1>All Seeds</h1>
         <div css={buttonContainer}>
-          <button className="button-default-ghost">All Seeds</button>
-          <button className="button-default-ghost">My Seeds</button>
+          <button
+            className="button-default-ghost"
+            onClick={handleAllSeedsClick}
+          >
+            All Seeds
+          </button>
+          <button className="button-default-ghost" onClick={handleMySeedsClick}>
+            My Seeds
+          </button>
           <select
             className="button-default-ghost"
             id="category"
@@ -117,7 +143,7 @@ export default function AllSeeds(props: Props) {
         </div>
 
         <div css={seedsContainer}>
-          {props.allSeeds.map((seedObject) => {
+          {data.map((seedObject) => {
             return (
               <div key={seedObject.id} css={seedContainer}>
                 <h3>{seedObject.title}</h3>

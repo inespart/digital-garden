@@ -502,7 +502,7 @@ export async function getAllSeeds() {
       users,
       categories
     WHERE
-    seeds.public_note_id = notes.id
+      seeds.public_note_id = notes.id
     AND
       seeds.user_id = users.id
     AND
@@ -533,7 +533,7 @@ export async function getSeedsByValidSessionUser(validSessionUserId: number) {
       users,
       categories
     WHERE
-    seeds.public_note_id = notes.id
+      seeds.public_note_id = notes.id
     AND
       seeds.user_id = users.id
     AND
@@ -542,6 +542,39 @@ export async function getSeedsByValidSessionUser(validSessionUserId: number) {
       seeds.user_id = ${validSessionUserId}
     `;
   return allSeedsByValidSessionUser.map((s) => camelcaseKeys(s));
+}
+
+export async function getSeedsByCategoryId(categoryId: number) {
+  if (!categoryId) return undefined;
+
+  const allSeedsByCategoryId = await sql<[Seed]>`
+    SELECT
+      seeds.title,
+      seeds.image_url,
+      seeds.resource_url,
+      seeds.public_note_id,
+      seeds.user_id,
+      seeds.category_id,
+      seeds.slug,
+      notes.id,
+      notes.content,
+      users.username,
+      categories.title as categories_title
+    FROM
+      seeds,
+      notes,
+      users,
+      categories
+    WHERE
+      seeds.public_note_id = notes.id
+    AND
+      seeds.user_id = users.id
+    AND
+      seeds.category_id = categories.id
+    AND
+      seeds.category_id = ${categoryId}
+    `;
+  return allSeedsByCategoryId.map((s) => camelcaseKeys(s));
 }
 
 export async function getAuthorBySeedId(seedId: number) {
