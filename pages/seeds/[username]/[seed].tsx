@@ -1,6 +1,8 @@
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import Layout from '../../../components/Layout';
 import { green, pageContainer } from '../../../util/sharedStyles';
 import { SingleSeedResponseType } from '../../api/seeds/[username]/[seed]';
@@ -23,6 +25,10 @@ const seedContainer = css`
 `;
 
 export default function SeedDisplay(props: Props) {
+  const [seed, setSeed] = useState(props.seed);
+  const [draftSeed, setDraftSeed] = useState(seed);
+  const router = useRouter();
+
   // console.log('props in seed.ts', props);
   // Function to remove html tags from notes
   function createMarkup(content: string) {
@@ -35,7 +41,7 @@ export default function SeedDisplay(props: Props) {
       </Head>
       <div css={pageContainer}>
         <div css={seedContainer}>
-          <h1>{props.seed.title}</h1>
+          <h1>{seed.title}</h1>
           <p>Author: {props.author.username}</p>
 
           <div
@@ -55,9 +61,85 @@ export default function SeedDisplay(props: Props) {
           ) : (
             ''
           )} */}
-          <p>Resource URL: {props.seed.resourceUrl}</p>
+          <p>Resource URL: {seed.resourceUrl}</p>
           {/* <p>Image URL: </p>
           <img src={props.seed.imageUrl} alt="Note" /> */}
+          {props.privateNoteContent ? (
+            <div>
+              <button
+                className="button-default-ghost"
+                onClick={async (event) => {
+                  event.preventDefault();
+                  const response = await fetch(
+                    `/api/seeds/${props.author.username}/${props.slugTitle}`,
+                    {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        resourceUrl: props.seed.resourceUrl,
+                      }),
+                    },
+                  );
+                  const json = await response.json();
+                  // as DeleteResponse
+
+                  if ('errors' in json) {
+                    setError(json.errors[0].message);
+                    return;
+                  }
+                }}
+              >
+                Edit
+              </button>
+              <button
+                className="button-default-ghost"
+                onClick={async (event) => {
+                  event.preventDefault();
+                  if (
+                    !window.confirm(
+                      `Do you really want to delete this piece of wisdom? It will be gone forever.`,
+                    )
+                  ) {
+                    return;
+                  }
+                  // console.log('test');
+                  // console.log('props.author.username', props.author.username);
+                  // console.log('props.seed.id', props.seed.id);
+                  // console.log('props.slugTitle ', props.slugTitle);
+
+                  const response = await fetch(
+                    `/api/seeds/${props.author.username}/${props.slugTitle}`,
+                    {
+                      method: 'DELETE',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        id: props.seed.id,
+                      }),
+                    },
+                  );
+
+                  const json = await response.json();
+                  // as DeleteResponse
+
+                  if ('errors' in json) {
+                    setError(json.errors[0].message);
+                    return;
+                  }
+
+                  // Navigate to seeds overview after having deleted a seed
+                  router.push(`/seeds`);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ) : (
+            ''
+          )}
         </div>
       </div>
     </Layout>
@@ -65,6 +147,7 @@ export default function SeedDisplay(props: Props) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  // console.log('context.query.seed', context.query.seed);
   const response = await fetch(
     `${process.env.API_BASE_URL}/seeds/${context.query.username}/${context.query.seed}`,
     {
@@ -79,7 +162,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // console.log('cookie inside GSSP on title.tsx', context.req.headers.cookie);
   const json = (await response.json()) as SingleSeedResponseType;
 
-  console.log('API decoded JSON from response', json);
+  // console.log('API decoded JSON from response', json);
 
   // checking for a property called errors inside object json
   if ('errors' in json) {

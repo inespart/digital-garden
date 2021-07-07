@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { convertQueryValueString } from '../../../../util/context';
 import {
+  deleteSeedBySeedId,
   getAuthorBySeedId,
   getNoteContentByNoteId,
   getSeedBySeedSlug,
   getUserByUsername,
   getValidSessionByToken,
+  updateSeedBySeedId,
 } from '../../../../util/database';
 import {
   ApplicationError,
@@ -14,13 +16,14 @@ import {
   Seed,
 } from '../../../../util/types';
 
-// Type for response
+// Define the types of the response
 export type SingleSeedResponseType =
   | {
       seed: Seed | null;
       author: Author | undefined;
       publicNoteContent: Content | undefined;
       privateNoteContent: string | Content | undefined;
+      slugTitle: string | undefined;
     }
   | { errors: ApplicationError[] };
 
@@ -44,11 +47,15 @@ export default async function singleSeedHandler(
   if (!user) {
     return res.status(404).json({ errors: [{ message: 'User not found.' }] });
   }
-  console.log('user', user);
-  const seedTitle = convertQueryValueString(req.query.seed);
+  // console.log('user', user);
 
-  const slug = `${user.id}-${seedTitle}`;
-  console.log('slug', slug);
+  // Get slug title
+  // education-title-ip
+  const slugTitle = convertQueryValueString(req.query.seed);
+
+  // Save seed slug
+  // 1-education-title-ip
+  const slug = `${user.id}-${slugTitle}`;
 
   if (!slug) {
     return res.status(409).json({ errors: [{ message: 'Slug is missing.' }] });
@@ -67,7 +74,7 @@ export default async function singleSeedHandler(
 
   // Get the author of the seed
   const author = await getAuthorBySeedId(seed.id);
-  console.log('author', author);
+  // console.log('author', author);
 
   let privateNoteContent;
 
@@ -84,19 +91,28 @@ export default async function singleSeedHandler(
     privateNoteContent = '';
   }
 
+  if (req.method === 'DELETE') {
+    const deletedSeed = await deleteSeedBySeedId(seed.id);
+    console.log('deletedSeed', deletedSeed);
+  }
+
+  if (req.method === 'PUT') {
+    const updatedSeed = await updateSeedBySeedId(seed.id, req.body.resourceUrl);
+    console.log('updatedSeed', updatedSeed);
+  }
+
   // If we have received an array of errors, set the
   // response accordingly
   if (Array.isArray(seed)) {
     return res.status(403).json({ errors: seed });
   }
 
-  console.log('seed in seed.ts', seed);
-
-  // If we've successfully retrieved a title, return that
+  // If we've successfully retrieved the information, return that to the frontend
   return res.status(200).json({
     seed: seed,
     author: author,
     publicNoteContent: publicNoteContent,
     privateNoteContent: privateNoteContent,
+    slugTitle: slugTitle,
   });
 }

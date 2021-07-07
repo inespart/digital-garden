@@ -27,12 +27,13 @@ type SeedObject = {
   resourceUrl: string;
   slug: string;
   categoriesTitle: string;
+  categoryId: string;
 };
 
 const seedsContainer = css`
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
 `;
 
 const buttonContainer = css`
@@ -52,6 +53,7 @@ const seedContainer = css`
   width: 350px;
   height: 500px;
   margin-bottom: 32px;
+  margin-right: 32px;
   padding: 32px;
 
   h3 {
@@ -89,22 +91,28 @@ export default function AllSeeds(props: Props) {
   }
 
   // Handle click on My Seeds Button
-  const handleMySeedsClick = (event) => {
+  const handleMySeedsClick = (event: any) => {
     event.preventDefault();
     return setData(props.allSeedsByValidSessionUser);
   };
 
   // Handle click on All Seeds Button
-  const handleAllSeedsClick = (event) => {
+  const handleAllSeedsClick = (event: any) => {
     event.preventDefault();
     return setData(props.allSeeds);
   };
 
-  // Handle click on Select By Category Button
-  // const handleSeedsByCategoryClick = (event) => {
-  //   event.preventDefault();
-  //   return setData(props.allSeeds);
-  // };
+  // Handle click on "Select By Category" Button
+  const handleSeedsByCategoryClick = (id: string) => {
+    // Filter seeds by category on the frontend
+    function getSeedsByCategoryId(seed: SeedObject) {
+      // returns a boolean
+      return seed.categoryId == id;
+    }
+    const seedsByCategoryId = props.allSeeds.filter(getSeedsByCategoryId);
+    // event.preventDefault();
+    return setData(seedsByCategoryId);
+  };
 
   return (
     <Layout username={props.username}>
@@ -113,6 +121,8 @@ export default function AllSeeds(props: Props) {
       </Head>
       <div css={pageContainer}>
         <h1>All Seeds</h1>
+
+        {/* Filter Options START */}
         <div css={buttonContainer}>
           <button
             className="button-default-ghost"
@@ -120,15 +130,23 @@ export default function AllSeeds(props: Props) {
           >
             All Seeds
           </button>
-          <button className="button-default-ghost" onClick={handleMySeedsClick}>
-            My Seeds
-          </button>
+          {props.allSeedsByValidSessionUser ? (
+            <button
+              className="button-default-ghost"
+              onClick={handleMySeedsClick}
+            >
+              My Seeds
+            </button>
+          ) : (
+            ''
+          )}
           <select
             className="button-default-ghost"
             id="category"
             value={categoryId}
             onChange={(event) => {
               setCategoryId(event.currentTarget.value);
+              handleSeedsByCategoryClick(event.currentTarget.value);
             }}
           >
             <option value="">Select category</option>
@@ -141,8 +159,10 @@ export default function AllSeeds(props: Props) {
             })}
           </select>
         </div>
+        {/* Filter Options END */}
 
         <div css={seedsContainer}>
+          {/* {console.log('data', data)} */}
           {data.map((seedObject) => {
             return (
               <div key={seedObject.id} css={seedContainer}>
@@ -151,7 +171,7 @@ export default function AllSeeds(props: Props) {
                   <span className="usernameCircle">{seedObject.username}</span>{' '}
                   curated in {seedObject.categoriesTitle}
                 </div>
-                {/* {console.log('url:', seedObject.resourceUrl)} */}
+                {/* {console.log('seedObject:', seedObject)} */}
                 <div>
                   Resource URL:{' '}
                   <a

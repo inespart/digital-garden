@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
   getAllSeeds,
-  getSeedsByCategoryId,
   getSeedsByValidSessionUser,
   getValidSessionByToken,
 } from '../../../util/database';
@@ -15,8 +14,22 @@ export default async function singleSeedHandler(
   res: NextApiResponse,
 ) {
   // Retrieve all seeds
+  // allSeeds [
+  //   {
+  //     title: 'Create a startup',
+  //     imageUrl: 'https://images.com,
+  //     resourceUrl: '',
+  //     publicNoteId: 1,
+  //     userId: 1,
+  //     categoryId: 1,
+  //     slug: '1-create-a-startup',
+  //     id: 1,
+  //     content: '<p>This is the public note</p>',
+  //     username: 'ip',
+  //     categoriesTitle: 'Business'
+  //   },
   const allSeeds = await getAllSeeds();
-  // console.log('allSeeds', allSeeds);
+  console.log('allSeeds', allSeeds);
 
   // Check if session is valid
   // validSession {
@@ -29,29 +42,24 @@ export default async function singleSeedHandler(
   // console.log('req.cookies', req.cookies.sessionToken);
   // console.log('validSession', validSession);
 
-  // Check if valid session is not undefined
-  if (!validSession) {
-    return res.status(404).json({ errors: [{ message: 'No valid session.' }] });
+  let allSeedsByValidSessionUser;
+
+  // Check if valid session is defined
+  if (validSession) {
+    // Retrieve seeds of valid session user
+    allSeedsByValidSessionUser = await getSeedsByValidSessionUser(
+      validSession.userId,
+    );
+
+    // console.log('allSeedsByValidSessionUser', allSeedsByValidSessionUser);
+  } else {
+    // return res.status(404).json({ errors: [{ message: 'No valid session.' }] });
   }
 
-  // Retrieve seeds of valid session user
-  const allSeedsByValidSessionUser = await getSeedsByValidSessionUser(
-    validSession.userId,
-  );
-  // console.log('allSeedsByValidSessionUser', allSeedsByValidSessionUser);
-
-  // Retrieve seeds by category
-  const allSeedsByCategoryId = await getSeedsByCategoryId(4);
-  console.log('allSeedsByCategoryId', allSeedsByCategoryId);
-
-  // If we have received an array of errors, set the response accordingly
-  // if (Array.isArray(seed)) {
-  //   return res.status(403).json({ errors: seed });
-  // }
-
-  // If we've successfully retrieved a title, return that
+  // If we've successfully retrieved the seeds, return them
   return res.status(200).json({
     allSeeds: allSeeds,
     allSeedsByValidSessionUser: allSeedsByValidSessionUser,
+    // allSeedsByCategoryId: allSeedsByCategoryId,
   });
 }

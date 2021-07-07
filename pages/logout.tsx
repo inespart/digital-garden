@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import cookie from 'cookie';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
@@ -11,6 +12,15 @@ type Props = {
   username?: string;
 };
 
+const imageContainer = css`
+  height: 50%;
+  width: 50%;
+
+  img {
+    width: 100%;
+  }
+`;
+
 export default function Logout(props: Props) {
   // useEffect because this should run when the page loads
   useEffect(() => props.refreshUsername(), [props]);
@@ -21,6 +31,9 @@ export default function Logout(props: Props) {
       </Head>
       <div css={pageContainer}>
         <h1>You've successfully logged out</h1>
+        <div css={imageContainer}>
+          <img src="log-out.svg" alt="Woman talking on phone and walking" />
+        </div>
       </div>
     </Layout>
   );

@@ -544,38 +544,38 @@ export async function getSeedsByValidSessionUser(validSessionUserId: number) {
   return allSeedsByValidSessionUser.map((s) => camelcaseKeys(s));
 }
 
-export async function getSeedsByCategoryId(categoryId: number) {
-  if (!categoryId) return undefined;
+// export async function getSeedsByCategoryId(categoryId: number) {
+//   if (!categoryId) return undefined;
 
-  const allSeedsByCategoryId = await sql<[Seed]>`
-    SELECT
-      seeds.title,
-      seeds.image_url,
-      seeds.resource_url,
-      seeds.public_note_id,
-      seeds.user_id,
-      seeds.category_id,
-      seeds.slug,
-      notes.id,
-      notes.content,
-      users.username,
-      categories.title as categories_title
-    FROM
-      seeds,
-      notes,
-      users,
-      categories
-    WHERE
-      seeds.public_note_id = notes.id
-    AND
-      seeds.user_id = users.id
-    AND
-      seeds.category_id = categories.id
-    AND
-      seeds.category_id = ${categoryId}
-    `;
-  return allSeedsByCategoryId.map((s) => camelcaseKeys(s));
-}
+//   const allSeedsByCategoryId = await sql<[Seed]>`
+//     SELECT
+//       seeds.title,
+//       seeds.image_url,
+//       seeds.resource_url,
+//       seeds.public_note_id,
+//       seeds.user_id,
+//       seeds.category_id,
+//       seeds.slug,
+//       notes.id,
+//       notes.content,
+//       users.username,
+//       categories.title as categories_title
+//     FROM
+//       seeds,
+//       notes,
+//       users,
+//       categories
+//     WHERE
+//       seeds.public_note_id = notes.id
+//     AND
+//       seeds.user_id = users.id
+//     AND
+//       seeds.category_id = categories.id
+//     AND
+//       seeds.category_id = ${categoryId}
+//     `;
+//   return allSeedsByCategoryId.map((s) => camelcaseKeys(s));
+// }
 
 export async function getAuthorBySeedId(seedId: number) {
   if (!seedId) return undefined;
@@ -593,4 +593,37 @@ export async function getAuthorBySeedId(seedId: number) {
       users.id = seeds.user_id
   `;
   return authors.map((author) => camelcaseKeys(author))[0];
+}
+
+export async function deleteSeedBySeedId(seedId: number) {
+  if (!seedId) return undefined;
+
+  const seeds = await sql`
+    DELETE FROM
+      seeds
+    WHERE
+      id = ${seedId}
+    RETURNING
+      id
+  `;
+  return seeds.map((seed) => camelcaseKeys(seed))[0];
+}
+
+export async function updateSeedBySeedId(seedId: number, resourceUrl: string) {
+  // if (!seedId) return undefined;
+
+  const seeds = await sql<[User]>`
+    UPDATE
+      seeds
+    SET
+      resource_url = ${resourceUrl}
+    WHERE
+      id = ${seedId}
+    RETURNING
+      id,
+      resource_url
+  `;
+  console.log('Im here');
+
+  return seeds.map((seed) => camelcaseKeys(seed))[0];
 }

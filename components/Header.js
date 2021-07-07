@@ -105,8 +105,8 @@ export default function Header(props) {
                 <li class="button-default-ghost">Login</li>
               </a>
             </Link>
-          )}
-          {props.username && `logged in as ${props.username}`}
+          )}{' '}
+          {props.username && `User: ${props.username}`}{' '}
         </ul>
       </div>
     </header>

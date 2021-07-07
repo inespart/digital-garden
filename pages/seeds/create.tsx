@@ -108,8 +108,7 @@ export default function CreateSeed(props: Props) {
         privateNoteId: privateNoteId,
         resourceUrl: resourceUrl,
         categoryId: Number(categoryId),
-        imageUrl:
-          'https://images.unsplash.com/photo-1512314889357-e157c22f938d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1502&q=80',
+        imageUrl: '',
         isPublished: isPublished,
       }),
     });
