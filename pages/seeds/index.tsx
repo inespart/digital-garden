@@ -39,7 +39,8 @@ const seedsContainer = css`
 const buttonContainer = css`
   margin-bottom: 64px;
 
-  button {
+  button,
+  select {
     margin-right: 32px;
   }
 `;
@@ -90,12 +91,6 @@ export default function AllSeeds(props: Props) {
     return { __html: content };
   }
 
-  // Handle click on My Seeds Button
-  const handleMySeedsClick = (event: any) => {
-    event.preventDefault();
-    return setData(props.allSeedsByValidSessionUser);
-  };
-
   // Handle click on All Seeds Button
   const handleAllSeedsClick = (event: any) => {
     event.preventDefault();
@@ -114,6 +109,12 @@ export default function AllSeeds(props: Props) {
     return setData(seedsByCategoryId);
   };
 
+  // Handle click on My Seeds Button
+  const handleMySeedsClick = (event: any) => {
+    event.preventDefault();
+    return setData(props.allSeedsByValidSessionUser);
+  };
+
   return (
     <Layout username={props.username}>
       <Head>
@@ -130,16 +131,7 @@ export default function AllSeeds(props: Props) {
           >
             All Seeds
           </button>
-          {props.allSeedsByValidSessionUser ? (
-            <button
-              className="button-default-ghost"
-              onClick={handleMySeedsClick}
-            >
-              My Seeds
-            </button>
-          ) : (
-            ''
-          )}
+
           <select
             className="button-default-ghost"
             id="category"
@@ -158,6 +150,17 @@ export default function AllSeeds(props: Props) {
               );
             })}
           </select>
+
+          {props.allSeedsByValidSessionUser ? (
+            <button
+              className="button-default-ghost"
+              onClick={handleMySeedsClick}
+            >
+              My Seeds
+            </button>
+          ) : (
+            ''
+          )}
         </div>
         {/* Filter Options END */}
 

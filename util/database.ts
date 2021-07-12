@@ -66,9 +66,7 @@ export async function getUsersIfValidSessionToken(token?: string) {
     return errors;
   }
 
-  // Security: Now this query has been protected
-  // and it will only run in case the user has a
-  // token corresponding to a valid session
+  // Security: Now this query has been protected and it will only run in case the user has a token corresponding to a valid session
   const users = await sql<User[]>`
     SELECT
       id,
@@ -236,8 +234,7 @@ export async function getUserByValidSessionToken(token: string) {
 
   if (!session) return undefined;
 
-  // once we have the session, we want to get the user information
-  // we call another function and pass the session.userId
+  // once we have the session, we want to get the user information we call another function and pass the session.userId
   return await getUserById(session.userId);
 }
 
@@ -353,10 +350,12 @@ export async function getCategoryById(categoryId: number) {
 
   const categories = await sql<[Category]>`
   SELECT
-      id,
-      title
-    FROM
-      categories
+    id,
+    title
+  FROM
+    categories
+  WHERE
+    id = ${categoryId}
   `;
   return categories.map((category) => camelcaseKeys(category))[0];
 }
@@ -406,39 +405,15 @@ export async function getSeedBySeedSlug(seedSlug: string) {
       private_note_id,
       slug,
       resource_url,
-      image_url
+      image_url,
+      category_id
     FROM
       seeds
     WHERE
       slug = ${seedSlug};
   `;
-  // console.log('seeds', seeds);
   return seeds.map((seed) => camelcaseKeys(seed))[0];
 }
-
-// export async function getSeedBySeedSlug(seedSlug: string) {
-//   if (!seedSlug) return undefined;
-
-//   const seeds = await sql<[Seed]>`
-//     SELECT
-//       seeds.title,
-//       seeds.resource_url,
-//       seeds.image_url,
-//       notes.content,
-//       notes.is_private
-//     FROM
-//       seeds,
-//       notes
-//     WHERE
-//       (notes.id = seeds.public_note_id
-//     OR
-//       notes.id = seeds.private_note_id)
-//     AND
-//       seeds.slug = ${seedSlug};
-//   `;
-//   console.log('seeds', seeds);
-//   return seeds.map((seed) => camelcaseKeys(seed))[0];
-// }
 
 export async function getNoteContentByNoteId(noteId: number) {
   if (!noteId) return undefined;
@@ -454,33 +429,19 @@ export async function getNoteContentByNoteId(noteId: number) {
   return notesContent.map((noteContent) => camelcaseKeys(noteContent))[0];
 }
 
-// // maybe dont need this anymore
-// export async function getAllSeeds() {
-//   const allSeeds = await sql<[Seed]>`
+// maybe dont need this anymore
+// export async function getPublicNotesContents() {
+//   const publicNotesContents = await sql<[Content]>`
 //     SELECT
 //       id,
-//       title,
-//       image_url,
-//       public_note_id
+//       content
 //     FROM
-//       seeds
+//       notes
 //   `;
-//   return allSeeds.map((seed) => camelcaseKeys(seed));
+//   return publicNotesContents.map((publicNoteContent) =>
+//     camelcaseKeys(publicNoteContent),
+//   );
 // }
-
-// maybe dont need this anymore
-export async function getPublicNotesContents() {
-  const publicNotesContents = await sql<[Content]>`
-    SELECT
-      id,
-      content
-    FROM
-      notes
-  `;
-  return publicNotesContents.map((publicNoteContent) =>
-    camelcaseKeys(publicNoteContent),
-  );
-}
 
 export async function getAllSeeds() {
   const allSeeds = await sql<[Seed]>`
@@ -544,39 +505,6 @@ export async function getSeedsByValidSessionUser(validSessionUserId: number) {
   return allSeedsByValidSessionUser.map((s) => camelcaseKeys(s));
 }
 
-// export async function getSeedsByCategoryId(categoryId: number) {
-//   if (!categoryId) return undefined;
-
-//   const allSeedsByCategoryId = await sql<[Seed]>`
-//     SELECT
-//       seeds.title,
-//       seeds.image_url,
-//       seeds.resource_url,
-//       seeds.public_note_id,
-//       seeds.user_id,
-//       seeds.category_id,
-//       seeds.slug,
-//       notes.id,
-//       notes.content,
-//       users.username,
-//       categories.title as categories_title
-//     FROM
-//       seeds,
-//       notes,
-//       users,
-//       categories
-//     WHERE
-//       seeds.public_note_id = notes.id
-//     AND
-//       seeds.user_id = users.id
-//     AND
-//       seeds.category_id = categories.id
-//     AND
-//       seeds.category_id = ${categoryId}
-//     `;
-//   return allSeedsByCategoryId.map((s) => camelcaseKeys(s));
-// }
-
 export async function getAuthorBySeedId(seedId: number) {
   if (!seedId) return undefined;
 
@@ -609,9 +537,14 @@ export async function deleteSeedBySeedId(seedId: number) {
   return seeds.map((seed) => camelcaseKeys(seed))[0];
 }
 
-export async function updateSeedBySeedId(seedId: number, resourceUrl: string) {
-  // if (!seedId) return undefined;
-
+export async function updateSeedBySeedId(
+  seedId: number,
+  resourceUrl: string,
+  publicNoteId: number,
+  publicNoteContent: string,
+  privateNoteId: number,
+  privateNoteContent: string,
+) {
   const seeds = await sql<[User]>`
     UPDATE
       seeds
@@ -623,7 +556,34 @@ export async function updateSeedBySeedId(seedId: number, resourceUrl: string) {
       id,
       resource_url
   `;
-  console.log('Im here');
+
+  const cleanPublicNoteContent = DOMPurify.sanitize(publicNoteContent);
+
+  const publicNote = await sql<[Note]>`
+    UPDATE
+      notes
+    SET
+      content = ${cleanPublicNoteContent}
+    WHERE
+      id = ${publicNoteId}
+    RETURNING
+      id,
+      content
+  `;
+
+  const cleanPrivateNoteContent = DOMPurify.sanitize(privateNoteContent);
+
+  const privateNote = await sql<[Note]>`
+  UPDATE
+    notes
+  SET
+    content = ${cleanPrivateNoteContent}
+  WHERE
+    id = ${privateNoteId}
+  RETURNING
+    id,
+    content
+`;
 
   return seeds.map((seed) => camelcaseKeys(seed))[0];
 }

@@ -3,6 +3,7 @@ import { convertQueryValueString } from '../../../../util/context';
 import {
   deleteSeedBySeedId,
   getAuthorBySeedId,
+  getCategoryById,
   getNoteContentByNoteId,
   getSeedBySeedSlug,
   getUserByUsername,
@@ -21,6 +22,7 @@ export type SingleSeedResponseType =
   | {
       seed: Seed | null;
       author: Author | undefined;
+      categoryName: string | undefined;
       publicNoteContent: Content | undefined;
       privateNoteContent: string | Content | undefined;
       slugTitle: string | undefined;
@@ -91,14 +93,32 @@ export default async function singleSeedHandler(
     privateNoteContent = '';
   }
 
+  // Get category name
+  // console.log('seed in seed.ts', seed);
+
+  const category = await getCategoryById(seed.categoryId);
+  console.log('category', category);
+  const categoryName = category.title;
+  console.log('categoryName', categoryName);
+
   if (req.method === 'DELETE') {
     const deletedSeed = await deleteSeedBySeedId(seed.id);
-    console.log('deletedSeed', deletedSeed);
+    // console.log('deletedSeed', deletedSeed);
   }
 
   if (req.method === 'PUT') {
-    const updatedSeed = await updateSeedBySeedId(seed.id, req.body.resourceUrl);
-    console.log('updatedSeed', updatedSeed);
+    const updatedSeed = await updateSeedBySeedId(
+      seed.id,
+      req.body.resourceUrl,
+      seed.publicNoteId,
+      req.body.publicNoteContent,
+      seed.privateNoteId,
+      req.body.privateNoteContent,
+    );
+    // console.log('seed', seed);
+    // console.log('seed.id', seed.id);
+    // console.log('req.body.resourceUrl', req.body.resourceUrl);
+    // console.log('updatedSeed', updatedSeed);
   }
 
   // If we have received an array of errors, set the
@@ -111,6 +131,7 @@ export default async function singleSeedHandler(
   return res.status(200).json({
     seed: seed,
     author: author,
+    categoryName: categoryName,
     publicNoteContent: publicNoteContent,
     privateNoteContent: privateNoteContent,
     slugTitle: slugTitle,
