@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Link from 'next/link';
+import { AiOutlineUser } from 'react-icons/ai';
 import { darkGrey, green } from '../util/sharedStyles';
 
 const headerStyles = css`

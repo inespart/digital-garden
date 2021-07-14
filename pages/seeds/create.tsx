@@ -32,7 +32,6 @@ const formStyle = css`
     input,
     option,
     select {
-      margin: 4px 0 24px 0;
       width: 100%;
       padding: 12px 8px;
       border: 1px solid ${green};
@@ -49,20 +48,20 @@ const buttonStyles = css`
     width: 48%;
     margin-left: 4px;
     margin-right: 4px;
-    margin-bottom: 64px;
-    margin-top: 32px;
+    margin-bottom: 32px;
+    margin-top: 16px;
   }
 `;
-
-// const largeInput = css`
-//   line-height: 128px;
-// `;
 
 const containerLeft = css`
   display: flex;
   flex-direction: column;
   width: 65%;
   margin-right: 32px;
+
+  div {
+    margin: 4px 0 24px 0;
+  }
 `;
 
 const containerRight = css`
@@ -77,7 +76,8 @@ const containerRight = css`
 
 const errorStyle = css`
   color: red;
-  padding-bottom: 128px;
+  font-size: 0.8rem;
+  font-style: italic;
 `;
 
 export default function CreateSeed(props: Props) {
@@ -86,15 +86,8 @@ export default function CreateSeed(props: Props) {
   const [privateNoteId, setPrivateNoteId] = useState('');
   const [resourceUrl, setResourceUrl] = useState('');
   const [categoryId, setCategoryId] = useState('');
-  const [errors, setErrors] = useState('');
+  const [errors, setErrors] = useState();
   const router = useRouter();
-
-  // const editorRef = useRef(null);
-  // const log = () => {
-  //   if (editorRef.current) {
-  //     console.log(editorRef.current.getContent());
-  //   }
-  // };
 
   async function clickHandler(isPublished: boolean) {
     const response = await fetch(`/api/seeds/create`, {
@@ -114,18 +107,32 @@ export default function CreateSeed(props: Props) {
     });
 
     // Wait for the response of the fetch inside create.ts and then transform it into json
-    const { user, sluggedTitle, errors: errorMessage } = await response.json();
-    // console.log('json user inside create.tsx', user);
+    const {
+      user,
+      sluggedTitle,
+      errors: [errorMessage],
+    } = await response.json();
 
-    console.log('errorMessages', errorMessage);
+    // Check if there is an errorMessage inside the json and update state
     if (errorMessage) {
-      setErrors(errorMessage[0].message);
+      // console.log('error in create.tsx', errorMessage);
+      setErrors(errorMessage);
       return;
     }
-
-    // TODO: Navigate to /seeds/[username]/[title].tsx page when new seed has been successfully created
+    // Navigate to /seeds/[username]/[title].tsx page when new seed has been successfully created
     router.push(`/seeds/${user.username}/${sluggedTitle}`);
   }
+
+  const errorObject = {
+    // category is either error or undefined
+    category: errors?.find((e) => e.id === 2),
+    title: errors?.find((e) => e.id === 3),
+    duplicateTitle: errors?.find((e) => e.id === 4),
+    publicNote: errors?.find((e) => e.id === 5),
+  };
+  // console.log('errorObject.category', errorObject.category);
+  // console.log('errorObject.title', errorObject.title);
+  // console.log('errorObject.publicNote', errorObject.publicNote);
 
   return (
     <Layout username={props.username}>
@@ -141,8 +148,7 @@ export default function CreateSeed(props: Props) {
             <div css={containerLeft}>
               <div>
                 <label>
-                  Category:
-                  {/* Map over categories */}
+                  Category: {/* Map over categories */}
                   <select
                     id="category"
                     value={categoryId}
@@ -160,6 +166,11 @@ export default function CreateSeed(props: Props) {
                     })}
                   </select>
                 </label>
+                {errorObject.category ? (
+                  <span css={errorStyle}>{errorObject.category.message}</span>
+                ) : (
+                  ''
+                )}
               </div>
 
               <div>
@@ -169,11 +180,25 @@ export default function CreateSeed(props: Props) {
                     value={title}
                     placeholder="Insert title of your seed"
                     required
+                    minLength={3}
+                    maxLength={40}
                     onChange={(event) => {
                       setTitle(event.currentTarget.value);
                     }}
                   />
                 </label>
+                {errorObject.title ? (
+                  <span css={errorStyle}>{errorObject.title.message}</span>
+                ) : (
+                  ''
+                )}
+                {errorObject.duplicateTitle ? (
+                  <span css={errorStyle}>
+                    {errorObject.duplicateTitle.message}
+                  </span>
+                ) : (
+                  ''
+                )}
               </div>
 
               <div>
@@ -189,7 +214,7 @@ export default function CreateSeed(props: Props) {
                 </label>
               </div>
 
-              <div>
+              {/* <div>
                 <label>
                   Brain Links: (optional)
                   <input
@@ -200,7 +225,7 @@ export default function CreateSeed(props: Props) {
                   // }}
                   />
                 </label>
-              </div>
+              </div> */}
 
               <div>
                 <label>
@@ -227,9 +252,7 @@ export default function CreateSeed(props: Props) {
                         'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                     }}
                     value={publicNoteId}
-                    onEditorChange={(newValue, editor) =>
-                      setPublicNoteId(newValue)
-                    }
+                    onEditorChange={(newValue) => setPublicNoteId(newValue)}
                   />
                   {/* <input
                     css={largeInput}
@@ -242,6 +265,11 @@ export default function CreateSeed(props: Props) {
                     }}
                   /> */}
                 </label>
+                {errorObject.publicNote ? (
+                  <span css={errorStyle}>{errorObject.publicNote.message}</span>
+                ) : (
+                  ''
+                )}
               </div>
 
               <div>
@@ -269,9 +297,7 @@ export default function CreateSeed(props: Props) {
                         'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                     }}
                     value={privateNoteId}
-                    onEditorChange={(newValue, editor) =>
-                      setPrivateNoteId(newValue)
-                    }
+                    onEditorChange={(newValue) => setPrivateNoteId(newValue)}
                   />
                   {/* <input
                     css={largeInput}
@@ -286,14 +312,24 @@ export default function CreateSeed(props: Props) {
               </div>
 
               <div css={buttonStyles}>
-                <button
+                {/* Keep this */}
+
+                {/* <button
                   className="button-default-ghost"
                   onClick={() => {
                     clickHandler(false);
                   }}
                 >
                   Save as draft
-                </button>
+                </button> */}
+
+                {errors ? (
+                  <div css={errorStyle}>
+                    Please fill out all required fields above.
+                  </div>
+                ) : (
+                  ''
+                )}
 
                 <button
                   className="button-default"
@@ -303,8 +339,6 @@ export default function CreateSeed(props: Props) {
                 >
                   Create seed
                 </button>
-
-                <div css={errorStyle}>{errors}</div>
               </div>
             </div>
 

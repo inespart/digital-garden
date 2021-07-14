@@ -50,10 +50,10 @@ export default function RegistrationSuccessful(props: Props) {
             </h3>
 
             <Link href="/seeds">
-              <a className="button-default-ghost"> Go to all seeds</a>
+              <a className="button-default-ghost"> Go to all Seeds</a>
             </Link>
             <Link href="/seeds/create">
-              <a className="button-default">+ Create seed</a>
+              <a className="button-default">+ Create Seed</a>
             </Link>
           </div>
           <div css={containerRight}>

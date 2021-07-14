@@ -23,7 +23,6 @@ export default async function createSeedHandler(
 ) {
   if (req.method === 'POST') {
     const validSession = await getValidSessionByToken(req.cookies.sessionToken);
-
     // console.log('validSession', validSession);
 
     // Retrieve title, etc. from the request body from the frontend
@@ -37,31 +36,67 @@ export default async function createSeedHandler(
       isPublished,
     } = req.body;
 
-    // Check if userId, etc. is not undefined
-    if (!validSession) {
-      return res
-        .status(403)
-        .json({ errors: [{ message: 'No valid session. Please log in.' }] });
-    }
-    // console.log('validSession', validSession);
+    // Declare variables for form validation
+    const responseErrorObject = [];
+    let responseStatusCode = 200;
 
-    // Check if category is selected
+    // Check if valid session is not undefined
+    if (!validSession) {
+      responseStatusCode = 400;
+      responseErrorObject.push({
+        id: 1,
+        message: 'No valid session. Please log in.',
+      });
+
+      // return res.status(403).json({
+      //   errors: [{ id: 1, message: 'No valid session. Please log in.' }],
+      // });
+    }
+
+    // Check if user selected a category
     if (!categoryId) {
-      return res
-        .status(403)
-        .json({ errors: [{ message: 'Please select a category.' }] });
+      responseStatusCode = 400;
+      responseErrorObject.push({ id: 2, message: 'Please select a category.' });
+      // console.log('responseErrorObject in categoryid', responseErrorObject);
+      // return res
+      //   .status(403)
+      //   .json({ errors: [{ id: 2, message: 'Please select a category.' }] });
     }
 
     // Create slug from title
     let sluggedTitle = '';
     let slug = '';
     if (!title) {
-      return res
-        .status(403)
-        .json({ errors: [{ message: 'Please enter a title.' }] });
-    } else {
+      responseStatusCode = 400;
+      responseErrorObject.push({ id: 3, message: 'Please enter a title.' });
+      // return res
+      //   .status(403)
+      //   .json({ errors: [{ id: 3, message: 'Please enter a title.' }] });
+    }
+
+    if (title) {
       sluggedTitle = generateTitle(title);
       slug = generateSlug(validSession.userId, title);
+    }
+
+    // Check if public note was entered
+    if (!publicNoteId) {
+      responseStatusCode = 403;
+      responseErrorObject.push({
+        id: 5,
+        message: 'Please enter a public note.',
+      });
+      // return res
+      //   .status(403)
+      //   .json({ errors: [{ id: 5, message: 'Please enter a public note.' }] });
+    }
+
+    // Early return any errors and status code to the frontend
+    if (responseErrorObject.length > 0) {
+      // console.log('responseErrorObject early return', responseErrorObject);
+      return res
+        .status(responseStatusCode)
+        .json({ errors: [responseErrorObject] });
     }
 
     // Check if slug is unique
@@ -72,18 +107,19 @@ export default async function createSeedHandler(
     );
 
     if (isSlugAlreadyUsed) {
-      return res.status(409).json({
-        errors: [
-          { message: 'Title already used. Please choose another title.' },
-        ],
+      responseStatusCode = 400;
+      responseErrorObject.push({
+        id: 4,
+        message: 'Title already used. Please choose another title.',
       });
-    }
-
-    // Check if public note was entered
-    if (!publicNoteId) {
-      return res
-        .status(403)
-        .json({ errors: [{ message: 'Please enter a public note.' }] });
+      // return res.status(409).json({
+      //   errors: [
+      //     {
+      //       id: 4,
+      //       message: 'Title already used. Please choose another title.',
+      //     },
+      //   ],
+      // });
     }
 
     // Save the seed information to the database
@@ -102,9 +138,18 @@ export default async function createSeedHandler(
     const user = await getUserById(seed.userId);
     // console.log('user from create.ts', user);
 
-    // Return seed and user response to the frontend
-    return res
-      .status(200)
-      .json({ seed: seed, user: user, sluggedTitle: sluggedTitle });
+    // Send response to frontend
+    if (responseErrorObject.length > 0) {
+      // If there is/are errors, return status code and errors to the frontend
+      // console.log('responseErrorObject bottom', responseErrorObject);
+      return res
+        .status(responseStatusCode)
+        .json({ errors: [responseErrorObject] });
+    } else {
+      // Return seed and user response to the frontend
+      return res
+        .status(200)
+        .json({ seed: seed, user: user, sluggedTitle: sluggedTitle });
+    }
   }
 }

@@ -94,20 +94,17 @@ export default async function singleSeedHandler(
   }
 
   // Get category name
-  // console.log('seed in seed.ts', seed);
-
   const category = await getCategoryById(seed.categoryId);
-  console.log('category', category);
-  const categoryName = category.title;
-  console.log('categoryName', categoryName);
+  // console.log('category', category);
+  const categoryName = category?.title;
+  // console.log('categoryName', categoryName);
 
   if (req.method === 'DELETE') {
-    const deletedSeed = await deleteSeedBySeedId(seed.id);
-    // console.log('deletedSeed', deletedSeed);
+    await deleteSeedBySeedId(seed.id);
   }
 
   if (req.method === 'PUT') {
-    const updatedSeed = await updateSeedBySeedId(
+    await updateSeedBySeedId(
       seed.id,
       req.body.resourceUrl,
       seed.publicNoteId,
@@ -115,10 +112,8 @@ export default async function singleSeedHandler(
       seed.privateNoteId,
       req.body.privateNoteContent,
     );
-    // console.log('seed', seed);
     // console.log('seed.id', seed.id);
     // console.log('req.body.resourceUrl', req.body.resourceUrl);
-    // console.log('updatedSeed', updatedSeed);
   }
 
   // If we have received an array of errors, set the

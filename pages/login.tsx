@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -17,6 +18,10 @@ type Props = {
   refreshUsername: () => void;
   username?: string;
 };
+
+const newAccountStyle = css`
+  text-align: center;
+`;
 
 export default function Login(props: Props) {
   const [username, setUsername] = useState('');
@@ -101,18 +106,20 @@ export default function Login(props: Props) {
 
               <div style={{ color: 'red' }}>{error}</div>
             </form>
-            <div>
+            {/* <div>
               <Link href="/">
                 <a className="a-no-highlight-color">
                   <p>Forgot password?</p>
                 </a>
               </Link>
-            </div>
+            </div> */}
             <br />
-            <div>
+            <div css={newAccountStyle}>
+              {' '}
+              <p>Don't have an account yet?</p>
               <Link href="/register">
                 <a>
-                  <p>Create new account</p>
+                  <span>Create new account</span>
                 </a>
               </Link>
             </div>

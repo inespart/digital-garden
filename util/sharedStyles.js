@@ -20,6 +20,14 @@ export const pageContainer = css`
   padding-right: 128px;
 `;
 
+export const pageContainerWhite = css`
+  background-color: white;
+  height: 100vh;
+  padding-top: 100px;
+  padding-left: 128px;
+  padding-right: 128px;
+`;
+
 // Form Styles
 export const wrapper = css`
   display: flex;

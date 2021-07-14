@@ -1,5 +1,7 @@
+import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import Layout from '../../components/Layout';
 import { pageContainer } from '../../util/sharedStyles';
 import { ApplicationError, User } from '../../util/types';
@@ -10,6 +12,40 @@ type Props = {
   username?: string;
   errors?: ApplicationError[];
 };
+
+const contentContainer = css`
+  display: flex;
+`;
+
+const containerLeft = css`
+  width: 65%;
+  margin-right: 24px;
+
+  h3 {
+    margin-bottom: 64px;
+  }
+
+  .button-default,
+  .button-default-ghost {
+    font-size: 1.3rem;
+    margin-right: 24px;
+  }
+
+  .userInformation {
+    margin-bottom: 64px;
+
+    p {
+      margin: 6px 0;
+    }
+  }
+`;
+
+const containerRight = css`
+  width: 35%;
+  img {
+    width: 100%;
+  }
+`;
 
 export default function SingleUserProfile(props: Props) {
   // Show message if user not allowed
@@ -50,9 +86,32 @@ export default function SingleUserProfile(props: Props) {
         </title>
       </Head>
       <div css={pageContainer}>
-        <h1 data-cy="profile-page-h1">Profile Page</h1>
+        <h1>Welcome back, {props.user.firstName}!</h1>
+        <div css={contentContainer}>
+          <div css={containerLeft}>
+            <div className="userInformation">
+              <p>Username: {props.user.username}</p>
+              <p>First name: {props.user.firstName}</p>
+              <p>Last name: {props.user.lastName}</p>
+            </div>
 
-        <div>
+            <Link href="/seeds">
+              <a className="button-default-ghost"> Go to all Seeds</a>
+            </Link>
+            <Link href="/seeds/create">
+              <a className="button-default">+ Create Seed</a>
+            </Link>
+          </div>
+          <div css={containerRight}>
+            <img
+              src="/register.svg"
+              alt="Person skateboarding"
+              className="registrationImageStyle"
+            />
+          </div>
+        </div>
+
+        {/* <div>
           id: <span data-cy="profile-page-id">{props.user.id}</span>
         </div>
 
@@ -60,7 +119,7 @@ export default function SingleUserProfile(props: Props) {
           username: <span data-cy="profile-page-id">{props.user.username}</span>
         </div>
         <div>first_name: {props.user.firstName}</div>
-        <div>last_name: {props.user.lastName}</div>
+        <div>last_name: {props.user.lastName}</div> */}
       </div>
     </Layout>
   );

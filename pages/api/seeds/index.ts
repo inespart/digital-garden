@@ -29,7 +29,7 @@ export default async function singleSeedHandler(
   //     categoriesTitle: 'Business'
   //   },
   const allSeeds = await getAllSeeds();
-  console.log('allSeeds', allSeeds);
+  // console.log('allSeeds', allSeeds);
 
   // Check if session is valid
   // validSession {
@@ -41,6 +41,8 @@ export default async function singleSeedHandler(
   const validSession = await getValidSessionByToken(req.cookies.sessionToken);
   // console.log('req.cookies', req.cookies.sessionToken);
   // console.log('validSession', validSession);
+  const isSessionValid = validSession ? true : false;
+  // console.log('isSessionValid', isSessionValid);
 
   let allSeedsByValidSessionUser;
 
@@ -59,7 +61,7 @@ export default async function singleSeedHandler(
   // If we've successfully retrieved the seeds, return them
   return res.status(200).json({
     allSeeds: allSeeds,
+    isSessionValid: isSessionValid,
     allSeedsByValidSessionUser: allSeedsByValidSessionUser,
-    // allSeedsByCategoryId: allSeedsByCategoryId,
   });
 }

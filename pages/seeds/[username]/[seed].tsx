@@ -9,9 +9,17 @@ import { BsLink45Deg, BsLock } from 'react-icons/bs';
 import { GoLightBulb } from 'react-icons/go';
 import Layout from '../../../components/Layout';
 import { green, pageContainer } from '../../../util/sharedStyles';
+import { Author, Content, Seed } from '../../../util/types';
 import { SingleSeedResponseType } from '../../api/seeds/[username]/[seed]';
 
-type Props = SingleSeedResponseType & {
+// SingleSeedResponseType &
+type Props = {
+  seed: Seed;
+  author: Author;
+  categoryName: string | undefined;
+  publicNoteContent: Content;
+  privateNoteContent: Content | undefined;
+  slugTitle: string | undefined;
   username?: string;
   errors?: Error[];
 };
@@ -76,14 +84,16 @@ const buttonContainer = css`
 `;
 
 export default function SeedDisplay(props: Props) {
+  // console.log('props in seed.tsx', props);
   const [showEdit, setShowEdit] = useState(true);
   const [resourceUrl, setResourceUrl] = useState(props.seed.resourceUrl);
   const [publicNoteContent, setPublicNoteContent] = useState(
     props.publicNoteContent.content,
   );
   const [privateNoteContent, setPrivateNoteContent] = useState(
-    props.privateNoteContent.content,
+    props.privateNoteContent?.content,
   );
+  const [errors, setErrors] = useState('');
   const router = useRouter();
 
   const handleResourceUrlChange = (event: any) =>
@@ -174,9 +184,10 @@ export default function SeedDisplay(props: Props) {
                     'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                 }}
                 value={publicNoteContent}
-                onEditorChange={(newValue, editor) =>
-                  setPublicNoteContent(newValue)
-                }
+                // onEditorChange={(newValue, editor) =>
+                //   setPublicNoteContent(newValue)
+                // }
+                onEditorChange={(newValue) => setPublicNoteContent(newValue)}
               />
             ) : (
               // If button EDIT hasn't been clicked, just show the content
@@ -211,15 +222,15 @@ export default function SeedDisplay(props: Props) {
                       'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                   }}
                   value={privateNoteContent}
-                  onEditorChange={(newValue, editor) =>
-                    setPrivateNoteContent(newValue)
-                  }
+                  onEditorChange={(newValue) => setPrivateNoteContent(newValue)}
                 />
-              ) : (
-                // If button EDIT hasn't been clicked, just show the content
+              ) : // If button EDIT hasn't been clicked, just show the content
+              privateNoteContent ? (
                 <div
                   dangerouslySetInnerHTML={createMarkup(privateNoteContent)}
                 />
+              ) : (
+                ''
               )}
             </div>
           ) : (
@@ -256,7 +267,7 @@ export default function SeedDisplay(props: Props) {
                     // as DeleteResponse
 
                     if ('errors' in json) {
-                      setError(json.errors[0].message);
+                      setErrors(json.errors[0].message);
                       return;
                     }
                   }
@@ -295,7 +306,7 @@ export default function SeedDisplay(props: Props) {
                   // as DeleteResponse
 
                   if ('errors' in json) {
-                    setError(json.errors[0].message);
+                    setErrors(json.errors[0].message);
                     return;
                   }
 

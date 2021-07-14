@@ -3,11 +3,12 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
-// import ReadMoreReact from 'read-more-react';
+import { AiOutlineTag, AiOutlineUser } from 'react-icons/ai';
+import { BsLink45Deg } from 'react-icons/bs';
 import Layout from '../../components/Layout';
 import { getCategory } from '../../util/database';
 import { generateTitle } from '../../util/generateTitle';
-import { darkGrey, pageContainer } from '../../util/sharedStyles';
+import { darkGrey, green, pageContainer } from '../../util/sharedStyles';
 import { Category } from '../../util/types';
 
 type Props = {
@@ -15,6 +16,7 @@ type Props = {
   categories: Category[];
   allSeeds: SeedObject[];
   allSeedsByValidSessionUser: SeedObject[];
+  isSessionValid: Boolean;
 };
 
 type SeedObject = {
@@ -49,31 +51,49 @@ const seedContainer = css`
   display: flex;
   flex-direction: column;
   background-color: white;
-  box-shadow: 0 0 8px #acacac;
   border-radius: 16px;
-  width: 350px;
-  height: 500px;
-  margin-bottom: 32px;
-  margin-right: 32px;
-  padding: 32px;
+  border: 1px solid ${green};
+  width: 330px;
+  height: 400px;
+  margin: 0 32px 64px 32px;
 
   h3 {
     margin-bottom: 0px;
+    text-align: center;
+    font-family: 'Petrona, sans-serif';
   }
+`;
+
+const seedTopStyle = css`
+  background-color: ${green};
+  border-radius: 16px 16px 0 0;
+
+  a {
+    color: ${darkGrey};
+  }
+
+  h3 {
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+`;
+
+const seedBottomStyle = css`
+  background-color: white;
+  border-radius: 0 0 16px 16px;
+  padding: 32px;
 `;
 
 const userAndCategoryStyle = css`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   font-size: 0.7rem;
   margin-bottom: 16px;
 
-  .usernameCircle {
-    border: 1px solid ${darkGrey};
-    border-radius: 50%;
-    padding: 3px;
-    margin-right: 3px;
+  .userInfo {
+    margin-right: 6px;
   }
 `;
 
@@ -85,6 +105,7 @@ export default function AllSeeds(props: Props) {
   // console.log('props inside /seeds/index.ts', props);
   const [categoryId, setCategoryId] = useState('');
   const [data, setData] = useState(props.allSeeds);
+  // const [active, setActive] = useState(false);
 
   // Function to remove html tags from notes
   function createMarkup(content: string) {
@@ -150,8 +171,8 @@ export default function AllSeeds(props: Props) {
               );
             })}
           </select>
-
-          {props.allSeedsByValidSessionUser ? (
+          {/* {console.log('props.isSessionValid', props.isSessionValid)} */}
+          {props.isSessionValid === true ? (
             <button
               className="button-default-ghost"
               onClick={handleMySeedsClick}
@@ -169,40 +190,53 @@ export default function AllSeeds(props: Props) {
           {data.map((seedObject) => {
             return (
               <div key={seedObject.id} css={seedContainer}>
-                <h3>{seedObject.title}</h3>
-                <div css={userAndCategoryStyle}>
-                  <span className="usernameCircle">{seedObject.username}</span>{' '}
-                  curated in {seedObject.categoriesTitle}
+                <div css={seedTopStyle}>
+                  <h3>{seedObject.title}</h3>
+                  <div css={userAndCategoryStyle}>
+                    <div>
+                      <span className="userInfo">
+                        <AiOutlineUser /> {seedObject.username}
+                      </span>{' '}
+                      <AiOutlineTag />
+                      {seedObject.categoriesTitle}
+                    </div>
+
+                    <div>
+                      {seedObject.resourceUrl ? (
+                        <>
+                          <BsLink45Deg />
+                          <a
+                            target="_blank"
+                            href={seedObject.resourceUrl}
+                            rel="noopener noreferrer"
+                          >
+                            {seedObject.resourceUrl}
+                          </a>
+                        </>
+                      ) : (
+                        <br />
+                      )}
+                    </div>
+                  </div>
+                  {/* {console.log('seedObject:', seedObject)} */}
                 </div>
-                {/* {console.log('seedObject:', seedObject)} */}
-                <div>
-                  Resource URL:{' '}
-                  <a
-                    target="_blank"
-                    href={seedObject.resourceUrl}
-                    rel="noopener noreferrer"
+
+                <div css={seedBottomStyle}>
+                  <div
+                    css={publicNoteStyle}
+                    dangerouslySetInnerHTML={createMarkup(
+                      seedObject.content.slice(0, 300),
+                    )}
+                  />
+
+                  <Link
+                    href={`seeds/${seedObject.username}/${generateTitle(
+                      seedObject.title,
+                    )}`}
                   >
-                    {seedObject.resourceUrl}
-                  </a>
-                  {/* <Link href={seedObject.resourceUrl} passHref={true}>
-                    <a>{seedObject.resourceUrl}</a>
-                  </Link> */}
+                    Read full seed
+                  </Link>
                 </div>
-
-                <div
-                  css={publicNoteStyle}
-                  dangerouslySetInnerHTML={createMarkup(
-                    seedObject.content.slice(0, 300),
-                  )}
-                />
-
-                <Link
-                  href={`seeds/${seedObject.username}/${generateTitle(
-                    seedObject.title,
-                  )}`}
-                >
-                  Read full seed
-                </Link>
 
                 {/* <div css={publicNoteStyle}>
                   <ReadMoreReact

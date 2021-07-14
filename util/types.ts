@@ -54,4 +54,7 @@ export type Category = {
   title: string;
 };
 
-export type ApplicationError = { message: string };
+export type ApplicationError = {
+  id: number;
+  message: string;
+};
