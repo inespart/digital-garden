@@ -55,6 +55,6 @@ export type Category = {
 };
 
 export type ApplicationError = {
-  id: number;
+  field: string;
   message: string;
 };

@@ -86,7 +86,7 @@ export default function CreateSeed(props: Props) {
   const [privateNoteId, setPrivateNoteId] = useState('');
   const [resourceUrl, setResourceUrl] = useState('');
   const [categoryId, setCategoryId] = useState('');
-  const [errors, setErrors] = useState();
+  const [errors, setErrors] = useState<any[]>();
   const router = useRouter();
 
   async function clickHandler(isPublished: boolean) {
@@ -95,6 +95,7 @@ export default function CreateSeed(props: Props) {
       headers: {
         'Content-Type': 'application/json',
       },
+      // send the request body to the API route
       body: JSON.stringify({
         title: title,
         publicNoteId: publicNoteId,
@@ -113,9 +114,20 @@ export default function CreateSeed(props: Props) {
       errors: [errorMessage],
     } = await response.json();
 
+    // errorMessage = [
+    //   {field: , message: },
+    //   {}
+    // ]
+
+    if (errorMessage) {
+      console.log('errors after fetch in create.tsx', errorMessage);
+    } else {
+      console.log('no errors sent to the frontend, juhu');
+    }
+
     // Check if there is an errorMessage inside the json and update state
     if (errorMessage) {
-      // console.log('error in create.tsx', errorMessage);
+      console.log('error in create.tsx', errorMessage);
       setErrors(errorMessage);
       return;
     }
@@ -125,10 +137,9 @@ export default function CreateSeed(props: Props) {
 
   const errorObject = {
     // category is either error or undefined
-    category: errors?.find((e) => e.id === 2),
-    title: errors?.find((e) => e.id === 3),
-    duplicateTitle: errors?.find((e) => e.id === 4),
-    publicNote: errors?.find((e) => e.id === 5),
+    category: errors?.find((e: any) => e.field === 'categoryId'),
+    title: errors?.find((e: any) => e.field === 'title'),
+    publicNote: errors?.find((e: any) => e.field === 'publicNoteId'),
   };
   // console.log('errorObject.category', errorObject.category);
   // console.log('errorObject.title', errorObject.title);
@@ -189,13 +200,6 @@ export default function CreateSeed(props: Props) {
                 </label>
                 {errorObject.title ? (
                   <span css={errorStyle}>{errorObject.title.message}</span>
-                ) : (
-                  ''
-                )}
-                {errorObject.duplicateTitle ? (
-                  <span css={errorStyle}>
-                    {errorObject.duplicateTitle.message}
-                  </span>
                 ) : (
                   ''
                 )}

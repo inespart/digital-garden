@@ -12,7 +12,6 @@ import { green, pageContainer } from '../../../util/sharedStyles';
 import { Author, Content, Seed } from '../../../util/types';
 import { SingleSeedResponseType } from '../../api/seeds/[username]/[seed]';
 
-// SingleSeedResponseType &
 type Props = {
   seed: Seed;
   author: Author;
@@ -21,7 +20,7 @@ type Props = {
   privateNoteContent: Content | undefined;
   slugTitle: string | undefined;
   username?: string;
-  errors?: Error[];
+  // errors?: Error[];
 };
 
 const seedContainer = css`
@@ -321,6 +320,7 @@ export default function SeedDisplay(props: Props) {
             ''
           )}
         </div>
+        {errors ? errors : ''}
       </div>
     </Layout>
   );

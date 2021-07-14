@@ -47,7 +47,9 @@ export default async function singleSeedHandler(
   // console.log('req.query', req.query.username);
   const user = await getUserByUsername(req.query.username);
   if (!user) {
-    return res.status(404).json({ errors: [{ message: 'User not found.' }] });
+    return res
+      .status(404)
+      .json({ errors: [{ field: 'user', message: 'User not found.' }] });
   }
   // console.log('user', user);
 
@@ -60,7 +62,9 @@ export default async function singleSeedHandler(
   const slug = `${user.id}-${slugTitle}`;
 
   if (!slug) {
-    return res.status(409).json({ errors: [{ message: 'Slug is missing.' }] });
+    return res
+      .status(409)
+      .json({ errors: [{ field: 'slug', message: 'Slug is missing.' }] });
   }
 
   // Get either an array of errors OR a user
@@ -68,7 +72,9 @@ export default async function singleSeedHandler(
   // console.log('seed in .ts', seed);
 
   if (!seed) {
-    return res.status(409).json({ errors: [{ message: 'Seed is missing.' }] });
+    return res
+      .status(409)
+      .json({ errors: [{ field: 'seed', message: 'Seed is missing.' }] });
   }
 
   // Get public note content
