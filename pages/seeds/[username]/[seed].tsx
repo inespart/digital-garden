@@ -40,10 +40,6 @@ const seedContainer = css`
     margin-bottom: 32px;
   }
 
-  img {
-    width: 24px;
-  }
-
   input {
     width: 89%;
     padding: 12px 6px;
@@ -59,6 +55,28 @@ const seedContainer = css`
       background-color: transparent;
       padding: 0;
     }
+  }
+`;
+
+const seedHeadingContainer = css`
+  border: 1px solid ${green};
+  border-radius: 32px;
+  display: flex;
+`;
+
+const seedInfoContainer = css`
+  padding: 0 32px;
+  width: 65%;
+`;
+
+const seedImageContainer = css`
+  width: 35%;
+  display: flex;
+  justify-content: flex-end;
+
+  img {
+    width: 70%;
+    padding: 16px;
   }
 `;
 
@@ -113,53 +131,51 @@ export default function SeedDisplay(props: Props) {
       </Head>
       <div css={pageContainer}>
         <div css={seedContainer}>
-          <h1>{props.seed.title}</h1>
-          <p className="authorCategoryStyle">
-            <AiOutlineUser css={iconStyle} /> Curated by {props.author.username}
-          </p>
-          <p className="authorCategoryStyle">
-            {' '}
-            <AiOutlineTag css={iconStyle} />
-            Category: {props.categoryName}
-          </p>
-          {console.log('props.seed', props.seed)}
-          <div className="urlStyle">
-            <BsLink45Deg css={iconStyle} />{' '}
-            {/* {props.privateNoteContent ? (
-              <input
-                onChange={handleResourceUrlChange}
-                value={resourceUrl}
-                disabled={showEdit ? true : false}
-              />
-            ) : (
-              <a
-                target="_blank"
-                href={props.seed.resourceUrl}
-                rel="noopener noreferrer"
-              >
-                {props.seed.resourceUrl}
-              </a>
-            )} */}
-            {props.privateNoteContent && showEdit ? (
-              <a
-                target="_blank"
-                href={props.seed.resourceUrl}
-                rel="noopener noreferrer"
-              >
-                {resourceUrl}
-              </a>
-            ) : (
-              <input
-                onChange={handleResourceUrlChange}
-                value={resourceUrl}
-                disabled={showEdit ? true : false}
-              />
-            )}
+          <div css={seedHeadingContainer}>
+            <div css={seedInfoContainer}>
+              <h1>{props.seed.title}</h1>
+              <p className="authorCategoryStyle">
+                <AiOutlineUser css={iconStyle} /> Curated by{' '}
+                {props.author.username}
+              </p>
+
+              <p className="authorCategoryStyle">
+                {' '}
+                <AiOutlineTag css={iconStyle} />
+                Category: {props.categoryName}
+              </p>
+              <div className="urlStyle">
+                {props.privateNoteContent && showEdit && resourceUrl ? (
+                  <>
+                    <BsLink45Deg css={iconStyle} />
+                    <a
+                      target="_blank"
+                      href={props.seed.resourceUrl}
+                      rel="noopener noreferrer"
+                    >
+                      {resourceUrl}
+                    </a>
+                  </>
+                ) : (
+                  <input
+                    onChange={handleResourceUrlChange}
+                    value={resourceUrl}
+                    disabled={showEdit ? true : false}
+                  />
+                )}
+              </div>
+            </div>
+            <div css={seedImageContainer}>
+              <img src="/reading.svg" alt="Person reading in a book" />
+            </div>
           </div>
 
           {/* If button EDIT has been clicked, show public note editor */}
           <div css={publicNoteContentStyle}>
-            <GoLightBulb /> Key take-aways:
+            <h3>
+              <GoLightBulb />
+              Key take-aways:
+            </h3>
             {!showEdit ? (
               <Editor
                 apiKey={process.env.API_KEY}
@@ -197,7 +213,10 @@ export default function SeedDisplay(props: Props) {
           {/* If button EDIT has been clicked, show private notes editor */}
           {props.privateNoteContent ? (
             <div css={privateNoteContentStyle}>
-              <BsLock /> Private Note:
+              <h3>
+                <BsLock />
+                Private Note:
+              </h3>
               {!showEdit ? (
                 <Editor
                   apiKey={process.env.API_KEY}

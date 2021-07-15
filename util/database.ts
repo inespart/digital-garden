@@ -148,7 +148,9 @@ export async function getUserByUsernameAndToken(
 ) {
   // Security: If the user is not logged in, we do not allow access and return an error from the database function
   if (!token) {
-    const errors: ApplicationError[] = [{ field:"userNotLoggedIn", message: 'Access denied' }];
+    const errors: ApplicationError[] = [
+      { field: 'userNotLoggedIn', message: 'Access denied' },
+    ];
     return errors;
   }
 
@@ -193,7 +195,9 @@ export async function getUserByUsernameAndToken(
   // Security: Match ids of session user with user
   // corresponding to requested username
   if (user.id !== userFromSession.id) {
-    const errors: ApplicationError[] = [{ field: "idNotMatching", message: 'Access denied' }];
+    const errors: ApplicationError[] = [
+      { field: 'idNotMatching', message: 'Access denied' },
+    ];
 
     return errors;
   }
@@ -472,6 +476,8 @@ export async function getAllSeeds() {
       seeds.user_id = users.id
     AND
       seeds.category_id = categories.id
+    ORDER by
+      seeds.id DESC
     `;
   return allSeeds.map((s) => camelcaseKeys(s));
 }
@@ -505,6 +511,8 @@ export async function getSeedsByValidSessionUser(validSessionUserId: number) {
       seeds.category_id = categories.id
     AND
       seeds.user_id = ${validSessionUserId}
+    ORDER by
+      seeds.id DESC
     `;
   return allSeedsByValidSessionUser.map((s) => camelcaseKeys(s));
 }
@@ -574,7 +582,7 @@ export async function updateSeedBySeedId(
       id,
       content
   `;
-  console.log(publicNote)
+  console.log(publicNote);
 
   const cleanPrivateNoteContent = DOMPurify.sanitize(privateNoteContent);
 
@@ -589,8 +597,7 @@ export async function updateSeedBySeedId(
     id,
     content
 `;
-console.log(privateNote)
-
+  console.log(privateNote);
 
   return seeds.map((seed) => camelcaseKeys(seed))[0];
 }

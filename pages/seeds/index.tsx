@@ -74,7 +74,7 @@ const seedTopStyle = css`
 
   h3 {
     margin-bottom: 12px;
-    font-weight: 600;
+    /* font-weight: 600; */
   }
 `;
 
@@ -105,12 +105,17 @@ export default function AllSeeds(props: Props) {
   // console.log('props inside /seeds/index.ts', props);
   const [categoryId, setCategoryId] = useState('');
   const [data, setData] = useState(props.allSeeds);
-  // const [active, setActive] = useState(false);
+  // const [appState, setAppState] = useState(false);
 
   // Function to remove html tags from notes
   function createMarkup(content: string) {
     return { __html: content };
   }
+
+  // Toggle active filter button
+  // const toggleClass = () => {
+  //   setAppState(!appState);
+  // };
 
   // Handle click on All Seeds Button
   const handleAllSeedsClick = (event: any) => {
@@ -147,6 +152,7 @@ export default function AllSeeds(props: Props) {
         {/* Filter Options START */}
         <div css={buttonContainer}>
           <button
+            key="1"
             className="button-default-ghost"
             onClick={handleAllSeedsClick}
           >
@@ -154,13 +160,16 @@ export default function AllSeeds(props: Props) {
           </button>
 
           <select
-            className="button-default-ghost"
+            key="2"
             id="category"
             value={categoryId}
             onChange={(event) => {
               setCategoryId(event.currentTarget.value);
               handleSeedsByCategoryClick(event.currentTarget.value);
+              // toggleClass();
             }}
+            // className={appState ? 'button-default' : 'button-default-ghost'}
+            className="button-default-ghost"
           >
             <option value="">Select category</option>
             {props.categories.map((category) => {
@@ -174,8 +183,10 @@ export default function AllSeeds(props: Props) {
           {/* {console.log('props.isSessionValid', props.isSessionValid)} */}
           {props.isSessionValid === true ? (
             <button
+              key="3"
               className="button-default-ghost"
               onClick={handleMySeedsClick}
+              // handleMySeedsClick;
             >
               My Seeds
             </button>

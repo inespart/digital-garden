@@ -3,6 +3,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { BiErrorCircle } from 'react-icons/bi';
 import Layout from '../../components/Layout';
 import { getCategory } from '../../util/database';
 import { darkGrey, green, pageContainer } from '../../util/sharedStyles';
@@ -119,15 +120,15 @@ export default function CreateSeed(props: Props) {
     //   {}
     // ]
 
-    if (errorMessage) {
-      console.log('errors after fetch in create.tsx', errorMessage);
-    } else {
-      console.log('no errors sent to the frontend, juhu');
-    }
+    // if (errorMessage) {
+    //   console.log('errors after fetch in create.tsx', errorMessage);
+    // } else {
+    //   console.log('no errors sent to the frontend, juhu');
+    // }
 
     // Check if there is an errorMessage inside the json and update state
     if (errorMessage) {
-      console.log('error in create.tsx', errorMessage);
+      // console.log('error in create.tsx', errorMessage);
       setErrors(errorMessage);
       return;
     }
@@ -136,11 +137,13 @@ export default function CreateSeed(props: Props) {
   }
 
   const errorObject = {
-    // category is either error or undefined
+    // validSession, category, title, publicNote is either an error object or undefined
+    validSession: errors?.find((e: any) => e.field === 'validSession'),
     category: errors?.find((e: any) => e.field === 'categoryId'),
     title: errors?.find((e: any) => e.field === 'title'),
     publicNote: errors?.find((e: any) => e.field === 'publicNoteId'),
   };
+  // console.log('errorObject', errorObject);
   // console.log('errorObject.category', errorObject.category);
   // console.log('errorObject.title', errorObject.title);
   // console.log('errorObject.publicNote', errorObject.publicNote);
@@ -157,6 +160,11 @@ export default function CreateSeed(props: Props) {
         <div>
           <div css={formStyle}>
             <div css={containerLeft}>
+              {errorObject.validSession
+                ? !window.alert(
+                    `It seems like you're not logged in. Please log in to create a seed.`,
+                  )
+                : ''}
               <div>
                 <label>
                   Category: {/* Map over categories */}
@@ -329,7 +337,8 @@ export default function CreateSeed(props: Props) {
 
                 {errors ? (
                   <div css={errorStyle}>
-                    Please fill out all required fields above.
+                    {' '}
+                    <BiErrorCircle /> Please fill out all required fields above.
                   </div>
                 ) : (
                   ''

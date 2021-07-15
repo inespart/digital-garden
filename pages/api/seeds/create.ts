@@ -164,14 +164,12 @@ export default async function createSeedHandler(
       // Return seed and user response to the frontend
       console.log('I am inside the else - no errors');
       console.log('responseErrorObject.length', responseErrorObject.length);
-      return res
-        .status(200)
-        .json({
-          seed: seed,
-          user: user,
-          sluggedTitle: sluggedTitle,
-          errors: [],
-        });
+      return res.status(200).json({
+        seed: seed,
+        user: user,
+        sluggedTitle: sluggedTitle,
+        errors: [],
+      });
     }
   }
 }
