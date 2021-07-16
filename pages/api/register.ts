@@ -38,17 +38,18 @@ export default async function registerHandler(
       req.body;
 
     const sessionToken = req.cookies.sessionTokenRegister;
-    // console.log('req.cookies register.ts', req.cookies);
-    // console.log(
-    //   'req.cookies.sessionToken register.ts',
-    //   req.cookies.sessionToken,
-    // );
-    // console.log('sessionToken register.ts', sessionToken);
 
     const registerSession = await getValidSessionByToken(sessionToken);
 
     if (!registerSession) {
-      return res.status(400).json({ errors: [{ message: 'Invalid session' }] });
+      return res.status(400).json({
+        errors: [
+          {
+            field: 'invalidSession',
+            message: 'Please choose another username.',
+          },
+        ],
+      });
     }
 
     const csrfSecret = generateCsrfSecretByToken(sessionToken);
@@ -60,9 +61,11 @@ export default async function registerHandler(
     // console.log('csrfToken', csrfToken);
 
     if (!isCsrfTokenValid) {
-      return res
-        .status(400)
-        .json({ errors: [{ message: "CSRF token doesn't match" }] });
+      return res.status(400).json({
+        errors: [
+          { field: 'csrfTokenMatching', message: "CSRF token doesn't match" },
+        ],
+      });
     }
 
     await deleteSessionByToken(sessionToken);
@@ -94,5 +97,7 @@ export default async function registerHandler(
     return res.status(200).setHeader('Set-Cookie', cookie).json({ user: user });
   }
 
-  res.status(400).json({ errors: [{ message: 'Bad request' }] });
+  res
+    .status(400)
+    .json({ errors: [{ field: 'badRequest', message: 'Bad request' }] });
 }

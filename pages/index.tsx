@@ -36,6 +36,29 @@ const heroSectionHeading = css`
   align-items: center;
   width: 80%;
   padding: 0px 32px;
+
+  @media (max-width: 1240px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+  }
+
+  @media (max-width: 1020px) {
+    h1 {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 900px) {
+    h1 {
+      font-size: 2rem;
+      line-height: 32px;
+    }
+
+    h3 {
+      font-size: 1rem;
+    }
+  }
 `;
 
 const heroSectionImage = css`

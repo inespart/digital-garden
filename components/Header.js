@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import Link from 'next/link';
-import { AiOutlineUser } from 'react-icons/ai';
+import { useRouter } from 'next/router';
 import { darkGrey, green } from '../util/sharedStyles';
 
 const headerStyles = css`
@@ -68,6 +68,8 @@ const navContainer = css`
 `;
 
 export default function Header(props) {
+  const router = useRouter();
+
   return (
     <header css={headerStyles}>
       <div css={logoContainer}>
@@ -84,6 +86,15 @@ export default function Header(props) {
               <li>Digital Seeds</li>
             </a>
           </Link>
+          {props.username ? (
+            <Link href={`/profiles/${props.username}`}>
+              <a data-cy="header-my-profile-link">
+                <li>My Profile</li>
+              </a>
+            </Link>
+          ) : (
+            ''
+          )}
           <Link href="/about">
             <a>
               <li>About</li>
@@ -102,12 +113,12 @@ export default function Header(props) {
             </Link>
           ) : (
             <Link href="/login">
-              <a>
+              <a data-cy="header-login-link">
                 <li class="button-default-ghost">Login</li>
               </a>
             </Link>
           )}{' '}
-          {props.username && `User: ${props.username}`}{' '}
+          {/* {props.username && `User: ${props.username}`}{' '} */}
         </ul>
       </div>
     </header>

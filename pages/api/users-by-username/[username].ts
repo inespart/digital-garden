@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { convertQueryValueString } from '../../../util/context';
-import { getUserByUsernameAndToken } from '../../../util/database';
+import {
+  deleteUserByUserId,
+  deleteUserByUserUsername,
+  getUserByUsernameAndToken,
+} from '../../../util/database';
 import { ApplicationError, User } from '../../../util/types';
 
 export type SingleUserResponseType =
@@ -19,6 +23,13 @@ export default async function singleUserHandler(
 
   // Get either an array of errors OR a user
   const result = await getUserByUsernameAndToken(username, token);
+
+  // Delete user
+  if (req.method === 'DELETE') {
+    if (username) {
+      await deleteUserByUserUsername(username);
+    }
+  }
 
   // If we have received an array of errors, set the
   // response accordingly

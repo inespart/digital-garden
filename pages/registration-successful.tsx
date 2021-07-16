@@ -41,7 +41,7 @@ export default function RegistrationSuccessful(props: Props) {
         <title>Registration Successful | Digital Garden</title>
       </Head>
       <div css={pageContainer}>
-        <h1>Congratulations! </h1>
+        <h1>Welcome! </h1>
         <div css={contentContainer}>
           <div css={containerLeft}>
             <h3>
@@ -50,10 +50,21 @@ export default function RegistrationSuccessful(props: Props) {
             </h3>
 
             <Link href="/seeds">
-              <a className="button-default-ghost"> Go to all Seeds</a>
+              <a
+                data-cy="go-to-all-seeds-link"
+                className="button-default-ghost"
+              >
+                {' '}
+                Go to all Seeds
+              </a>
             </Link>
             <Link href="/seeds/create">
-              <a className="button-default">+ Create Seed</a>
+              <a
+                data-cy="registration-successful-create-seed"
+                className="button-default"
+              >
+                + Create Seed
+              </a>
             </Link>
           </div>
           <div css={containerRight}>

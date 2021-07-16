@@ -107,6 +107,20 @@ export async function insertUser(
   return users.map((user) => camelcaseKeys(user))[0];
 }
 
+export async function deleteUserByUserUsername(username: string) {
+  if (!username) return undefined;
+
+  const users = await sql`
+    DELETE FROM
+      users
+    WHERE
+      username = ${username}
+    RETURNING
+      username
+  `;
+  return users.map((user) => camelcaseKeys(user))[0];
+}
+
 export async function getUserById(id?: number) {
   // Return undefined if userId is not parseable to an integer
   if (!id) return undefined;

@@ -77,7 +77,7 @@ export default function Login(props: Props) {
                 <label>
                   Username:
                   <input
-                    data-cy="users-management-create-username"
+                    data-cy="login-username"
                     value={username}
                     placeholder="sophie_br"
                     onChange={(event) => {
@@ -91,7 +91,7 @@ export default function Login(props: Props) {
                 <label>
                   Password:
                   <input
-                    data-cy="users-management-create-password"
+                    data-cy="login-password"
                     value={password}
                     type="password"
                     placeholder="*******"
@@ -102,7 +102,9 @@ export default function Login(props: Props) {
                 </label>
               </div>
 
-              <button className="button-default">Login</button>
+              <button data-cy="login-button" className="button-default">
+                Login
+              </button>
 
               <div style={{ color: 'red' }}>{error}</div>
             </form>

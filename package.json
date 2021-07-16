@@ -35,6 +35,7 @@
     "typeface-poppins": "^1.1.13"
   },
   "devDependencies": {
+    "@foreachbe/cypress-tinymce": "^1.0.0",
     "@next/eslint-plugin-next": "^10.2.2",
     "@types/cookie": "^0.4.0",
     "@types/csrf": "^3.1.0",
@@ -48,6 +49,7 @@
     "@typescript-eslint/parser": "^4.21.0",
     "@upleveled/eslint-config-upleveled": "1.14.3",
     "babel-eslint": "^10.1.0",
+    "cypress": "^7.7.0",
     "eslint": "^7.23.0",
     "eslint-config-next": "^11.0.0",
     "eslint-config-react-app": "^6.0.0",

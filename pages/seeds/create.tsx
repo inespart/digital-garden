@@ -169,6 +169,7 @@ export default function CreateSeed(props: Props) {
                 <label>
                   Category: {/* Map over categories */}
                   <select
+                    data-cy="create-category"
                     id="category"
                     value={categoryId}
                     onChange={(event) => {
@@ -196,6 +197,7 @@ export default function CreateSeed(props: Props) {
                 <label>
                   Title:
                   <input
+                    data-cy="create-title"
                     value={title}
                     placeholder="Insert title of your seed"
                     required
@@ -217,6 +219,7 @@ export default function CreateSeed(props: Props) {
                 <label>
                   Resource URL: (optional)
                   <input
+                    data-cy="create-resource-url"
                     value={resourceUrl}
                     placeholder="www.khanacademy.org/review-arrays"
                     onChange={(event) => {
@@ -263,6 +266,7 @@ export default function CreateSeed(props: Props) {
                       content_style:
                         'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                     }}
+                    data-cy="create-public-note"
                     value={publicNoteId}
                     onEditorChange={(newValue) => setPublicNoteId(newValue)}
                   />

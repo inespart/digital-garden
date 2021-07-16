@@ -2,13 +2,16 @@ import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { IoCreateOutline } from 'react-icons/io';
+import { RiDeleteBin2Line } from 'react-icons/ri';
 import Layout from '../../components/Layout';
 import { pageContainer } from '../../util/sharedStyles';
 import { ApplicationError, User } from '../../util/types';
 import { SingleUserResponseType } from '../api/users-by-username/[username]';
 
 type Props = {
-  user?: User;
+  user: User;
   username?: string;
   errors?: ApplicationError[];
 };
@@ -42,12 +45,16 @@ const containerLeft = css`
 
 const containerRight = css`
   width: 35%;
+  padding-top: 48px;
+
   img {
     width: 100%;
   }
 `;
 
 export default function SingleUserProfile(props: Props) {
+  const router = useRouter();
+
   // Show message if user not allowed
   const errors = props.errors;
 
@@ -86,21 +93,58 @@ export default function SingleUserProfile(props: Props) {
         </title>
       </Head>
       <div css={pageContainer}>
-        <h1>Welcome back, {props.user.firstName}!</h1>
         <div css={contentContainer}>
           <div css={containerLeft}>
+            <h1>Welcome, {props.user.firstName}!</h1>
+
             <div className="userInformation">
               <p>Username: {props.user.username}</p>
               <p>First name: {props.user.firstName}</p>
               <p>Last name: {props.user.lastName}</p>
             </div>
 
-            <Link href="/seeds">
-              <a className="button-default-ghost"> Go to all Seeds</a>
-            </Link>
+            {/* CREATE Seed */}
             <Link href="/seeds/create">
-              <a className="button-default">+ Create Seed</a>
+              <a data-cy="create-seed-button" className="button-default">
+                + Create Seed
+              </a>
             </Link>
+
+            {/* DELETE Account */}
+            <button
+              className="button-default-ghost"
+              onClick={async (event) => {
+                event.preventDefault();
+                if (
+                  !window.confirm(
+                    `Do you really want to delete your account? It will be gone forever.`,
+                  )
+                ) {
+                  return;
+                }
+
+                const response = await fetch(
+                  `/api/users-by-username/${props.user.username}`,
+                  {
+                    method: 'DELETE',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      username: props.user.username,
+                    }),
+                  },
+                );
+
+                await response.json();
+
+                // Navigate to seeds overview after having deleted a seed
+                router.push(`/`);
+              }}
+            >
+              {' '}
+              <RiDeleteBin2Line /> Delete account
+            </button>
           </div>
           <div css={containerRight}>
             <img

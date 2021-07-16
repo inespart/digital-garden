@@ -71,6 +71,7 @@ export default function Register(props: Props) {
                 <label>
                   First Name:
                   <input
+                    data-cy="registration-first-name"
                     value={firstName}
                     placeholder="Sophie"
                     onChange={(event) => {
@@ -84,6 +85,7 @@ export default function Register(props: Props) {
                 <label>
                   Last Name:
                   <input
+                    data-cy="registration-last-name"
                     value={lastName}
                     placeholder="Breuer"
                     onChange={(event) => {
@@ -97,6 +99,7 @@ export default function Register(props: Props) {
                 <label>
                   Email:
                   <input
+                    data-cy="registration-email"
                     value={email}
                     type="email"
                     placeholder="sophie_br@gmail.com"
@@ -111,6 +114,7 @@ export default function Register(props: Props) {
                 <label>
                   Username:
                   <input
+                    data-cy="registration-username"
                     value={username}
                     placeholder="sophie_br"
                     onChange={(event) => {
@@ -123,6 +127,7 @@ export default function Register(props: Props) {
                 <label>
                   Password:
                   <input
+                    data-cy="registration-password"
                     value={password}
                     placeholder="******"
                     type="password"
@@ -132,8 +137,16 @@ export default function Register(props: Props) {
                   />
                 </label>
               </div>
+              <div
+                style={{
+                  color: 'red',
+                  fontStyle: 'italic',
+                  paddingBottom: '12px',
+                }}
+              >
+                {error}
+              </div>
               <button className="button-default">Create Account</button>
-              <div style={{ color: 'red' }}>{error}</div>
             </form>
           </div>
           <div css={imageContainer}>
@@ -192,7 +205,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const shortLivedSession = await insertFiveMinuteSessionWithoutUserId(
     crypto.randomBytes(64).toString('base64'),
   );
-  console.log('short lived session token', shortLivedSession.token);
+  // console.log('short lived session token', shortLivedSession.token);
 
   // Set new cookie for the short-lived session
   const cookie = createSerializedRegisterSessionTokenCookie(
@@ -202,11 +215,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   // Use token from short-lived session to generate secret for the CSRF token
   const csrfSecret = generateCsrfSecretByToken(shortLivedSession.token);
-  console.log('csrfSecret', csrfSecret);
+  // console.log('csrfSecret', csrfSecret);
 
   // Create CSRF token to the props
   const csrfToken = tokens.create(csrfSecret);
-  console.log('csrfToken', csrfToken);
+  // console.log('csrfToken', csrfToken);
 
   return {
     props: {

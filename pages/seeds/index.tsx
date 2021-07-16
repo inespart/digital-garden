@@ -54,7 +54,7 @@ const seedContainer = css`
   border-radius: 16px;
   border: 1px solid ${green};
   width: 330px;
-  height: 400px;
+  height: 470px;
   margin: 0 32px 64px 32px;
 
   h3 {
@@ -89,11 +89,17 @@ const userAndCategoryStyle = css`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 0 12px;
+  text-align: center;
   font-size: 0.7rem;
   margin-bottom: 16px;
 
   .userInfo {
     margin-right: 6px;
+  }
+
+  .resourceInfo {
+    padding-top: 6px;
   }
 `;
 
@@ -105,7 +111,9 @@ export default function AllSeeds(props: Props) {
   // console.log('props inside /seeds/index.ts', props);
   const [categoryId, setCategoryId] = useState('');
   const [data, setData] = useState(props.allSeeds);
-  // const [appState, setAppState] = useState(false);
+  const [allSeedsActive, setAllSeedsActive] = useState(true);
+  const [byCategoryActive, setByCategoryActive] = useState(false);
+  const [mySeedActive, setMySeedActive] = useState(false);
 
   // Function to remove html tags from notes
   function createMarkup(content: string) {
@@ -118,8 +126,12 @@ export default function AllSeeds(props: Props) {
   // };
 
   // Handle click on All Seeds Button
-  const handleAllSeedsClick = (event: any) => {
-    event.preventDefault();
+  // const handleAllSeedsClick = (event: any) => {
+  //   event.preventDefault();
+  //   return setData(props.allSeeds);
+  // };
+
+  const handleAllSeedsClick = () => {
     return setData(props.allSeeds);
   };
 
@@ -136,8 +148,7 @@ export default function AllSeeds(props: Props) {
   };
 
   // Handle click on My Seeds Button
-  const handleMySeedsClick = (event: any) => {
-    event.preventDefault();
+  const handleMySeedsClick = () => {
     return setData(props.allSeedsByValidSessionUser);
   };
 
@@ -152,24 +163,34 @@ export default function AllSeeds(props: Props) {
         {/* Filter Options START */}
         <div css={buttonContainer}>
           <button
-            key="1"
-            className="button-default-ghost"
-            onClick={handleAllSeedsClick}
+            className={
+              byCategoryActive || mySeedActive
+                ? 'button-default-ghost'
+                : 'button-default'
+            }
+            onClick={() => {
+              handleAllSeedsClick();
+              setAllSeedsActive(!allSeedsActive);
+              setByCategoryActive(false);
+              setMySeedActive(false);
+            }}
           >
             All Seeds
           </button>
 
           <select
-            key="2"
             id="category"
             value={categoryId}
             onChange={(event) => {
               setCategoryId(event.currentTarget.value);
               handleSeedsByCategoryClick(event.currentTarget.value);
-              // toggleClass();
+              setByCategoryActive(true);
+              setAllSeedsActive(false);
+              setMySeedActive(false);
             }}
-            // className={appState ? 'button-default' : 'button-default-ghost'}
-            className="button-default-ghost"
+            className={
+              byCategoryActive ? 'button-default' : 'button-default-ghost'
+            }
           >
             <option value="">Select category</option>
             {props.categories.map((category) => {
@@ -183,10 +204,17 @@ export default function AllSeeds(props: Props) {
           {/* {console.log('props.isSessionValid', props.isSessionValid)} */}
           {props.isSessionValid === true ? (
             <button
-              key="3"
-              className="button-default-ghost"
-              onClick={handleMySeedsClick}
-              // handleMySeedsClick;
+              className={
+                byCategoryActive || allSeedsActive
+                  ? 'button-default-ghost'
+                  : 'button-default'
+              }
+              onClick={() => {
+                handleMySeedsClick();
+                setMySeedActive(!mySeedActive);
+                setAllSeedsActive(false);
+                setByCategoryActive(false);
+              }}
             >
               My Seeds
             </button>
@@ -212,7 +240,7 @@ export default function AllSeeds(props: Props) {
                       {seedObject.categoriesTitle}
                     </div>
 
-                    <div>
+                    <div className="resourceInfo">
                       {seedObject.resourceUrl ? (
                         <>
                           <BsLink45Deg />

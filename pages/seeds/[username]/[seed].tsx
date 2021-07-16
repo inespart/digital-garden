@@ -30,16 +30,6 @@ const seedContainer = css`
     margin-bottom: 12px;
   }
 
-  .authorCategoryStyle {
-    font-size: 0.8rem;
-    font-style: italic;
-  }
-
-  .urlStyle {
-    font-size: 0.8rem;
-    margin-bottom: 32px;
-  }
-
   input {
     width: 89%;
     padding: 12px 6px;
@@ -62,6 +52,16 @@ const seedHeadingContainer = css`
   border: 1px solid ${green};
   border-radius: 32px;
   display: flex;
+
+  .authorCategoryStyle {
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+
+  .urlStyle {
+    font-size: 0.8rem;
+    margin-bottom: 32px;
+  }
 `;
 
 const seedInfoContainer = css`
@@ -75,8 +75,8 @@ const seedImageContainer = css`
   justify-content: flex-end;
 
   img {
-    width: 70%;
-    padding: 16px;
+    width: 300px;
+    padding: 0 62px 0 0;
   }
 `;
 
@@ -166,7 +166,7 @@ export default function SeedDisplay(props: Props) {
               </div>
             </div>
             <div css={seedImageContainer}>
-              <img src="/reading.svg" alt="Person reading in a book" />
+              <img src="/writing.svg" alt="Person writing in a notebook" />
             </div>
           </div>
 
