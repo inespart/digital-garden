@@ -246,7 +246,6 @@ export default function AllSeeds(props: Props) {
                       )}
                     </div>
                   </div>
-                  {/* {console.log('seedObject:', seedObject)} */}
                 </div>
 
                 <div css={seedBottomStyle}>

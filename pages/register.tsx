@@ -123,6 +123,7 @@ export default function Register(props: Props) {
                   />
                 </label>
               </div>
+
               <div>
                 <label>
                   Password:
@@ -137,6 +138,7 @@ export default function Register(props: Props) {
                   />
                 </label>
               </div>
+              {console.log("There's an error")}
               <div
                 style={{
                   color: 'red',
