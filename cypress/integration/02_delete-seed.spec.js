@@ -9,7 +9,6 @@ describe('Can login and delete seed', () => {
     cy.get('[data-cy="header-seeds-link"]').click();
     cy.contains('Read full seed').first().click();
     cy.get('[data-cy="delete-seed-button"]', { timeout: 10000 }).click();
-    // cy.get('[data-cy="delete-seed-button"]', { timeout: 12000 }).click();
 
     // cy.contains('Edit', { timeout: 10000 }).click();
     // cy.get('[data-cy="edit-resource-url"]')

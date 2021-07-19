@@ -2,7 +2,7 @@ import camelcaseKeys from 'camelcase-keys';
 import dotenvSafe from 'dotenv-safe';
 import DOMPurify from 'isomorphic-dompurify';
 import postgres from 'postgres';
-// import setPostgresDefaultsOnHeroku from '../setPostgresDefaultsOnHeroku';
+import setPostgresDefaultsOnHeroku from './setPostgresDefaulsOnHeroku';
 import {
   ApplicationError,
   Author,
@@ -16,7 +16,7 @@ import {
   UserWithPasswordHash,
 } from './types';
 
-// setPostgresDefaultsOnHeroku();
+setPostgresDefaultsOnHeroku();
 
 // Read the PostgreSQL secret connection information
 // (host, database, username, password) from the .env file
