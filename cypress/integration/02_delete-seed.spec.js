@@ -7,7 +7,7 @@ describe('Can login and delete seed', () => {
     cy.get('[data-cy="login-password"]').type('triA1-PA55w0rd');
     cy.get('[data-cy="login-button"]').click();
     cy.get('[data-cy="header-seeds-link"]').click();
-    cy.get('[data-cy="read-full-seed-link"]').first().click();
+    cy.contains('Read full seed').first().click();
     cy.get('[data-cy="delete-seed-button"]', { timeout: 10000 }).click();
     // cy.get('[data-cy="delete-seed-button"]', { timeout: 12000 }).click();
 
