@@ -1,5 +1,5 @@
-describe('Can register and delete account', () => {
-  it('Can visit website, register new account and delete account', () => {
+describe('Can login, create new seed, edit and delete it', () => {
+  it('Can login, create new seed, edit and delete it', () => {
     cy.visit('http://localhost:3000/');
     cy.contains('Login');
     cy.get('[data-cy="header-login-link"]').click();
@@ -12,5 +12,15 @@ describe('Can register and delete account', () => {
     cy.get('[data-cy="create-resource-url"]').type(
       'http://www.stackoverflow.com',
     );
+    cy.setTinyMceContent('public-note-id', 'Public Note Content');
+    cy.setTinyMceContent('private-note-id', 'Private Note Content');
+    cy.get('[data-cy="create-seed-button"]').click();
+    cy.contains('Edit').click();
+    cy.get('[data-cy="edit-resource-url"]')
+      .type('{selectall}')
+      .type('http://www.newurl.com');
+    cy.contains('Save').click();
+    cy.contains('newurl').should('be.visible');
+    cy.contains('Delete').click();
   });
 });

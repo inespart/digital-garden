@@ -15,7 +15,7 @@ export type CreateSeedResponse =
       user?: User;
       sluggedTitle: string;
     }
-  | { errors: ApplicationError[] };
+  | { errors: ApplicationError[][] };
 
 export default async function createSeedHandler(
   req: NextApiRequest,
@@ -53,7 +53,7 @@ export default async function createSeedHandler(
       // });
     }
 
-    // Check if user selected a category
+    // Check if user has selected a category
     if (!categoryId) {
       responseStatusCode = 400;
       responseErrorObject.push({
@@ -65,10 +65,7 @@ export default async function createSeedHandler(
       //   .json({ errors: [{ id: 2, message: 'Please select a category.' }] });
     }
 
-    // Create slug from title
-    let sluggedTitle = '';
-    let slug = '';
-
+    // Check if user has entered a title
     if (!title) {
       responseStatusCode = 400;
       responseErrorObject.push({
@@ -80,12 +77,16 @@ export default async function createSeedHandler(
       //   .json({ errors: [{ id: 3, message: 'Please enter a title.' }] });
     }
 
+    // Create slug from title
+    let sluggedTitle = '';
+    let slug = '';
+
     if (validSession && title) {
       sluggedTitle = generateTitle(title);
       slug = generateSlug(validSession.userId, title);
     }
 
-    // Check if public note was entered
+    // Check if public note has been entered
     if (!publicNoteId) {
       responseStatusCode = 403;
       responseErrorObject.push({
@@ -97,24 +98,29 @@ export default async function createSeedHandler(
       //   .json({ errors: [{ id: 5, message: 'Please enter a public note.' }] });
     }
 
-    console.log('right before early return');
+    // console.log('right before early return');
 
     // Early return any errors and status code to the frontend
     if (responseErrorObject.length > 0) {
-      // console.log('responseErrorObject early return', responseErrorObject);
+      console.log('responseErrorObject early return', responseErrorObject);
       return res
         .status(responseStatusCode)
         .json({ errors: [responseErrorObject] });
     }
 
-    console.log('right after early return');
+    // console.log('right after early return');
 
     // Check if slug is unique
-    const userSlugs = await getSlugsByUserId(validSession.userId);
+    let userSlugs;
+    let isSlugAlreadyUsed;
 
-    const isSlugAlreadyUsed = userSlugs?.some(
-      (slugObject) => slugObject.slug === slug,
-    );
+    if (validSession) {
+      userSlugs = await getSlugsByUserId(validSession.userId);
+
+      isSlugAlreadyUsed = userSlugs?.some(
+        (slugObject) => slugObject.slug === slug,
+      );
+    }
 
     if (isSlugAlreadyUsed) {
       responseStatusCode = 400;
@@ -133,36 +139,34 @@ export default async function createSeedHandler(
     }
 
     // Save the seed information to the database
-    const seed = await createSeed(
-      title,
-      publicNoteId,
-      validSession.userId,
-      categoryId,
-      isPublished,
-      privateNoteId,
-      imageUrl,
-      resourceUrl,
-      slug,
-    );
+    let seed;
 
-    console.log('successfully saved info in database');
+    if (validSession) {
+      seed = await createSeed(
+        title,
+        publicNoteId,
+        validSession.userId,
+        categoryId,
+        isPublished,
+        privateNoteId,
+        imageUrl,
+        resourceUrl,
+        slug,
+      );
+    }
 
-    const user = await getUserById(seed.userId);
-    // console.log('user from create.ts', user);
-
-    console.log('right before sending response to frontend');
+    const user = await getUserById(seed?.userId);
 
     // Send response to frontend
     if (responseErrorObject.length > 0) {
       // If there is/are errors, return status code and errors to the frontend
-      console.log('responseErrorObject.length', responseErrorObject.length);
-      console.log('responseErrorObject bottom', responseErrorObject);
+      // console.log('responseErrorObject.length', responseErrorObject.length);
+      // console.log('responseErrorObject bottom', responseErrorObject);
       return res
         .status(responseStatusCode)
         .json({ errors: [responseErrorObject] });
     } else {
       // Return seed and user response to the frontend
-      console.log('I am inside the else - no errors');
       console.log('responseErrorObject.length', responseErrorObject.length);
       return res.status(200).json({
         seed: seed,

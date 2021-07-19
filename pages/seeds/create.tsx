@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { Editor } from '@tinymce/tinymce-react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { BiErrorCircle } from 'react-icons/bi';
 import Layout from '../../components/Layout';
 import { getCategory } from '../../util/database';
@@ -90,6 +90,13 @@ export default function CreateSeed(props: Props) {
   const [errors, setErrors] = useState<any[]>();
   const router = useRouter();
 
+  const editorRef = useRef(null);
+  const log = () => {
+    if (editorRef.current) {
+      console.log(editorRef.current.getContent());
+    }
+  };
+
   async function clickHandler(isPublished: boolean) {
     const response = await fetch(`/api/seeds/create`, {
       method: 'POST',
@@ -143,10 +150,6 @@ export default function CreateSeed(props: Props) {
     title: errors?.find((e: any) => e.field === 'title'),
     publicNote: errors?.find((e: any) => e.field === 'publicNoteId'),
   };
-  // console.log('errorObject', errorObject);
-  // console.log('errorObject.category', errorObject.category);
-  // console.log('errorObject.title', errorObject.title);
-  // console.log('errorObject.publicNote', errorObject.publicNote);
 
   return (
     <Layout username={props.username}>
@@ -247,8 +250,9 @@ export default function CreateSeed(props: Props) {
                   Public Note:
                   <Editor
                     apiKey={process.env.API_KEY}
-                    // onInit={(evt, editor) => (editorRef.current = editor)}
-                    // initialValue="<p>What are your key takeaways?</p>"
+                    onInit={(evt, editor) => (editorRef.current = editor)}
+                    initialValue="<p>What are your key takeaways?</p>"
+                    id="public-note-id"
                     init={{
                       height: 500,
                       menubar: false,
@@ -266,7 +270,6 @@ export default function CreateSeed(props: Props) {
                       content_style:
                         'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                     }}
-                    data-cy="create-public-note"
                     value={publicNoteId}
                     onEditorChange={(newValue) => setPublicNoteId(newValue)}
                   />
@@ -294,8 +297,9 @@ export default function CreateSeed(props: Props) {
                   Private Note: (optional)
                   <Editor
                     apiKey={process.env.API_KEY}
-                    // onInit={(evt, editor) => (editorRef.current = editor)}
-                    // initialValue="<p>No one will ever see your private notes</p>"
+                    onInit={(evt, editor) => (editorRef.current = editor)}
+                    initialValue="<p>Here's the place for your private notes.</p>"
+                    id="private-note-id"
                     init={{
                       height: 500,
                       menubar: false,
@@ -349,6 +353,7 @@ export default function CreateSeed(props: Props) {
                 )}
 
                 <button
+                  data-cy="create-seed-button"
                   className="button-default"
                   onClick={() => {
                     clickHandler(true);

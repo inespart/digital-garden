@@ -158,6 +158,7 @@ export default function SeedDisplay(props: Props) {
                   </>
                 ) : (
                   <input
+                    data-cy="edit-resource-url"
                     onChange={handleResourceUrlChange}
                     value={resourceUrl}
                     disabled={showEdit ? true : false}

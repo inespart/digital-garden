@@ -67,9 +67,7 @@ export default function Login(props: Props) {
 
                 props.refreshUsername();
 
-                // console.log('json inside login.tsx', json);
-                // Navigate to the user's page when
-                // they have been successfully created
+                // Navigate to the user's page when account has been successfully created
                 router.push(`/profiles/${json.user.username}`);
               }}
             >
@@ -108,13 +106,6 @@ export default function Login(props: Props) {
 
               <div style={{ color: 'red' }}>{error}</div>
             </form>
-            {/* <div>
-              <Link href="/">
-                <a className="a-no-highlight-color">
-                  <p>Forgot password?</p>
-                </a>
-              </Link>
-            </div> */}
             <br />
             <div css={newAccountStyle}>
               {' '}
@@ -133,22 +124,32 @@ export default function Login(props: Props) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  // Redirect from HTTP to HTTPS on Heroku
+  if (
+    context.req.headers.host &&
+    context.req.headers['x-forwarded-proto'] &&
+    context.req.headers['x-forwarded-proto'] !== 'https'
+  ) {
+    return {
+      redirect: {
+        destination: `https://${context.req.headers.host}/login`,
+        permanent: true,
+      },
+    };
+  }
+
   // get the session token from cookie
   const sessionToken = context.req.cookies.sessionToken;
-  // console.log('sessionToken on login.tsx in gSSP', sessionToken);
 
   const session = await getValidSessionByToken(sessionToken);
-  // if the session is undefined, we allow the person to log in
-  // because they don't have a valid session
-  // but if they DO have a valid session,
-  // we redirect them
+  // if the session is undefined, we allow the person to log in because they don't have a valid session
+  // but if they DO have a valid session, we redirect them
   if (session) {
     // Redirect the user when they have a session
     // token by returning an object with the `redirect` prop
     // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
     return {
       redirect: {
-        // destination: `/users/management/${session.userId}/read`,
         destination: `/create-seed`,
         permanent: false,
       },

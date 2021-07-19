@@ -159,6 +159,20 @@ export default function Register(props: Props) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  // Redirect from HTTP to HTTPS on Heroku
+  if (
+    context.req.headers.host &&
+    context.req.headers['x-forwarded-proto'] &&
+    context.req.headers['x-forwarded-proto'] !== 'https'
+  ) {
+    return {
+      redirect: {
+        destination: `https://${context.req.headers.host}/register`,
+        permanent: true,
+      },
+    };
+  }
+
   // Import needed libraries and functions
   // eslint-disable-next-line unicorn/prefer-node-protocol
   const crypto = await import('crypto');
@@ -174,17 +188,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   } = await import('../util/database');
 
   // Import and initialize the `csrf` library
-  const Tokens = await (await import('csrf')).default;
-  const tokens = new Tokens();
+  const tokensImport = await (await import('csrf')).default;
+  const tokens = new tokensImport();
 
   // Get session information if user is already logged in
   const sessionToken = context.req.cookies.sessionToken;
-  // why is this undefined???
-  // console.log('sessionToken inside gSSP of register.tsx', context.req.cookies);
-
   const session = await getValidSessionByToken(sessionToken);
-  // why is this undefined???
-  // console.log('session inside gSSP of register.tsx', session);
 
   if (session) {
     // Redirect the user when they have a session
@@ -215,11 +224,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   // Use token from short-lived session to generate secret for the CSRF token
   const csrfSecret = generateCsrfSecretByToken(shortLivedSession.token);
-  // console.log('csrfSecret', csrfSecret);
 
   // Create CSRF token to the props
   const csrfToken = tokens.create(csrfSecret);
-  // console.log('csrfToken', csrfToken);
 
   return {
     props: {

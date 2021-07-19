@@ -74,7 +74,6 @@ const seedTopStyle = css`
 
   h3 {
     margin-bottom: 12px;
-    /* font-weight: 600; */
   }
 `;
 
@@ -120,17 +119,6 @@ export default function AllSeeds(props: Props) {
     return { __html: content };
   }
 
-  // Toggle active filter button
-  // const toggleClass = () => {
-  //   setAppState(!appState);
-  // };
-
-  // Handle click on All Seeds Button
-  // const handleAllSeedsClick = (event: any) => {
-  //   event.preventDefault();
-  //   return setData(props.allSeeds);
-  // };
-
   const handleAllSeedsClick = () => {
     return setData(props.allSeeds);
   };
@@ -140,7 +128,8 @@ export default function AllSeeds(props: Props) {
     // Filter seeds by category on the frontend
     function getSeedsByCategoryId(seed: SeedObject) {
       // returns a boolean
-      return seed.categoryId == id;
+      const seedCategoryId = seed.categoryId.toString();
+      return seedCategoryId === id;
     }
     const seedsByCategoryId = props.allSeeds.filter(getSeedsByCategoryId);
     // event.preventDefault();
