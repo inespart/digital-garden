@@ -3,7 +3,6 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { IoCreateOutline } from 'react-icons/io';
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import Layout from '../../components/Layout';
 import { pageContainer } from '../../util/sharedStyles';
