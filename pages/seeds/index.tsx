@@ -258,6 +258,7 @@ export default function AllSeeds(props: Props) {
                   />
 
                   <Link
+                    data-cy="read-full-seed-link"
                     href={`seeds/${seedObject.username}/${generateTitle(
                       seedObject.title,
                     )}`}

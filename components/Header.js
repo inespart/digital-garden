@@ -82,7 +82,7 @@ export default function Header(props) {
       <div css={navContainer}>
         <ul>
           <Link href="/seeds">
-            <a>
+            <a data-cy="header-seeds-link">
               <li>Digital Seeds</li>
             </a>
           </Link>
