@@ -47,10 +47,6 @@ export default async function createSeedHandler(
         field: 'validSession',
         message: 'It seems like you are not logged in. Please log in.',
       });
-
-      // return res.status(403).json({
-      //   errors: [{ id: 1, message: 'No valid session. Please log in.' }],
-      // });
     }
 
     // Check if user has selected a category
