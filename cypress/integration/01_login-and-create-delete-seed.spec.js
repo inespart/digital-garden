@@ -1,5 +1,5 @@
-describe('Can login, create new seed, edit and delete it', () => {
-  it('Can login, create new seed, edit and delete it', () => {
+describe('Can login, create new seed and delete it', () => {
+  it('Can login, create new seed and delete it', () => {
     cy.visit('http://localhost:3000/');
     cy.contains('Login');
     cy.get('[data-cy="header-login-link"]').click();
@@ -15,12 +15,12 @@ describe('Can login, create new seed, edit and delete it', () => {
     cy.setTinyMceContent('public-note-id', 'Public Note Content');
     cy.setTinyMceContent('private-note-id', 'Private Note Content');
     cy.get('[data-cy="create-seed-button"]').click();
-    cy.contains('Edit').click();
-    cy.get('[data-cy="edit-resource-url"]')
-      .type('{selectall}')
-      .type('http://www.newurl.com');
-    cy.contains('Save').click();
-    cy.contains('newurl').should('be.visible');
+    // cy.contains('Edit', { timeout: 10000 }).click();
+    // cy.get('[data-cy="edit-resource-url"]')
+    //   .type('{selectall}')
+    //   .type('http://www.newurl.com');
+    // cy.contains('Save').click();
+    // cy.contains('newurl').should('be.visible');
     cy.contains('Delete').click();
   });
 });

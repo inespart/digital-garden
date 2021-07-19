@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { Editor } from '@tinymce/tinymce-react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { BiErrorCircle } from 'react-icons/bi';
 import Layout from '../../components/Layout';
 import { getCategory } from '../../util/database';
@@ -90,12 +90,12 @@ export default function CreateSeed(props: Props) {
   const [errors, setErrors] = useState<any[]>();
   const router = useRouter();
 
-  const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
+  // const editorRef = useRef(null);
+  // const log = () => {
+  //   if (editorRef.current) {
+  //     console.log(editorRef.current.getContent());
+  //   }
+  // };
 
   async function clickHandler(isPublished: boolean) {
     const response = await fetch(`/api/seeds/create`, {
@@ -250,7 +250,7 @@ export default function CreateSeed(props: Props) {
                   Public Note:
                   <Editor
                     apiKey={process.env.API_KEY}
-                    onInit={(evt, editor) => (editorRef.current = editor)}
+                    // onInit={(evt, editor) => (editorRef.current = editor)}
                     initialValue="<p>What are your key takeaways?</p>"
                     id="public-note-id"
                     init={{
@@ -297,7 +297,7 @@ export default function CreateSeed(props: Props) {
                   Private Note: (optional)
                   <Editor
                     apiKey={process.env.API_KEY}
-                    onInit={(evt, editor) => (editorRef.current = editor)}
+                    // onInit={(evt, editor) => (editorRef.current = editor)}
                     initialValue="<p>Here's the place for your private notes.</p>"
                     id="private-note-id"
                     init={{
