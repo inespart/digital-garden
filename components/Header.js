@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { darkGrey, green } from '../util/sharedStyles';
 
 const headerStyles = css`
@@ -68,8 +67,6 @@ const navContainer = css`
 `;
 
 export default function Header(props) {
-  const router = useRouter();
-
   return (
     <header css={headerStyles}>
       <div css={logoContainer}>

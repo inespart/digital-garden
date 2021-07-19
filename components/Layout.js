@@ -9,7 +9,7 @@ export default function Layout(props) {
     <>
       <Header username={props.username} />
       <div css={containerStyles}>{props.children}</div>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }

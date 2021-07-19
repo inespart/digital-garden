@@ -50,6 +50,20 @@ function connectOneTimeToDatabase() {
 // Connect to PostgreSQL
 const sql = connectOneTimeToDatabase();
 
+// Perform a first query
+export async function getUsers() {
+  const users = await sql<User[]>`
+    SELECT
+      id,
+      first_name,
+      last_name,
+      username
+    FROM
+      users
+  `;
+  return users.map((user) => camelcaseKeys(user));
+}
+
 // Secure version of getUsers which allows ANY authenticated user to view ALL users
 export async function getUsersIfValidSessionToken(token?: string) {
   // Security: Return "Access denied" error if falsy token passed
