@@ -297,6 +297,7 @@ export default function SeedDisplay(props: Props) {
 
               {/* Delete Seed */}
               <button
+                data-cy="delete-seed-button"
                 className="button-default-ghost"
                 onClick={async (event) => {
                   event.preventDefault();
