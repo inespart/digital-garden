@@ -45,7 +45,7 @@ export default async function createSeedHandler(
       responseStatusCode = 400;
       responseErrorObject.push({
         field: 'validSession',
-        message: 'No valid session. Please log in.',
+        message: 'It seems like you are not logged in. Please log in.',
       });
 
       // return res.status(403).json({

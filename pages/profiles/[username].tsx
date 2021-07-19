@@ -71,6 +71,7 @@ export default function SingleUserProfile(props: Props) {
   }
 
   // Show message if user does not exist
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!props.user) {
     return (
       <Layout username={props.username}>

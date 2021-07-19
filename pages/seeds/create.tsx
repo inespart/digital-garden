@@ -163,11 +163,17 @@ export default function CreateSeed(props: Props) {
         <div>
           <div css={formStyle}>
             <div css={containerLeft}>
-              {errorObject.validSession
+              {errorObject.validSession ? (
+                <span css={errorStyle}>{errorObject.validSession.message}</span>
+              ) : (
+                ''
+              )}
+              <br />
+              {/* {errorObject.validSession
                 ? !window.alert(
                     `It seems like you're not logged in. Please log in to create a seed.`,
                   )
-                : ''}
+                : ''} */}
               <div>
                 <label>
                   Category: {/* Map over categories */}
