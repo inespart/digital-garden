@@ -30,6 +30,7 @@ jobs:
           PGDATABASE: ${{ secrets.PGDATABASE }}
           PGUSERNAME: ${{ secrets.PGUSERNAME }}
           PGPASSWORD: ${{ secrets.PGPASSWORD }}
+          API_KEY: ${{ secrets.API_KEY }}
           CSRF_SECRET_SALT: ${{ secrets.CSRF_SECRET_SALT }}
       # Store any Cypress screenshots on test failure
       - uses: actions/upload-artifact@v2
