@@ -2,7 +2,7 @@ import camelcaseKeys from 'camelcase-keys';
 import dotenvSafe from 'dotenv-safe';
 import DOMPurify from 'isomorphic-dompurify';
 import postgres from 'postgres';
-import setPostgresDefaultsOnHeroku from './setPostgresDefaulsOnHeroku';
+import setPostgresDefaultsOnHeroku from './setPostgresDefaultsOnHeroku';
 import {
   ApplicationError,
   Author,
