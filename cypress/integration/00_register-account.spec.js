@@ -1,5 +1,5 @@
-describe('Can register and delete account', () => {
-  it('Can visit website, register new account and delete account', () => {
+describe('Can register account', () => {
+  it('Can visit website, register new account', () => {
     cy.visit('http://localhost:3000/');
     cy.contains('Login');
     cy.get('[data-cy="header-login-link"]').click();
@@ -12,6 +12,6 @@ describe('Can register and delete account', () => {
     cy.contains('Create Account').click();
     cy.get('[data-cy="go-to-all-seeds-link"]').click();
     cy.get('[data-cy="header-my-profile-link"]').click();
-    cy.contains('Delete').click();
+    // cy.contains('Delete').click();
   });
 });

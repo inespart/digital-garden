@@ -3,8 +3,8 @@ describe('Can login, create new seed, edit and delete it', () => {
     cy.visit('http://localhost:3000/');
     cy.contains('Login');
     cy.get('[data-cy="header-login-link"]').click();
-    cy.get('[data-cy="login-username"]').type('ip');
-    cy.get('[data-cy="login-password"]').type('ip');
+    cy.get('[data-cy="login-username"]').type('a_carlson');
+    cy.get('[data-cy="login-password"]').type('triA1-PA55w0rd');
     cy.get('[data-cy="login-button"]').click();
     cy.get('[data-cy="create-seed-button"]').click();
     cy.get('[data-cy="create-category"]').select('Business');
