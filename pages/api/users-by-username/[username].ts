@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { convertQueryValueString } from '../../../util/context';
 import {
-  deleteUserByUserId,
   deleteUserByUserUsername,
   getUserByUsernameAndToken,
 } from '../../../util/database';
