@@ -12,6 +12,5 @@ describe('Can register account', () => {
     cy.contains('Create Account').click();
     cy.get('[data-cy="go-to-all-seeds-link"]', { timeout: 10000 }).click();
     cy.get('[data-cy="header-my-profile-link"]').click();
-    // cy.contains('Delete').click();
   });
 });

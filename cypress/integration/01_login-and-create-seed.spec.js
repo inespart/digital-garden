@@ -12,8 +12,11 @@ describe('Can login and create new seed', () => {
     cy.get('[data-cy="create-resource-url"]').type(
       'http://www.stackoverflow.com',
     );
+    cy.wait(10000);
     cy.setTinyMceContent('public-note-id', 'Public Note Content');
+    cy.wait(10000);
     cy.setTinyMceContent('private-note-id', 'Private Note Content');
     cy.get('[data-cy="create-seed-button"]').click();
+    cy.contains('Cypress Test Title').should('be.visible');
   });
 });
