@@ -33,9 +33,14 @@ export default async function loginHandler(
     // If a matching user does not exist in the database, return a
     // 401 Unauthorized status code and an error
     if (!userWithPasswordHash) {
-      return res
-        .status(401)
-        .json({ errors: [{ message: 'Username or password did not match' }] });
+      return res.status(401).json({
+        errors: [
+          {
+            field: 'usernamePasswordDidNotMatch',
+            message: 'Username or password did not match',
+          },
+        ],
+      });
     }
 
     // Check that the entered plaintext password matches with the
@@ -50,7 +55,14 @@ export default async function loginHandler(
     if (!passwordMatches) {
       return res
         .status(401)
-        .json({ errors: [{ message: 'Username or password did not match' }] });
+        .json({
+          errors: [
+            {
+              field: 'passwordMatchesPasswordHash',
+              message: 'Username or password did not match',
+            },
+          ],
+        });
     }
 
     // Clean up expired sessions
@@ -76,5 +88,7 @@ export default async function loginHandler(
     return res.status(200).setHeader('Set-Cookie', cookie).json({ user: user });
   }
 
-  res.status(400).json({ errors: [{ message: 'Bad request' }] });
+  res
+    .status(400)
+    .json({ errors: [{ field: 'badRequest', message: 'Bad request' }] });
 }
