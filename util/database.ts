@@ -117,7 +117,6 @@ export async function insertUser(
       username,
       email
   `;
-  console.log('users', users);
   return users.map((user) => camelcaseKeys(user))[0];
 }
 
@@ -464,20 +463,6 @@ export async function getNoteContentByNoteId(noteId: number) {
   `;
   return notesContent.map((noteContent) => camelcaseKeys(noteContent))[0];
 }
-
-// maybe dont need this anymore
-// export async function getPublicNotesContents() {
-//   const publicNotesContents = await sql<[Content]>`
-//     SELECT
-//       id,
-//       content
-//     FROM
-//       notes
-//   `;
-//   return publicNotesContents.map((publicNoteContent) =>
-//     camelcaseKeys(publicNoteContent),
-//   );
-// }
 
 export async function getAllSeeds() {
   const allSeeds = await sql<[Seed]>`

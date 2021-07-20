@@ -845,6 +845,11 @@
   resolved "https://registry.yarnpkg.com/@phc/format/-/format-1.0.0.tgz#b5627003b3216dc4362125b13f48a4daa76680e4"
   integrity sha512-m7X9U6BG2+J+R1lSOdCiITLLrxm+cWlNI3HUFA92oLO77ObGNzaKdh8pMLqdZcshtkKuV84olNNXDfMc4FezBQ==
 
+"@popperjs/core@^2.9.2":
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.2.tgz#adea7b6953cbb34651766b0548468e743c6a2353"
+  integrity sha512-VZMYa7+fXHdwIq1TDhSXoVmSPEGM/aa+6Aiq3nVVJ9bXr24zScr+NlKFKC3iPljA7ho/GAZr+d2jOf5GIRC30Q==
+
 "@rushstack/eslint-patch@^1.0.6":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.0.6.tgz#023d72a5c4531b4ce204528971700a78a85a0c50"
@@ -3529,6 +3534,16 @@ internal-slot@^1.0.3:
     has "^1.0.3"
     side-channel "^1.0.4"
 
+intro.js-react@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/intro.js-react/-/intro.js-react-0.4.0.tgz#bcbc2b39b13b4393f6f9651bc6e8add8365253ce"
+  integrity sha512-cJq6E2FXBzFVkiw4v7cXiJjtVze+92yLCoJwBOXWOIn/2E9yze6wqtUtblw2CULUHnktyP/72Fe+vNOP3tpRgA==
+
+intro.js@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/intro.js/-/intro.js-4.1.0.tgz#7e4ae5877df0c452b23d1fd96f2666eb87796b22"
+  integrity sha512-+Y+UsP+yvqqlEOjFExMBXKopn3nzwc91PaUl0SrvqiVs6ztko1DzfkoXR2AnfirZVZZhr5Aej6wlXRlvIkuMcA==
+
 is-arguments@^1.0.4:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-arguments/-/is-arguments-1.1.0.tgz#62353031dfbee07ceb34656a6bde59efecae8dd9"
@@ -5477,6 +5492,13 @@ react-refresh@0.8.3:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
 
+react-shepherd@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/react-shepherd/-/react-shepherd-3.3.3.tgz#def8e18c8290348a99ca2a17b7bf9c78e9c7ab6b"
+  integrity sha512-ZfDpjRuAujEOeTcIA4dEkpRHUU7rViOziR1TbKJg5BSVtKOCYJOoAuz0csMaqjR2YU+tF64KhL3se5BMh4VNDw==
+  dependencies:
+    shepherd.js "^8.0.2"
+
 react-transition-group@^4.4.0:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.2.tgz#8b59a56f09ced7b55cbd53c36768b922890d5470"
@@ -5791,6 +5813,15 @@ shell-quote@1.7.2:
   resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.7.2.tgz#67a7d02c76c9da24f99d20808fcaded0e0e04be2"
   integrity sha512-mRz/m/JVscCrkMyPqHc/bczi3OQHkLTqXHEFu0zDhK/qfv3UcOA4SVmRCLmos4bhjr9ekVQubj/R7waKapmiQg==
 
+shepherd.js@^8.0.2, shepherd.js@^8.3.1:
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/shepherd.js/-/shepherd.js-8.3.1.tgz#131eeefc5eb2bc44c9e23d0da139db46b2b55339"
+  integrity sha512-IhxZNhnK2m/pNTXudNfYrcwvcZNWkeYngQbQee8nC3xJ2GjeIatGqivhdZAMZ+LeogZvKMakB931d/V534uhrw==
+  dependencies:
+    "@popperjs/core" "^2.9.2"
+    deepmerge "^4.2.2"
+    smoothscroll-polyfill "^0.4.4"
+
 side-channel@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/side-channel/-/side-channel-1.0.4.tgz#efce5c8fdc104ee751b25c58d4290011fa5ea2cf"
@@ -5832,6 +5863,11 @@ slice-ansi@^4.0.0:
     ansi-styles "^4.0.0"
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
+
+smoothscroll-polyfill@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/smoothscroll-polyfill/-/smoothscroll-polyfill-0.4.4.tgz#3a259131dc6930e6ca80003e1cb03b603b69abf8"
+  integrity sha512-TK5ZA9U5RqCwMpfoMq/l1mrH0JAR7y7KRvOBx0n2869aLxch+gT9GhN3yUfjiw+d/DiF1mKo14+hd62JyMmoBg==
 
 source-map-support@^0.5.6:
   version "0.5.19"

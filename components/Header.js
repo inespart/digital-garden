@@ -1,6 +1,42 @@
+import 'intro.js/introjs.css';
 import { css } from '@emotion/react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { darkGrey, green } from '../util/sharedStyles';
+
+const Steps = dynamic(
+  () => {
+    return import('intro.js-react').then((mod) => mod.Controlled);
+  },
+  { ssr: false },
+);
+
+const Hints = dynamic(
+  () => {
+    return import('intro.js-react').then((mod) => mod.Controlled);
+  },
+  { ssr: false },
+);
+
+// const intro = introJs();
+
+const steps = [
+  {
+    element: '#step-one',
+    intro: 'Read about the Digital Garden',
+    position: 'bottom',
+    // tooltipClass: 'myTooltipClass',
+    // highlightClass: 'myHighlightClass',
+  },
+  // {
+  //   element: '.selector2',
+  //   intro: 'test 2',
+  // },
+  // {
+  //   element: '.selector3',
+  //   intro: 'test 3',
+  // },
+];
 
 const headerStyles = css`
   width: 100%;
@@ -43,7 +79,6 @@ const navContainer = css`
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    /* z-index: 1200; */
     padding: 0;
   }
 
@@ -94,30 +129,44 @@ export default function Header(props) {
           )}
           <Link href="/about">
             <a>
-              <li>About</li>
+              <li id="step-one">About</li>
             </a>
           </Link>
           <Link href="/seeds/create">
             <a>
-              <li class="button-default">+ Create Seed</li>
+              <li
+                className="button-default"
+                data-title="Welcome!"
+                data-intro="Hello World!"
+              >
+                + Create Seed
+              </li>
             </a>
           </Link>
           {props.username ? (
             <Link href="/logout">
               <a>
-                <li class="button-default-ghost">Logout</li>
+                <li className="button-default-ghost">Logout</li>
               </a>
             </Link>
           ) : (
             <Link href="/login">
               <a data-cy="header-login-link">
-                <li class="button-default-ghost">Login</li>
+                <li className="button-default-ghost">Login</li>
               </a>
             </Link>
           )}{' '}
           {/* {props.username && `User: ${props.username}`}{' '} */}
         </ul>
       </div>
+      {console.log('steps', steps)}
+      <Steps steps={steps} />
+      {/* <Steps
+        enabled={stepsEnabled}
+        steps={steps}
+        initialStep={initialStep}
+        onExit={this.onExit}
+      /> */}
     </header>
   );
 }
