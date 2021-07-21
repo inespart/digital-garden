@@ -12,12 +12,5 @@ describe('Can login and delete seed', () => {
     cy.get('[data-cy="delete-seed-button"]', { timeout: 10000 }).click();
     cy.on('window:confirm', () => true);
     cy.contains('All Seeds');
-
-    // cy.contains('Edit', { timeout: 10000 }).click();
-    // cy.get('[data-cy="edit-resource-url"]')
-    //   .type('{selectall}')
-    //   .type('http://www.newurl.com');
-    // cy.contains('Save').click();
-    // cy.contains('newurl').should('be.visible');
   });
 });
