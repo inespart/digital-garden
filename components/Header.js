@@ -2,41 +2,17 @@ import 'intro.js/introjs.css';
 import { css } from '@emotion/react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useState } from 'react';
+import { FaRegLightbulb } from 'react-icons/fa';
 import { darkGrey, green } from '../util/sharedStyles';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const Steps = dynamic(
   () => {
-    return import('intro.js-react').then((mod) => mod.Controlled);
+    return import('intro.js-react').then((mod) => mod.Steps);
   },
   { ssr: false },
 );
-
-const Hints = dynamic(
-  () => {
-    return import('intro.js-react').then((mod) => mod.Controlled);
-  },
-  { ssr: false },
-);
-
-// const intro = introJs();
-
-const steps = [
-  {
-    element: '#step-one',
-    intro: 'Read about the Digital Garden',
-    position: 'bottom',
-    // tooltipClass: 'myTooltipClass',
-    // highlightClass: 'myHighlightClass',
-  },
-  // {
-  //   element: '.selector2',
-  //   intro: 'test 2',
-  // },
-  // {
-  //   element: '.selector3',
-  //   intro: 'test 3',
-  // },
-];
 
 const headerStyles = css`
   width: 100%;
@@ -68,6 +44,15 @@ const logoContainer = css`
 
   img {
     width: 90px;
+  }
+
+  .button-default {
+    margin-left: 24px;
+    padding: 8px;
+    border-radius: 6px;
+    /* color: ${darkGrey};
+    background-color: #f7f57c; */
+    border: none;
   }
 `;
 
@@ -102,15 +87,55 @@ const navContainer = css`
 `;
 
 export default function Header(props) {
+  const [stepsEnabled, setStepsEnabled] = useState(false);
+  const [initialStep] = useState(0);
+  const [steps] = useState([
+    {
+      element: '#step-one',
+      intro: 'Find out how to build your personal knowledge base',
+      position: 'bottom',
+    },
+    {
+      element: '#step-two',
+      intro: 'Register for free to use all features',
+      position: 'bottom',
+    },
+    {
+      element: '#step-three',
+      intro: 'Create your own seed and build a second brain',
+      position: 'bottom',
+    },
+  ]);
+  const onExit = () => {
+    setStepsEnabled(false);
+  };
+  const startIntro = () => {
+    setStepsEnabled(true);
+  };
+
   return (
     <header css={headerStyles}>
       <div css={logoContainer}>
+        <Steps
+          steps={steps}
+          enabled={stepsEnabled}
+          initialStep={initialStep}
+          onExit={onExit}
+        />
         <Link href="/">
           <a>
             <img src="/digital-garden-logo.png" alt="Digital Garden Logo" />
           </a>
         </Link>
+        {!props.username ? (
+          <button className="button-default" onClick={() => startIntro()}>
+            <FaRegLightbulb /> How to get started
+          </button>
+        ) : (
+          ''
+        )}
       </div>
+
       <div css={navContainer}>
         <ul>
           <Link href="/seeds">
@@ -134,11 +159,7 @@ export default function Header(props) {
           </Link>
           <Link href="/seeds/create">
             <a>
-              <li
-                className="button-default"
-                data-title="Welcome!"
-                data-intro="Hello World!"
-              >
+              <li id="step-three" className="button-default">
                 + Create Seed
               </li>
             </a>
@@ -152,21 +173,15 @@ export default function Header(props) {
           ) : (
             <Link href="/login">
               <a data-cy="header-login-link">
-                <li className="button-default-ghost">Login</li>
+                <li id="step-two" className="button-default-ghost">
+                  Login
+                </li>
               </a>
             </Link>
           )}{' '}
-          {/* {props.username && `User: ${props.username}`}{' '} */}
+          {/* {props.username && `Hello, ${props.username}`}{' '} */}
         </ul>
       </div>
-      {console.log('steps', steps)}
-      <Steps steps={steps} />
-      {/* <Steps
-        enabled={stepsEnabled}
-        steps={steps}
-        initialStep={initialStep}
-        onExit={this.onExit}
-      /> */}
     </header>
   );
 }
