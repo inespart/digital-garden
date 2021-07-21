@@ -107,7 +107,6 @@ const publicNoteStyle = css`
 `;
 
 export default function AllSeeds(props: Props) {
-  // console.log('props inside /seeds/index.ts', props);
   const [categoryId, setCategoryId] = useState('');
   const [data, setData] = useState(props.allSeeds);
   const [allSeedsActive, setAllSeedsActive] = useState(true);
@@ -214,7 +213,6 @@ export default function AllSeeds(props: Props) {
         {/* Filter Options END */}
 
         <div css={seedsContainer}>
-          {/* {console.log('data', data)} */}
           {data.map((seedObject) => {
             return (
               <div key={seedObject.id} css={seedContainer}>
@@ -265,21 +263,6 @@ export default function AllSeeds(props: Props) {
                     Read full seed
                   </Link>
                 </div>
-
-                {/* <div css={publicNoteStyle}>
-                  <ReadMoreReact
-                    text={seedObject.content}
-                    min={100}
-                    ideal={200}
-                    max={300}
-                    readMoreText=" "
-                  />
-                  <Link
-                    href={`seeds/${seedObject.username}/${seedObject.slug}`}
-                  >
-                    Read full seed
-                  </Link>
-                </div> */}
               </div>
             );
           })}
@@ -299,7 +282,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   // Wait for the response of the fetch inside /seeds/index.ts and then transform it into json
   const json = await response.json();
-  // console.log('API decoded JSON from response', json);
 
   // checking for a property called errors inside object json
   if ('errors' in json) {

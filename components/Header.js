@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { FaRegLightbulb } from 'react-icons/fa';
 import { darkGrey, green } from '../util/sharedStyles';
+import HeaderBurger from './HeaderBurger';
+import HeaderRightNav from './HeaderRightNav';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const Steps = dynamic(
@@ -26,6 +28,10 @@ const headerStyles = css`
   z-index: 1000;
   top: 0;
   left: 0;
+
+  @media (max-width: 880px) {
+    padding: 32px 24px;
+  }
 `;
 
 const logoContainer = css`
@@ -50,43 +56,12 @@ const logoContainer = css`
     margin-left: 24px;
     padding: 8px;
     border-radius: 6px;
-    /* color: ${darkGrey};
-    background-color: #f7f57c; */
     border: none;
   }
 `;
 
-const navContainer = css`
-  display: flex;
-
-  ul {
-    list-style: none;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    padding: 0;
-  }
-
-  li {
-    padding: 12px 24px;
-  }
-
-  .button-default,
-  .button-default-ghost {
-    margin: 12px 24px;
-  }
-
-  a {
-    text-decoration: none;
-    color: ${darkGrey};
-
-    :hover {
-      font-weight: 400;
-    }
-  }
-`;
-
 export default function Header(props) {
+  const [open, setOpen] = useState(false);
   const [stepsEnabled, setStepsEnabled] = useState(false);
   const [initialStep] = useState(0);
   const [steps] = useState([
@@ -135,53 +110,8 @@ export default function Header(props) {
           ''
         )}
       </div>
-
-      <div css={navContainer}>
-        <ul>
-          <Link href="/seeds">
-            <a data-cy="header-seeds-link">
-              <li>Digital Seeds</li>
-            </a>
-          </Link>
-          {props.username ? (
-            <Link href={`/profiles/${props.username}`}>
-              <a data-cy="header-my-profile-link">
-                <li>My Profile</li>
-              </a>
-            </Link>
-          ) : (
-            ''
-          )}
-          <Link href="/about">
-            <a>
-              <li id="step-one">About</li>
-            </a>
-          </Link>
-          <Link href="/seeds/create">
-            <a>
-              <li id="step-three" className="button-default">
-                + Create Seed
-              </li>
-            </a>
-          </Link>
-          {props.username ? (
-            <Link href="/logout">
-              <a>
-                <li className="button-default-ghost">Logout</li>
-              </a>
-            </Link>
-          ) : (
-            <Link href="/login">
-              <a data-cy="header-login-link">
-                <li id="step-two" className="button-default-ghost">
-                  Login
-                </li>
-              </a>
-            </Link>
-          )}{' '}
-          {/* {props.username && `Hello, ${props.username}`}{' '} */}
-        </ul>
-      </div>
+      <HeaderRightNav username={props.username} open={open} />
+      <HeaderBurger open={open} setOpen={setOpen} />
     </header>
   );
 }
