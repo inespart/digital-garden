@@ -8,5 +8,7 @@ describe('Can delete account', () => {
     cy.get('[data-cy="login-password"]').type('triA1-PA55w0rd');
     cy.get('[data-cy="login-button"]').click();
     cy.contains('Delete').click();
+    cy.on('window:confirm', () => true);
+    cy.contains('Digital Garden');
   });
 });
