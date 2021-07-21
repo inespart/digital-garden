@@ -17,7 +17,7 @@ describe('Can login and create new seed', () => {
     cy.setTinyMceContent('public-note-id', 'Public Note Content');
     cy.setTinyMceContent('private-note-id', 'Private Note Content');
     cy.get('[data-cy="create-seed-button"]').click();
-    cy.wait(10000);
+    cy.url().should('include', '/seeds/a_carlson/cypress-test-title');
     cy.contains('Cypress Test Title').should('be.visible');
   });
 });
