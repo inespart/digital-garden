@@ -29,7 +29,7 @@ const headerStyles = css`
   top: 0;
   left: 0;
 
-  @media (max-width: 880px) {
+  @media (max-width: 630px) {
     padding: 32px 24px;
   }
 `;
@@ -104,7 +104,7 @@ export default function Header(props) {
         </Link>
         {!props.username ? (
           <button className="button-default" onClick={() => startIntro()}>
-            <FaRegLightbulb /> How to get started
+            <FaRegLightbulb /> Get started
           </button>
         ) : (
           ''

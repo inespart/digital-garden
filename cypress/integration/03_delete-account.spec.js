@@ -1,5 +1,6 @@
 describe('Can delete account', () => {
   it('Can visit website and delete new account', () => {
+    cy.viewport(1440, 715);
     cy.visit('http://localhost:3000/');
     cy.contains('Login');
     cy.get('[data-cy="header-login-link"]').click();

@@ -19,12 +19,12 @@ const navContainer = (open) => css`
       flex-flow: column nowrap;
       background-color: ${green};
       position: fixed;
-      top: 0;
+      top: 0px;
       right: 0;
       height: 100vh;
       width: 200px;
       margin-top: 0;
-      padding-top: 3rem;
+      padding-top: 5rem;
       transform: ${open ? 'translateX(0)' : 'translateX(100%)'};
       transition: transform 0.3s ease-in-out;
     }

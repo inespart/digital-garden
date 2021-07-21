@@ -1,5 +1,6 @@
 describe('Can register account', () => {
   it('Can visit website, register new account', () => {
+    cy.viewport(1440, 715);
     cy.visit('http://localhost:3000/');
     cy.contains('Login');
     cy.get('[data-cy="header-login-link"]').click();
