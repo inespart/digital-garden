@@ -14,10 +14,33 @@ const heroSection = css`
   background-position: center;
   height: 100vh;
   width: 100%;
-  position: relative;
   min-height: 100%;
   display: flex;
   padding-top: 100px;
+
+  @media (max-width: 1024px) {
+    background-image: url('/Background.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    width: 100%;
+    min-height: 100%;
+  }
+
+  @media (max-width: 400px) {
+    background-image: none;
+
+    h1 {
+      font-size: 2rem;
+      line-height: 48px;
+    }
+
+    h3 {
+      font-size: 1rem;
+      text-align: center;
+    }
+  }
 
   h3 {
     text-align: left;
@@ -26,51 +49,65 @@ const heroSection = css`
 
 const heroSectionHeadingImageContainer = css`
   display: flex;
-  /* justify-content: center; */
-  /* align-items: center; */
+  flex-direction: row;
   padding: 0px 128px;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 64px;
+  }
 `;
 
 const heroSectionHeading = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80%;
+  width: 60%;
   padding: 0px 32px;
 
-  @media (max-width: 1240px) {
+  @media (max-width: 1260px) {
     h1 {
       font-size: 2.5rem;
     }
   }
 
-  @media (max-width: 1020px) {
-    h1 {
-      font-size: 2rem;
-    }
-  }
+  @media (max-width: 1024px) {
+    padding-bottom: 64px;
 
-  @media (max-width: 900px) {
     h1 {
-      font-size: 2rem;
-      line-height: 32px;
+      font-size: 3.5rem;
+      text-align: center;
     }
 
     h3 {
-      font-size: 1rem;
+      text-align: center;
     }
   }
 `;
 
 const heroSectionImage = css`
   display: flex;
-  justify-content: flex-end;
-  width: 70%;
-  padding: 0px 64px;
+  justify-content: center;
+  align-items: center;
+  width: 35%;
+  padding-left: 64px;
 
   img {
+    display: flex;
     width: 100%;
     height: auto;
+
+    /* @media (max-width: 1125px) {
+      width: 300px;
+    } */
+
+    @media (max-width: 1024px) {
+      /* justify-content: center; */
+      width: 400px;
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 `;
 

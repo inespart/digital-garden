@@ -5,10 +5,6 @@ import {
   getValidSessionByToken,
 } from '../../../util/database';
 
-// export type SingleSeedResponseType =
-//   | { title: User | null }
-//   | { errors: ApplicationError[] };
-
 export default async function singleSeedHandler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -28,11 +24,14 @@ export default async function singleSeedHandler(
     allSeedsByValidSessionUser = await getSeedsByValidSessionUser(
       validSession.userId,
     );
-  } else {
-    // return res.status(404).json({ errors: [{ message: 'No valid session.' }] });
   }
+  // else {
+  //   return res.status(404).json({
+  //     errors: [{ field: 'validSession', message: 'No valid session.' }],
+  //   });
+  // }
 
-  // If we've successfully retrieved the seeds, return them
+  // Return to the frontend
   return res.status(200).json({
     allSeeds: allSeeds,
     isSessionValid: isSessionValid,

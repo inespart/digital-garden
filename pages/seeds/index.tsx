@@ -113,7 +113,7 @@ export default function AllSeeds(props: Props) {
   const [byCategoryActive, setByCategoryActive] = useState(false);
   const [mySeedActive, setMySeedActive] = useState(false);
 
-  // Function to remove html tags from notes
+  // Functions to remove html tags from notes
   function createMarkup(content: string) {
     return { __html: content };
   }
@@ -189,7 +189,6 @@ export default function AllSeeds(props: Props) {
               );
             })}
           </select>
-          {/* {console.log('props.isSessionValid', props.isSessionValid)} */}
           {props.isSessionValid === true ? (
             <button
               className={
@@ -286,9 +285,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if ('errors' in json) {
     context.res.statusCode = 403;
   } else if (!json.user) {
-    // Return a proper status code for a response
-    // with a null user (which indicates it has
-    // not been found in the database)
+    // Return a proper status code for a response with a null user (which indicates it has not been found in the database)
     context.res.statusCode = 404;
   }
 

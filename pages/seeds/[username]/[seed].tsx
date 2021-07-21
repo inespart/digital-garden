@@ -101,7 +101,6 @@ const buttonContainer = css`
 `;
 
 export default function SeedDisplay(props: Props) {
-  // console.log('props in seed.tsx', props);
   const [showEdit, setShowEdit] = useState(true);
   const [resourceUrl, setResourceUrl] = useState(props.seed.resourceUrl);
   const [publicNoteContent, setPublicNoteContent] = useState(
@@ -115,9 +114,6 @@ export default function SeedDisplay(props: Props) {
 
   const handleResourceUrlChange = (event: any) =>
     setResourceUrl(event.currentTarget.value);
-
-  // const handlePublicNoteContentChange = (event: any) =>
-  //   setPublicNoteContent(event.currentTarget.value);
 
   // Function to remove html tags from notes
   function createMarkup(content: string) {
@@ -145,7 +141,7 @@ export default function SeedDisplay(props: Props) {
                 Category: {props.categoryName}
               </p>
               <div className="urlStyle">
-                {props.privateNoteContent && showEdit && resourceUrl ? (
+                {showEdit && resourceUrl ? (
                   <>
                     <BsLink45Deg css={iconStyle} />
                     <a
@@ -256,8 +252,6 @@ export default function SeedDisplay(props: Props) {
             ''
           )}
 
-          {/* <p>Image URL: </p>
-          <img src={props.seed.imageUrl} alt="Note" /> */}
           {props.privateNoteContent ? (
             <div css={buttonContainer}>
               {/* Edit Seed */}
@@ -283,7 +277,6 @@ export default function SeedDisplay(props: Props) {
                       },
                     );
                     const json = await response.json();
-                    // as DeleteResponse
 
                     if ('errors' in json) {
                       setErrors(json.errors[0].message);
@@ -323,7 +316,6 @@ export default function SeedDisplay(props: Props) {
                   );
 
                   const json = await response.json();
-                  // as DeleteResponse
 
                   if ('errors' in json) {
                     setErrors(json.errors[0].message);
@@ -348,7 +340,6 @@ export default function SeedDisplay(props: Props) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  // console.log('context.query.seed', context.query.seed);
   const response = await fetch(
     `${process.env.API_BASE_URL}/seeds/${context.query.username}/${context.query.seed}`,
     {
@@ -360,10 +351,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     },
   );
 
-  // console.log('cookie inside GSSP on title.tsx', context.req.headers.cookie);
   const json = (await response.json()) as SingleSeedResponseType;
-
-  // console.log('API decoded JSON from response', json);
 
   // checking for a property called errors inside object json
   if ('errors' in json) {
@@ -375,9 +363,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   } else if (!json.seed) {
-    // Return a proper status code for a response
-    // with a null user (which indicates it has
-    // not been found in the database)
+    // Return a proper status code for a response with a null user (which indicates it has not been found in the database)
     context.res.statusCode = 404;
     return {
       redirect: {
@@ -386,7 +372,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
-  // console.log('json', json);
   return {
     props: {
       // json is an object with a user property OR an error property
