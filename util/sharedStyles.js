@@ -18,6 +18,10 @@ export const pageContainer = css`
   padding-top: 100px;
   padding-left: 128px;
   padding-right: 128px;
+
+  @media (max-width: 768px) {
+    padding: 96px 24px;
+  }
 `;
 
 export const pageContainerWhite = css`

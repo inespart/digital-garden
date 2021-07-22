@@ -8,7 +8,7 @@ import { AiOutlineTag, AiOutlineUser } from 'react-icons/ai';
 import { BsLink45Deg, BsLock } from 'react-icons/bs';
 import { GoLightBulb } from 'react-icons/go';
 import Layout from '../../../components/Layout';
-import { green, pageContainer } from '../../../util/sharedStyles';
+import { green, lightGreen } from '../../../util/sharedStyles';
 import { Author, Content, Seed } from '../../../util/types';
 import { SingleSeedResponseType } from '../../api/seeds/[username]/[seed]';
 
@@ -23,11 +23,28 @@ type Props = {
   // errors?: Error[];
 };
 
+export const smallPageContainer = css`
+  background-color: ${lightGreen};
+  height: 100vh;
+  padding-top: 128px;
+  padding-left: 192px;
+  padding-right: 192px;
+
+  @media (max-width: 768px) {
+    padding: 96px 24px;
+  }
+`;
+
 const seedContainer = css`
-  padding: 16px;
+  padding-top: 32px;
 
   h1 {
     margin-bottom: 12px;
+
+    @media (max-width: 400px) {
+      font-size: 2rem;
+      line-height: 32px;
+    }
   }
 
   input {
@@ -67,6 +84,10 @@ const seedHeadingContainer = css`
 const seedInfoContainer = css`
   padding: 0 32px;
   width: 65%;
+
+  @media (max-width: 400px) {
+    width: 100%;
+  }
 `;
 
 const seedImageContainer = css`
@@ -74,9 +95,17 @@ const seedImageContainer = css`
   display: flex;
   justify-content: flex-end;
 
+  @media (max-width: 400px) {
+    width: 0%;
+  }
+
   img {
     width: 300px;
     padding: 0 62px 0 0;
+
+    @media (max-width: 400px) {
+      display: none;
+    }
   }
 `;
 
@@ -86,14 +115,35 @@ const iconStyle = css`
 
 const publicNoteContentStyle = css`
   margin: 64px 0;
+
+  @media (max-width: 768px) {
+    padding: 0 12px;
+  }
+
+  @media (max-width: 400px) {
+    margin: 32px 0;
+  }
 `;
 
 const privateNoteContentStyle = css`
   margin: 64px 0;
+
+  @media (max-width: 768px) {
+    padding: 0 12px;
+  }
+
+  @media (max-width: 400px) {
+    margin: 32px 0;
+  }
 `;
 
 const buttonContainer = css`
-  margin-top: 32px;
+  margin-top: 24px;
+  padding-bottom: 32px;
+
+  @media (max-width: 768px) {
+    padding: 0 12px;
+  }
 
   button {
     margin-right: 16px;
@@ -125,7 +175,7 @@ export default function SeedDisplay(props: Props) {
       <Head>
         <title>Seed | Digital Garden</title>
       </Head>
-      <div css={pageContainer}>
+      <div css={smallPageContainer}>
         <div css={seedContainer}>
           <div css={seedHeadingContainer}>
             <div css={seedInfoContainer}>
@@ -169,10 +219,10 @@ export default function SeedDisplay(props: Props) {
 
           {/* If button EDIT has been clicked, show public note editor */}
           <div css={publicNoteContentStyle}>
-            <h3>
+            <h2>
               <GoLightBulb />
               Key take-aways:
-            </h3>
+            </h2>
             {!showEdit ? (
               <Editor
                 apiKey={process.env.API_KEY}
@@ -210,10 +260,10 @@ export default function SeedDisplay(props: Props) {
           {/* If button EDIT has been clicked, show private notes editor */}
           {props.privateNoteContent ? (
             <div css={privateNoteContentStyle}>
-              <h3>
+              <h2>
                 <BsLock />
                 Private Note:
-              </h3>
+              </h2>
               {!showEdit ? (
                 <Editor
                   apiKey={process.env.API_KEY}

@@ -44,6 +44,11 @@ const buttonContainer = css`
   button,
   select {
     margin-right: 32px;
+
+    @media (max-width: 400px) {
+      margin-bottom: 12px;
+      margin-right: 6px;
+    }
   }
 `;
 
@@ -53,14 +58,27 @@ const seedContainer = css`
   background-color: white;
   border-radius: 16px;
   border: 1px solid ${green};
+  box-shadow: 5px 5px 8px #a5cc8252;
   width: 330px;
   height: 470px;
   margin: 0 32px 64px 32px;
 
+  @media (max-width: 768px) {
+    margin: 0 18px 64px 18px;
+    width: 300px;
+    height: 500px;
+  }
+
+  @media (max-width: 400px) {
+    margin: 0 18px 64px 18px;
+    width: 300px;
+    height: 480px;
+  }
+
   h3 {
     margin-bottom: 0px;
+    padding: 6px;
     text-align: center;
-    font-family: 'Petrona, sans-serif';
   }
 `;
 
@@ -81,6 +99,10 @@ const seedBottomStyle = css`
   background-color: white;
   border-radius: 0 0 16px 16px;
   padding: 32px;
+
+  @media (max-width: 400px) {
+    padding: 18px;
+  }
 `;
 
 const userAndCategoryStyle = css`
@@ -254,7 +276,7 @@ export default function AllSeeds(props: Props) {
                   />
 
                   <Link
-                    href={`seeds/${seedObject.username}/${generateTitle(
+                    href={`/seeds/${seedObject.username}/${generateTitle(
                       seedObject.title,
                     )}`}
                   >
@@ -284,10 +306,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // checking for a property called errors inside object json
   if ('errors' in json) {
     context.res.statusCode = 403;
-  } else if (!json.user) {
-    // Return a proper status code for a response with a null user (which indicates it has not been found in the database)
-    context.res.statusCode = 404;
   }
+  // else if (!json.user) {
+  //   // Return a proper status code for a response with a null user (which indicates it has not been found in the database)
+  //   context.res.statusCode = 404;
+  // }
 
   const categories = await getCategory();
 

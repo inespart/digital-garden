@@ -29,7 +29,7 @@ const headerStyles = css`
   top: 0;
   left: 0;
 
-  @media (max-width: 630px) {
+  @media (max-width: 768px) {
     padding: 32px 24px;
   }
 `;

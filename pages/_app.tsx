@@ -68,10 +68,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             background-color: #f8fff8;
           }
 
-          .page-container {
-            padding: 100px 128px;
-          }
-
           h1,
           h2,
           h3 {

@@ -180,8 +180,8 @@ export default function Home(props: Props) {
                 <Link href="/about">
                   <a className="button-default-ghost">Learn More</a>
                 </Link>
-                <Link href="/login">
-                  <a className="button-default-ghost">Login</a>
+                <Link href="/seeds">
+                  <a className="button-default-ghost">Digital Garden</a>
                 </Link>
               </div>
             </div>

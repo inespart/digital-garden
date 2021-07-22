@@ -26,9 +26,7 @@ export default async function singleSeedHandler(
     );
   }
   // else {
-  //   return res.status(404).json({
-  //     errors: [{ field: 'validSession', message: 'No valid session.' }],
-  //   });
+  //   console.log('unregistered user');
   // }
 
   // Return to the frontend
