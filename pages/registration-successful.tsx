@@ -10,11 +10,20 @@ type Props = {
 
 const contentContainer = css`
   display: flex;
+  flex-direction: row;
+
+  @media (max-width: 400px) {
+    flex-direction: column;
+  }
 `;
 
 const containerLeft = css`
   width: 65%;
   margin-right: 24px;
+
+  @media (max-width: 400px) {
+    width: 100%;
+  }
 
   h3 {
     margin-bottom: 64px;
@@ -24,11 +33,28 @@ const containerLeft = css`
   .button-default-ghost {
     font-size: 1.3rem;
     margin-right: 24px;
+    display: inline-block;
+
+    @media (max-width: 768px) {
+      margin-right: 12px;
+    }
+
+    @media (max-width: 400px) {
+      margin-right: 12px;
+      margin-bottom: 12px;
+      width: 200px;
+    }
   }
 `;
 
 const containerRight = css`
   width: 35%;
+
+  @media (max-width: 400px) {
+    padding-top: 48px;
+    width: 100%;
+  }
+
   img {
     width: 100%;
   }

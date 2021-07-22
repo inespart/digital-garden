@@ -22,6 +22,10 @@ const formStyle = css`
   display: flex;
   flex-direction: row;
 
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
   label {
     color: ${darkGrey};
     font-weight: 500;
@@ -42,6 +46,10 @@ const formStyle = css`
 `;
 
 const buttonStyles = css`
+  @media (max-width: 768px) {
+    align-self: center;
+  }
+
   .button-default,
   .button-default-ghost {
     font-size: 1.3rem;
@@ -51,6 +59,10 @@ const buttonStyles = css`
     margin-right: 4px;
     margin-bottom: 32px;
     margin-top: 16px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   }
 `;
 
@@ -59,6 +71,10 @@ const containerLeft = css`
   flex-direction: column;
   width: 65%;
   margin-right: 32px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 
   div {
     margin: 4px 0 24px 0;
@@ -70,8 +86,18 @@ const containerRight = css`
   flex-direction: column;
   width: 35%;
 
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+
   img {
     padding-left: 96px;
+
+    @media (max-width: 768px) {
+      width: 60%;
+      padding: 0 24px;
+      align-self: center;
+    }
   }
 `;
 
