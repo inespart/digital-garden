@@ -37,9 +37,12 @@ export const wrapper = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* grid-template-columns: 2fr 2fr; */
-  /* column-gap: 2.5em; */
   padding-top: 64px;
+
+  @media (max-width: 400px) {
+    flex-direction: column-reverse;
+    padding-top: 12px;
+  }
 `;
 
 export const registrationForm = css`
@@ -78,6 +81,10 @@ export const registrationForm = css`
 
 export const imageContainer = css`
   width: 50%;
+
+  @media (max-width: 400px) {
+    padding-top: 32px;
+  }
 
   img {
     width: 90%;

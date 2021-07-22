@@ -276,7 +276,7 @@ export default function AllSeeds(props: Props) {
                   />
 
                   <Link
-                    href={`/seeds/${seedObject.username}/${generateTitle(
+                    href={`seeds/${seedObject.username}/${generateTitle(
                       seedObject.title,
                     )}`}
                   >
