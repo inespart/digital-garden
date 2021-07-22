@@ -10,7 +10,7 @@ describe('Can register account', () => {
     cy.get('[data-cy="registration-email"]').type('a.carlson@gmail.com');
     cy.get('[data-cy="registration-username"]').type('a_carlson');
     cy.get('[data-cy="registration-password"]').type('triA1-PA55w0rd');
-    cy.contains('Create Account').click();
+    cy.contains('Create').click();
     cy.get('[data-cy="go-to-all-seeds-link"]', { timeout: 10000 }).click();
     cy.get('[data-cy="header-my-profile-link"]').click();
   });
