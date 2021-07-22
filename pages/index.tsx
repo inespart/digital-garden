@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
+import Link from 'next/link';
 import React from 'react';
 import Layout from '../components/Layout';
 
@@ -15,35 +16,11 @@ const heroSection = css`
   height: 100vh;
   width: 100%;
   min-height: 100%;
-  display: flex;
-  padding-top: 100px;
-
-  @media (max-width: 1024px) {
-    background-image: url('/Background.svg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 100vh;
-    width: 100%;
-    min-height: 100%;
-  }
+  position: relative;
+  padding-top: 120px;
 
   @media (max-width: 400px) {
-    background-image: none;
-
-    h1 {
-      font-size: 2rem;
-      line-height: 48px;
-    }
-
-    h3 {
-      font-size: 1rem;
-      text-align: center;
-    }
-  }
-
-  h3 {
-    text-align: left;
+    padding-top: 10px;
   }
 `;
 
@@ -52,19 +29,39 @@ const heroSectionHeadingImageContainer = css`
   flex-direction: row;
   padding: 0px 128px;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
-    padding-top: 64px;
+  }
+
+  @media (max-width: 400px) {
+    padding: 96px 24px;
   }
 `;
 
 const heroSectionHeading = css`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 60%;
   padding: 0px 32px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    /* padding-bottom: 64px; */
+    padding: 0px 0px;
+  }
+
+  @media (max-width: 400px) {
+    width: 100%;
+    padding: 0px 0px;
+  }
+`;
+
+const headingStyle = css`
+  display: flex;
+  flex-direction: column;
 
   @media (max-width: 1260px) {
     h1 {
@@ -72,17 +69,61 @@ const heroSectionHeading = css`
     }
   }
 
-  @media (max-width: 1024px) {
-    padding-bottom: 64px;
-
+  @media (max-width: 768px) {
     h1 {
       font-size: 3.5rem;
       text-align: center;
     }
 
     h3 {
+      align-self: center;
       text-align: center;
     }
+  }
+
+  @media (max-width: 400px) {
+    h1 {
+      font-size: 2rem;
+      line-height: 48px;
+      margin-bottom: 0;
+    }
+
+    h3 {
+      font-size: 1rem;
+      align-self: center;
+      text-align: center;
+    }
+  }
+
+  h1 {
+    margin-bottom: 12px;
+  }
+
+  h3 {
+    text-align: left;
+
+    @media (max-width: 768px) {
+      text-align: center;
+    }
+  }
+`;
+
+const buttonContainer = css`
+  display: flex;
+  flex-direction: row;
+
+  .button-default-ghost {
+    margin-right: 12px;
+  }
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    padding-bottom: 32px;
+  }
+
+  @media (max-width: 400px) {
+    justify-content: center;
+    padding-bottom: 32px;
   }
 `;
 
@@ -93,27 +134,29 @@ const heroSectionImage = css`
   width: 35%;
   padding-left: 64px;
 
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0px 0px;
+  }
+
+  @media (max-width: 400px) {
+    width: 100%;
+    padding: 0px 0px;
+  }
+
   img {
-    display: flex;
     width: 100%;
     height: auto;
 
-    /* @media (max-width: 1125px) {
-      width: 300px;
-    } */
-
-    @media (max-width: 1024px) {
-      /* justify-content: center; */
+    @media (max-width: 768px) {
       width: 400px;
-      padding-left: 0;
-      padding-right: 0;
+    }
+
+    @media (max-width: 400px) {
+      width: 200px;
     }
   }
 `;
-
-// const advantagesSection = css`
-//   height: 100vh;
-// `;
 
 export default function Home(props: Props) {
   return (
@@ -124,7 +167,7 @@ export default function Home(props: Props) {
       <section css={heroSection}>
         <div css={heroSectionHeadingImageContainer}>
           <div css={heroSectionHeading}>
-            <div>
+            <div css={headingStyle}>
               <h1>
                 Do you consume lots of interesting information, but feel like
                 it’s not leading to results?
@@ -133,6 +176,14 @@ export default function Home(props: Props) {
                 Discover how the Digital Garden can help you build a second
                 brain.
               </h3>
+              <div css={buttonContainer}>
+                <Link href="/about">
+                  <a className="button-default-ghost">Learn More</a>
+                </Link>
+                <Link href="/login">
+                  <a className="button-default-ghost">Login</a>
+                </Link>
+              </div>
             </div>
           </div>
           <div css={heroSectionImage}>
@@ -143,7 +194,6 @@ export default function Home(props: Props) {
           </div>
         </div>
       </section>
-      {/* <section css={advantagesSection}>testtestjkösadklfjöaslkdfjösldk</section> */}
     </Layout>
   );
 }

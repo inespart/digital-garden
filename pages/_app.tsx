@@ -93,7 +93,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             font-size: 1.5rem;
             line-height: 32px;
             font-weight: 400;
-            /* text-align: center; */
           }
 
           .button-default {
