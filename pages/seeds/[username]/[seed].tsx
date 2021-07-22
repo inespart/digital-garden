@@ -139,7 +139,7 @@ const privateNoteContentStyle = css`
 
 const buttonContainer = css`
   margin-top: 24px;
-  padding-bottom: 32px;
+  padding-bottom: 64px;
 
   @media (max-width: 768px) {
     padding: 0 12px;

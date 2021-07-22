@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -17,6 +18,10 @@ type Props = {
   username?: string;
   csrfToken: string;
 };
+
+const buttonContainer = css`
+  padding-bottom: 64px;
+`;
 
 export default function Register(props: Props) {
   const [firstName, setFirstName] = useState('');
@@ -138,7 +143,7 @@ export default function Register(props: Props) {
                   />
                 </label>
               </div>
-              {console.log("There's an error")}
+              {/* {console.log("There's an error")} */}
               <div
                 style={{
                   color: 'red',
@@ -148,7 +153,9 @@ export default function Register(props: Props) {
               >
                 {error}
               </div>
-              <button className="button-default">Create Account</button>
+              <div css={buttonContainer}>
+                <button className="button-default">Create Account</button>
+              </div>
             </form>
           </div>
           <div css={imageContainer}>

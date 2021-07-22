@@ -57,7 +57,7 @@ const buttonStyles = css`
     width: 48%;
     margin-left: 4px;
     margin-right: 4px;
-    margin-bottom: 32px;
+    margin-bottom: 64px;
     margin-top: 16px;
 
     @media (max-width: 768px) {
