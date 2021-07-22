@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Link from 'next/link';
 import React from 'react';
-import Layout from '../components/Layout';
+import Header from '../components/Header';
 
 type Props = {
   username?: string;
@@ -160,10 +160,11 @@ const heroSectionImage = css`
 
 export default function Home(props: Props) {
   return (
-    <Layout username={props.username}>
+    <>
       <Head>
         <title>Home | Digital Garden</title>
       </Head>
+      <Header username={props.username} />
       <section css={heroSection}>
         <div css={heroSectionHeadingImageContainer}>
           <div css={heroSectionHeading}>
@@ -194,6 +195,6 @@ export default function Home(props: Props) {
           </div>
         </div>
       </section>
-    </Layout>
+    </>
   );
 }
