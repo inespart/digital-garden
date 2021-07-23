@@ -5,7 +5,8 @@ import { darkGrey } from '../util/sharedStyles';
 const footerStyles = css`
   width: 100%;
   height: 62px;
-  border: 1px solid grey;
+  /* border: 1px solid grey; */
+  background-color: #e6f4e1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,6 +31,14 @@ const navItemsContainer = css`
     @media (min-width: 500px) {
       grid-auto-flow: column;
     }
+  }
+
+  div {
+    color: ${darkGrey};
+    font-size: 0.9rem;
+    font-weight: 300;
+    text-decoration: none;
+    padding-right: 24px;
   }
 
   a {
@@ -59,6 +68,7 @@ export default function Footer() {
     <div css={footerStyles}>
       {' '}
       <div css={navItemsContainer}>
+        <div>Digital Garden | 2021</div>
         <ul>
           <Link href="/">
             <a>

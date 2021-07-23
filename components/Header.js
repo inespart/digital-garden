@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FaRegLightbulb } from 'react-icons/fa';
-import { darkGrey, green, lightGreen } from '../util/sharedStyles';
+import { darkGrey, green } from '../util/sharedStyles';
 import HeaderBurger from './HeaderBurger';
 import HeaderRightNav from './HeaderRightNav';
 
@@ -18,7 +18,7 @@ const Steps = dynamic(
 
 const headerStyles = css`
   width: 100%;
-  height: 128px;
+  height: 112px;
   padding: 12px 128px;
   display: flex;
   justify-content: space-between;

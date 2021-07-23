@@ -170,12 +170,12 @@ export default function Home(props: Props) {
           <div css={heroSectionHeading}>
             <div css={headingStyle}>
               <h1>
-                Do you consume lots of interesting information, but feel like
-                it’s not leading to results?
-              </h1>
-              <h3>
                 Discover how the Digital Garden can help you build a second
                 brain.
+              </h1>
+              <h3>
+                Do you consume lots of interesting information, but feel like
+                it’s not leading to results? Take learning into your hands now!
               </h3>
               <div css={buttonContainer}>
                 <Link href="/about">
