@@ -181,13 +181,16 @@ export default function CreateSeed(props: Props) {
     <Layout username={props.username}>
       <Head>
         <title>Create Seed | Digital Garden</title>
-        <script
-          src={`https://cdn.tiny.cloud/1/${process.env.API_KEY}/tinymce/5/tinymce.min.js`}
-          referrerPolicy="origin"
-        />
+        {/* <script src="/path/to/tinymce.min.js" /> */}
+
+        {/* <script
+          src={`https://cdn.tiny.cloud/1/${process.env.TINYMCE_API_KEY}/tinymce/5/tinymce.min.js`}
+          referrerpolicy="origin"
+        /> */}
       </Head>
       <div css={pageContainer}>
         <h1>Create Seed</h1>
+
         <div>
           <div css={formStyle}>
             <div css={containerLeft}>

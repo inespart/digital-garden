@@ -45,11 +45,25 @@ export default function About(props: Props) {
           the Digital Garden knowlegde base is for you.
         </p>
         <p>
-          It is a place where you can capture all the resources that are
+          It is a pinboard where you can capture all the resources that are
           meaningful to you. It also makes it easier for your brain to retain
           your key take-aways by creating meaningful connections with your
           personal experiences. You decide, which part of your notes is public
           and which is only visible to you.
+        </p>
+        <h2>How it works - 3 simple steps</h2>
+        <p>
+          First, create a new seed (= resource) and save the url and your key
+          take-aways from it. Why did it catch your attention? What exactly do
+          you want to remember from it?{' '}
+        </p>
+        <p>
+          Second, think of a situation or story in your life that connects to
+          the message of the seed. Does it support or contradict it?{' '}
+        </p>{' '}
+        <p>
+          Lastly, use the digital garden (= pinboard) to get inspired by
+          likeminded learners in the areas you are interested in.
         </p>
         <div css={iconsContainer}>
           <div css={iconStyle}>
