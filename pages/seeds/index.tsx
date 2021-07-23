@@ -45,7 +45,7 @@ const buttonContainer = css`
   select {
     margin-right: 32px;
 
-    @media (max-width: 400px) {
+    @media (max-width: 450px) {
       margin-bottom: 12px;
       margin-right: 6px;
     }
@@ -73,7 +73,7 @@ const seedContainer = css`
     height: 500px;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     margin: 0 18px 64px 18px;
     width: 300px;
     height: 480px;

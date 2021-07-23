@@ -38,7 +38,7 @@ export const wrapper = css`
   align-items: center;
   padding-top: 64px;
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     flex-direction: column-reverse;
     padding-top: 12px;
   }
@@ -82,7 +82,7 @@ export const registrationForm = css`
 export const imageContainer = css`
   width: 50%;
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     padding-top: 32px;
   }
 

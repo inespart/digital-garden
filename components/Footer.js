@@ -11,7 +11,7 @@ const footerStyles = css`
   align-items: center;
   justify-content: center;
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     display: none;
   }
 `;

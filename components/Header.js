@@ -43,7 +43,7 @@ const tourButton = css`
     border: none;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     display: none;
   }
 `;

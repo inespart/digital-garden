@@ -13,7 +13,7 @@ const iconsContainer = css`
   justify-content: center;
   align-items: center;
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     flex-direction: column;
   }
 `;

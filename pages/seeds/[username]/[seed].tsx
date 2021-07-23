@@ -41,7 +41,7 @@ const seedContainer = css`
   h1 {
     margin-bottom: 12px;
 
-    @media (max-width: 400px) {
+    @media (max-width: 450px) {
       font-size: 2rem;
       line-height: 32px;
     }
@@ -85,7 +85,7 @@ const seedInfoContainer = css`
   padding: 0 32px;
   width: 65%;
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     width: 100%;
   }
 `;
@@ -95,7 +95,7 @@ const seedImageContainer = css`
   display: flex;
   justify-content: flex-end;
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     width: 0%;
   }
 
@@ -103,7 +103,7 @@ const seedImageContainer = css`
     width: 300px;
     padding: 0 62px 0 0;
 
-    @media (max-width: 400px) {
+    @media (max-width: 450px) {
       display: none;
     }
   }
@@ -120,7 +120,7 @@ const publicNoteContentStyle = css`
     padding: 0 12px;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     margin: 32px 0;
   }
 `;
@@ -132,7 +132,7 @@ const privateNoteContentStyle = css`
     padding: 0 12px;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     margin: 32px 0;
   }
 `;

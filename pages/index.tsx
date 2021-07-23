@@ -19,7 +19,7 @@ const heroSection = css`
   position: relative;
   padding-top: 120px;
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     padding-top: 10px;
   }
 `;
@@ -34,7 +34,7 @@ const heroSectionHeadingImageContainer = css`
     align-items: center;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     padding: 96px 24px;
   }
 `;
@@ -53,7 +53,7 @@ const heroSectionHeading = css`
     padding: 0px 0px;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     width: 100%;
     padding: 0px 0px;
   }
@@ -81,7 +81,7 @@ const headingStyle = css`
     }
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     h1 {
       font-size: 2rem;
       line-height: 48px;
@@ -121,7 +121,7 @@ const buttonContainer = css`
     padding-bottom: 32px;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     justify-content: center;
     padding-bottom: 32px;
   }
@@ -139,7 +139,7 @@ const heroSectionImage = css`
     padding: 0px 0px;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     width: 100%;
     padding: 0px 0px;
   }
@@ -152,7 +152,7 @@ const heroSectionImage = css`
       width: 400px;
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 450px) {
       width: 200px;
     }
   }

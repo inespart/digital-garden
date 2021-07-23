@@ -13,7 +13,7 @@ const contentContainer = css`
   flex-direction: row;
   padding-bottom: 92px;
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     flex-direction: column;
   }
 `;
@@ -22,7 +22,7 @@ const containerLeft = css`
   width: 65%;
   margin-right: 24px;
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     width: 100%;
   }
 
@@ -40,7 +40,7 @@ const containerLeft = css`
       margin-right: 12px;
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 450px) {
       margin-right: 12px;
       margin-bottom: 12px;
       width: 200px;
@@ -51,7 +51,7 @@ const containerLeft = css`
 const containerRight = css`
   width: 35%;
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     padding-top: 48px;
     width: 100%;
   }
