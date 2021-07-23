@@ -11,6 +11,7 @@ import { darkGrey, green, pageContainer } from '../../util/sharedStyles';
 type Props = {
   username?: string;
   categories: Category[];
+  tinyMceApiKey: string;
 };
 
 type Category = {
@@ -184,7 +185,7 @@ export default function CreateSeed(props: Props) {
         {/* <script src="/path/to/tinymce.min.js" /> */}
 
         <script
-          src="https://cdn.tiny.cloud/1/txlnzwxmbaq4q1025rbuupwrv6np2w8obe4wwc2k8m8n83xz/tinymce/5/tinymce.min.js"
+          src={`https://cdn.tiny.cloud/1/${props.tinyMceApiKey}/tinymce/5/tinymce.min.js`}
           referrerPolicy="origin"
         />
       </Head>
@@ -286,7 +287,7 @@ export default function CreateSeed(props: Props) {
                 <label>
                   Public Note:
                   <Editor
-                    apiKey={process.env.API_KEY}
+                    apiKey={props.tinyMceApiKey}
                     // onInit={(evt, editor) => (editorRef.current = editor)}
                     initialValue="<p>What are your key takeaways?</p>"
                     id="public-note-id"
@@ -333,7 +334,7 @@ export default function CreateSeed(props: Props) {
                 <label>
                   Private Note: (optional)
                   <Editor
-                    apiKey={process.env.API_KEY}
+                    apiKey={props.tinyMceApiKey}
                     // onInit={(evt, editor) => (editorRef.current = editor)}
                     initialValue="<p>Here's the place for your private notes.</p>"
                     id="private-note-id"
@@ -417,8 +418,10 @@ export default function CreateSeed(props: Props) {
 export async function getServerSideProps() {
   require('dotenv-safe');
 
+  const tinyMceApiKey = process.env.API_KEY;
+
   const categories = await getCategory();
   return {
-    props: { categories },
+    props: { categories, tinyMceApiKey },
   };
 }
