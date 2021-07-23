@@ -52,9 +52,11 @@ const seedContainer = css`
     padding: 12px 6px;
     border: 1px solid #a3a3a3;
     border-radius: 16px;
+    transition: 0.3s ease-in-out;
 
     :focus {
-      border: 2px solid ${green};
+      box-shadow: 0 0 10px rgba(165, 204, 130, 1);
+      outline: none !important;
     }
 
     :disabled {

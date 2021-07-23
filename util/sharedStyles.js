@@ -63,9 +63,11 @@ export const registrationForm = css`
       margin: 5px 0 20px 0;
       width: 256px;
       padding: 12px 8px;
+      transition: 0.3s ease-in-out;
 
       :focus {
-        border: 2px solid ${green};
+        box-shadow: 0 0 10px grey;
+        outline: none !important;
       }
     }
   }

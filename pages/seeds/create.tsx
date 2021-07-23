@@ -31,10 +31,6 @@ const formStyle = css`
     color: ${darkGrey};
     font-weight: 500;
 
-    :focus {
-      border: 1px solid ${green};
-    }
-
     input,
     option,
     select {
@@ -42,6 +38,12 @@ const formStyle = css`
       padding: 12px 8px;
       border: 1px solid ${green};
       border-radius: 16px;
+      transition: 0.3s ease-in-out;
+
+      :focus {
+        box-shadow: 0 0 10px rgba(165, 204, 130, 1);
+        outline: none !important;
+      }
     }
   }
 `;
