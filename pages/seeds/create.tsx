@@ -183,7 +183,7 @@ export default function CreateSeed(props: Props) {
         <title>Create Seed | Digital Garden</title>
         <script
           src={`https://cdn.tiny.cloud/1/${process.env.API_KEY}/tinymce/5/tinymce.min.js`}
-          referrerpolicy="origin"
+          referrerPolicy="origin"
         />
       </Head>
       <div css={pageContainer}>
