@@ -183,10 +183,10 @@ export default function CreateSeed(props: Props) {
         <title>Create Seed | Digital Garden</title>
         {/* <script src="/path/to/tinymce.min.js" /> */}
 
-        {/* <script
-          src={`https://cdn.tiny.cloud/1/${process.env.TINYMCE_API_KEY}/tinymce/5/tinymce.min.js`}
-          referrerpolicy="origin"
-        /> */}
+        <script
+          src="https://cdn.tiny.cloud/1/txlnzwxmbaq4q1025rbuupwrv6np2w8obe4wwc2k8m8n83xz/tinymce/5/tinymce.min.js"
+          referrerPolicy="origin"
+        />
       </Head>
       <div css={pageContainer}>
         <h1>Create Seed</h1>
@@ -415,6 +415,8 @@ export default function CreateSeed(props: Props) {
 }
 
 export async function getServerSideProps() {
+  require('dotenv-safe');
+
   const categories = await getCategory();
   return {
     props: { categories },

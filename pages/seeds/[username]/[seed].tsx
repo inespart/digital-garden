@@ -28,6 +28,7 @@ export const smallPageContainer = css`
   padding-top: 128px;
   padding-left: 192px;
   padding-right: 192px;
+  padding-bottom: 128px;
 
   @media (max-width: 768px) {
     padding: 96px 24px;

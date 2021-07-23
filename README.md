@@ -6,7 +6,27 @@ You can visit the deployed website here: [Digital Garden](https://digitalgarden-
 
 This web application was created as the final project for the Upleveled bootcamp in Vienna.
 
-## Idea & Functionalities
+## Vision
+
+The Digital Garden is a pinboard where users can capture all the resources that are meaningful to them. It also makes it easier for them to retain their key take-aways by creating meaningful connections with their personal experiences. Users can decide, which part of their notes is public and which one is only visible to them.
+
+![Landing Page](./public/screenshot_landing-page.png)
+![Login](./public/screenshot_login.png)
+![Seeds Overview](./public/screenshot_seeds-overview.png)
+![Seed](./public/screenshot_seed.png)
+
+## Functionalities
+
+- User authentication (registration + login)
+- User authorization (only the owner of items is allowed to modify or delete seeds and to see private notes)
+- Users can create seeds and select a category, save the resource URL and their main take-aways (= public note) as well as a private note, which is only visible to them.
+- A user can edit and delete their seeds
+- A rich-text editor enables the user to format the text
+- Users can see seeds (= resources) of other like-minded people, get inspired and grow their knowledge base
+- Also unregistered users can see all seeds of all users, but they cannot edit or delete seeds of other users
+- Users can filter by category or by only their seeds
+- The website is fully responsive, so access on the mobile phone is possible
+- The website includes a product tour
 
 ## Technologies
 
@@ -14,9 +34,9 @@ This web application was created as the final project for the Upleveled bootcamp
 - React.js
 - PostgreSQL
 - Emotion
-- Typescript
-- Jest
-- Cypress
+- TypeScript
+- Jest tests
+- Cypress tests
 
 ## Project Management
 
