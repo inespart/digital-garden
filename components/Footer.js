@@ -3,12 +3,12 @@ import Link from 'next/link';
 import { darkGrey } from '../util/sharedStyles';
 
 const footerStyles = css`
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100%;
-  height: 32px;
-  background-color: #e7f4e1;
+  height: 62px;
+  border: 1px solid grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media (max-width: 400px) {
     display: none;
@@ -18,8 +18,6 @@ const footerStyles = css`
 const navItemsContainer = css`
   padding-top: 4px;
   display: flex;
-  align-items: center;
-  justify-content: center;
 
   ul {
     display: inline-grid;
@@ -35,10 +33,10 @@ const navItemsContainer = css`
   }
 
   a {
-    color: #a9a9a9;
+    color: grey;
+    font-size: 0.9rem;
     font-weight: 300;
     text-decoration: none;
-    box-shadow: inset 0 -1px 0 hsla(0, 0%, 100%, 0.4);
 
     :hover {
       font-weight: 400;

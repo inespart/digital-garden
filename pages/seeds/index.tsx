@@ -63,6 +63,10 @@ const seedContainer = css`
   height: 470px;
   margin: 0 32px 64px 32px;
 
+  :hover {
+    transform: translate(0, -10px);
+  }
+
   @media (max-width: 768px) {
     margin: 0 18px 64px 18px;
     width: 300px;

@@ -548,7 +548,7 @@ export async function getAuthorBySeedId(seedId: number) {
   return authors.map((author) => camelcaseKeys(author))[0];
 }
 
-export async function deleteSeedBySeedId(seedId: number) {
+export async function deleteSeedBySeedId(seedId: number, userId: number) {
   if (!seedId) return undefined;
 
   const seeds = await sql`
@@ -556,6 +556,8 @@ export async function deleteSeedBySeedId(seedId: number) {
       seeds
     WHERE
       id = ${seedId}
+    AND
+      user_id = ${userId}
     RETURNING
       id
   `;

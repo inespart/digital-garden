@@ -14,8 +14,7 @@ export const smallFontSize = '0.8rem';
 // Styles
 export const pageContainer = css`
   background-color: ${lightGreen};
-  height: 100vh;
-  padding-top: 100px;
+  padding-top: 128px;
   padding-left: 128px;
   padding-right: 128px;
 
@@ -51,6 +50,7 @@ export const registrationForm = css`
   justify-content: center;
   align-items: center;
   width: 50%;
+  padding-bottom: 128px;
 
   label {
     display: flex;

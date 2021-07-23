@@ -18,6 +18,7 @@ type Props = {
 const contentContainer = css`
   display: flex;
   flex-direction: row;
+  height: 100vh;
 
   @media (max-width: 400px) {
     flex-direction: column;

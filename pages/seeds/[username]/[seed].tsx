@@ -25,7 +25,6 @@ type Props = {
 
 export const smallPageContainer = css`
   background-color: ${lightGreen};
-  height: 100vh;
   padding-top: 128px;
   padding-left: 192px;
   padding-right: 192px;

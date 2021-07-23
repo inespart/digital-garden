@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FaRegLightbulb } from 'react-icons/fa';
-import { darkGrey, green } from '../util/sharedStyles';
+import { darkGrey, green, lightGreen } from '../util/sharedStyles';
 import HeaderBurger from './HeaderBurger';
 import HeaderRightNav from './HeaderRightNav';
 
@@ -18,11 +18,12 @@ const Steps = dynamic(
 
 const headerStyles = css`
   width: 100%;
-  height: 100px;
+  height: 128px;
   padding: 12px 128px;
   display: flex;
   justify-content: space-between;
   background-color: ${green};
+
   font-weight: 400;
   position: fixed;
   z-index: 1000;
@@ -31,6 +32,19 @@ const headerStyles = css`
 
   @media (max-width: 768px) {
     padding: 32px 24px;
+  }
+`;
+
+const tourButton = css`
+  .button-default {
+    margin-left: 24px;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+  }
+
+  @media (max-width: 400px) {
+    display: none;
   }
 `;
 
@@ -51,13 +65,6 @@ const logoContainer = css`
   img {
     width: 90px;
   }
-
-  .button-default {
-    margin-left: 24px;
-    padding: 8px;
-    border-radius: 6px;
-    border: none;
-  }
 `;
 
 export default function Header(props) {
@@ -66,18 +73,23 @@ export default function Header(props) {
   const [initialStep] = useState(0);
   const [steps] = useState([
     {
+      element: '#step-zero',
+      intro: 'A seed is a resource with your personal notes',
+      position: 'bottom',
+    },
+    {
       element: '#step-one',
-      intro: 'Find out how to build your personal knowledge base',
+      intro: 'Find out how personal notes help you retain information',
+      position: 'bottom',
+    },
+    {
+      element: '#step-three',
+      intro: 'Create your own seed and start building your second brain',
       position: 'bottom',
     },
     {
       element: '#step-two',
       intro: 'Register for free to use all features',
-      position: 'bottom',
-    },
-    {
-      element: '#step-three',
-      intro: 'Create your own seed and build a second brain',
       position: 'bottom',
     },
   ]);
@@ -99,13 +111,18 @@ export default function Header(props) {
         />
         <Link href="/">
           <a>
-            <img src="/digital-garden-logo.png" alt="Digital Garden Logo" />
+            <img
+              src="/digital-garden-logo-transparent.png"
+              alt="Digital Garden Logo"
+            />
           </a>
         </Link>
         {!props.username ? (
-          <button className="button-default" onClick={() => startIntro()}>
-            <FaRegLightbulb /> Get started
-          </button>
+          <div css={tourButton}>
+            <button className="button-default" onClick={() => startIntro()}>
+              <FaRegLightbulb /> Get started
+            </button>
+          </div>
         ) : (
           ''
         )}

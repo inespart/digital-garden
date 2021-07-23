@@ -62,7 +62,7 @@ export default function HeaderRightNav(props) {
       <ul>
         <Link href="/seeds">
           <a data-cy="header-seeds-link">
-            <li>Digital Seeds</li>
+            <li id="step-zero">Digital Seeds</li>
           </a>
         </Link>
         {props.username ? (

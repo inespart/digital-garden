@@ -100,7 +100,7 @@ export default async function singleSeedHandler(
         errors: [{ field: 'validSession', message: 'No valid session' }],
       });
     } else {
-      await deleteSeedBySeedId(seed.id);
+      await deleteSeedBySeedId(seed.id, validSession.userId);
     }
   }
 
