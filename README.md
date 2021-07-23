@@ -8,7 +8,7 @@ This web application was created as the final project for the Upleveled bootcamp
 
 ## Vision
 
-The Digital Garden is a pinboard where users can capture all the resources that are meaningful to them. It also makes it easier for them to retain their key take-aways by creating meaningful connections with their personal experiences. Users can decide, which part of their notes is public and which one is only visible to them.
+The Digital Garden is a resource pinboard where users can capture all the resources that are meaningful to them. It also makes it easier for them to retain their key take-aways by creating meaningful connections with their personal experiences. Users can decide, which part of their notes is public and which one is only visible to them.
 
 ![Landing Page](./public/screenshot_landing-page.png)
 ![Login](./public/screenshot_login.png)
