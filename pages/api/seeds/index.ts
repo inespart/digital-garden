@@ -25,9 +25,6 @@ export default async function singleSeedHandler(
       validSession.userId,
     );
   }
-  // else {
-  //   console.log('unregistered user');
-  // }
 
   // Return to the frontend
   return res.status(200).json({

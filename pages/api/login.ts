@@ -3,9 +3,7 @@ import argon2 from 'argon2';
 import crypto from 'crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createSerializedSessionTokenCookie } from '../../util/cookies';
-// Since all files in the API folder
-// are server-side only, we can import from
-// the database statically at the top
+// Since all files in the API folder are server-side only, we can import from  the database statically at the top
 import {
   deleteExpiredSessions,
   getUserWithPasswordHashByUsername,
@@ -15,8 +13,7 @@ import { ApplicationError, User } from '../../util/types';
 
 export type LoginResponse = { user: User } | { errors: ApplicationError[] };
 
-// An API Route needs to define the response
-// that is returned to the user
+// An API Route needs to define the response that is returned to the user
 export default async function loginHandler(
   req: NextApiRequest,
   res: NextApiResponse<LoginResponse>,
@@ -53,16 +50,14 @@ export default async function loginHandler(
     // If the password doesn't match the password hash, return a
     // 401 Unauthorized status code and an error
     if (!passwordMatches) {
-      return res
-        .status(401)
-        .json({
-          errors: [
-            {
-              field: 'passwordMatchesPasswordHash',
-              message: 'Username or password did not match',
-            },
-          ],
-        });
+      return res.status(401).json({
+        errors: [
+          {
+            field: 'passwordMatchesPasswordHash',
+            message: 'Username or password did not match',
+          },
+        ],
+      });
     }
 
     // Clean up expired sessions

@@ -41,18 +41,14 @@ export default async function singleSeedHandler(
   //   userId: 3
   // }
   const validSession = await getValidSessionByToken(req.cookies.sessionToken);
-  // console.log('validSession', validSession);
-  // console.log('req.cookies.sessionToken', req.cookies.sessionToken);
 
   // Retrieve slug from the query string (the square bracket notation in the filename)
-  // console.log('req.query', req.query.username);
   const user = await getUserByUsername(req.query.username);
   if (!user) {
     return res
       .status(404)
       .json({ errors: [{ field: 'user', message: 'User not found.' }] });
   }
-  // console.log('user', user);
 
   // Get slug title
   const slugTitle = convertQueryValueString(req.query.seed);
@@ -115,8 +111,7 @@ export default async function singleSeedHandler(
     );
   }
 
-  // If we have received an array of errors, set the
-  // response accordingly
+  // If we have received an array of errors, set the response accordingly
   if (Array.isArray(seed)) {
     return res.status(403).json({ errors: seed });
   }

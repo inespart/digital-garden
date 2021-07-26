@@ -23,7 +23,6 @@ export default async function createSeedHandler(
 ) {
   if (req.method === 'POST') {
     const validSession = await getValidSessionByToken(req.cookies.sessionToken);
-    // console.log('validSession', validSession);
 
     // Retrieve title, etc. from the request body from the frontend
     const {
@@ -56,9 +55,6 @@ export default async function createSeedHandler(
         field: 'categoryId',
         message: 'Please select a category.',
       });
-      // return res
-      //   .status(403)
-      //   .json({ errors: [{ id: 2, message: 'Please select a category.' }] });
     }
 
     // Check if user has entered a title
@@ -68,9 +64,6 @@ export default async function createSeedHandler(
         field: 'title',
         message: 'Please enter a title.',
       });
-      // return res
-      //   .status(403)
-      //   .json({ errors: [{ id: 3, message: 'Please enter a title.' }] });
     }
 
     // Create slug from title
@@ -89,22 +82,14 @@ export default async function createSeedHandler(
         field: 'publicNoteId',
         message: 'Please enter a public note.',
       });
-      // return res
-      //   .status(403)
-      //   .json({ errors: [{ id: 5, message: 'Please enter a public note.' }] });
     }
-
-    // console.log('right before early return');
 
     // Early return any errors and status code to the frontend
     if (responseErrorObject.length > 0) {
-      console.log('responseErrorObject early return', responseErrorObject);
       return res
         .status(responseStatusCode)
         .json({ errors: [responseErrorObject] });
     }
-
-    // console.log('right after early return');
 
     // Check if slug is unique
     let userSlugs;
@@ -124,14 +109,6 @@ export default async function createSeedHandler(
         field: 'isSlugAlreadyUsed',
         message: 'Title already used. Please choose another title.',
       });
-      // return res.status(409).json({
-      //   errors: [
-      //     {
-      //       id: 4,
-      //       message: 'Title already used. Please choose another title.',
-      //     },
-      //   ],
-      // });
     }
 
     // Save the seed information to the database
@@ -156,14 +133,11 @@ export default async function createSeedHandler(
     // Send response to frontend
     if (responseErrorObject.length > 0) {
       // If there is/are errors, return status code and errors to the frontend
-      // console.log('responseErrorObject.length', responseErrorObject.length);
-      // console.log('responseErrorObject bottom', responseErrorObject);
       return res
         .status(responseStatusCode)
         .json({ errors: [responseErrorObject] });
     } else {
       // Return seed and user response to the frontend
-      console.log('responseErrorObject.length', responseErrorObject.length);
       return res.status(200).json({
         seed: seed,
         user: user,

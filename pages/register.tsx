@@ -143,7 +143,6 @@ export default function Register(props: Props) {
                   />
                 </label>
               </div>
-              {/* {console.log("There's an error")} */}
               <div
                 style={{
                   color: 'red',
@@ -223,7 +222,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const shortLivedSession = await insertFiveMinuteSessionWithoutUserId(
     crypto.randomBytes(64).toString('base64'),
   );
-  // console.log('short lived session token', shortLivedSession.token);
 
   // Set new cookie for the short-lived session
   const cookie = createSerializedRegisterSessionTokenCookie(

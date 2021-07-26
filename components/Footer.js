@@ -5,7 +5,6 @@ import { darkGrey } from '../util/sharedStyles';
 const footerStyles = css`
   width: 100%;
   height: 62px;
-  /* border: 1px solid grey; */
   background-color: #e6f4e1;
   display: flex;
   align-items: center;

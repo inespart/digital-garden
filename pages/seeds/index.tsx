@@ -311,10 +311,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if ('errors' in json) {
     context.res.statusCode = 403;
   }
-  // else if (!json.user) {
-  //   // Return a proper status code for a response with a null user (which indicates it has not been found in the database)
-  //   context.res.statusCode = 404;
-  // }
 
   const categories = await getCategory();
 

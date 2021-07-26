@@ -178,28 +178,12 @@ export default function SingleUserProfile(props: Props) {
             />
           </div>
         </div>
-
-        {/* <div>
-          id: <span data-cy="profile-page-id">{props.user.id}</span>
-        </div>
-
-        <div>
-          username: <span data-cy="profile-page-id">{props.user.username}</span>
-        </div>
-        <div>first_name: {props.user.firstName}</div>
-        <div>last_name: {props.user.lastName}</div> */}
       </div>
     </Layout>
   );
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  // TODO: Verify the user's token (from the cookie) and
-  // retrieve the user that matches the token
-
-  // TODO: Test if the token user's username matches the username in the URL
-
-  // API design here is not so great, maybe don't copy
   const response =
     // Since we're fetching on the server side,
     // the browser is not a part of this fetch
@@ -217,7 +201,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         },
       },
     );
-  // console.log('sessionToken inside GSSP', context.req.cookies.sessionToken);
   const json = (await response.json()) as SingleUserResponseType;
 
   console.log('API decoded JSON from response', json);

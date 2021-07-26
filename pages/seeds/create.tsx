@@ -264,7 +264,7 @@ export default function CreateSeed(props: Props) {
                   <input
                     data-cy="create-resource-url"
                     value={resourceUrl}
-                    placeholder="www.khanacademy.org/review-arrays"
+                    placeholder="http://www.example-url.com"
                     onChange={(event) => {
                       setResourceUrl(event.currentTarget.value);
                     }}

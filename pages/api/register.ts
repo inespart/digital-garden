@@ -57,8 +57,6 @@ export default async function registerHandler(
     // Security: Check CSRF Token
     const isCsrfTokenValid = tokens.verify(csrfSecret, csrfToken);
     // sessionToken gets created upon new registration
-    // console.log('short lived session token - register.ts', sessionToken);
-    // console.log('csrfToken', csrfToken);
 
     if (!isCsrfTokenValid) {
       return res.status(400).json({
